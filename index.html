@@ -1,0 +1,2468 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atlas Vasculaire — HSCM</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap');
+
+:root {
+  --red: #B91C1C;
+  --red-l: #DC2626;
+  --red-dim: rgba(185,28,28,0.15);
+  --blue: #1E3A5F;
+  --blue-l: #2563EB;
+  --gold: #B45309;
+  --gold-l: #D97706;
+  --bg: #080C10;
+  --bg2: #0F1419;
+  --bg3: #161D26;
+  --bg4: #1C2532;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --text: #E2E8F0;
+  --text2: #94A3B8;
+  --text3: #64748B;
+  --sidebar-w: 260px;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ─── SIDEBAR ─────────────────────────────────────────── */
+#sidebar {
+  position: fixed;
+  left: 0; top: 0; bottom: 0;
+  width: var(--sidebar-w);
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  z-index: 200;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.sidebar-brand {
+  padding: 22px 20px 18px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.brand-icon {
+  width: 36px; height: 36px;
+  background: var(--red);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.brand-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.2;
+}
+.brand-sub {
+  font-size: 9px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-top: 6px;
+}
+.brand-hospital {
+  font-size: 10px;
+  color: var(--text3);
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.5px;
+}
+
+.nav-group { padding: 10px 0 4px; }
+.nav-group-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text3);
+  padding: 6px 20px 4px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 20px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text2);
+  border-left: 2px solid transparent;
+  transition: all 0.18s;
+  user-select: none;
+}
+.nav-item:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+.nav-item.active { color: var(--text); border-left-color: var(--red); background: var(--red-dim); }
+.nav-icon { font-size: 14px; width: 18px; text-align: center; flex-shrink: 0; }
+
+.nav-sub {
+  padding-left: 48px;
+  font-size: 12px;
+  display: none;
+}
+.nav-sub.open { display: block; }
+.nav-sub-item {
+  padding: 5px 20px 5px 0;
+  cursor: pointer;
+  color: var(--text3);
+  transition: color 0.15s;
+  border-left: 1px solid var(--border);
+  padding-left: 12px;
+  margin-left: -1px;
+}
+.nav-sub-item:hover { color: var(--text2); }
+.nav-sub-item.active { color: var(--red); border-left-color: var(--red); }
+
+.nav-arrow {
+  margin-left: auto;
+  font-size: 10px;
+  color: var(--text3);
+  transition: transform 0.2s;
+}
+.nav-arrow.open { transform: rotate(90deg); }
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 16px 20px;
+  border-top: 1px solid var(--border);
+  font-size: 10px;
+  color: var(--text3);
+  font-family: 'DM Mono', monospace;
+  flex-shrink: 0;
+}
+.sidebar-footer span { color: var(--text2); }
+
+/* ─── MAIN ────────────────────────────────────────────── */
+#main {
+  margin-left: var(--sidebar-w);
+  min-height: 100vh;
+}
+
+/* ─── TOPBAR ──────────────────────────────────────────── */
+.topbar {
+  position: sticky; top: 0;
+  height: 52px;
+  background: rgba(8,12,16,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 36px;
+  gap: 16px;
+  z-index: 100;
+}
+.topbar-breadcrumb {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--text3);
+  flex: 1;
+}
+.topbar-breadcrumb span { color: var(--text2); }
+.topbar-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--red);
+  background: var(--red-dim);
+  border: 1px solid rgba(185,28,28,0.3);
+  padding: 3px 10px;
+  border-radius: 20px;
+  letter-spacing: 1px;
+}
+
+/* ─── SECTIONS ────────────────────────────────────────── */
+.section { display: none; }
+.section.active { display: block; animation: fadeUp 0.3s ease; }
+@keyframes fadeUp {
+  from { opacity:0; transform: translateY(10px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+
+/* ─── HOME ────────────────────────────────────────────── */
+.home-hero {
+  position: relative;
+  min-height: 380px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 48px;
+  overflow: hidden;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+}
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 80% at 80% 20%, rgba(185,28,28,0.12), transparent),
+    radial-gradient(ellipse 40% 60% at 10% 80%, rgba(30,58,95,0.2), transparent),
+    linear-gradient(180deg, var(--bg2), rgba(8,12,16,0.95));
+}
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+/* Animated pulse circle */
+.hero-pulse {
+  position: absolute;
+  top: 60px; right: 80px;
+  width: 180px; height: 180px;
+  border-radius: 50%;
+  border: 1px solid rgba(185,28,28,0.3);
+  animation: pulse 3s ease-in-out infinite;
+}
+.hero-pulse::after {
+  content:'';
+  position: absolute;
+  inset: 20px;
+  border-radius: 50%;
+  border: 1px solid rgba(185,28,28,0.2);
+  animation: pulse 3s ease-in-out infinite 0.5s;
+}
+@keyframes pulse {
+  0%,100% { opacity:0.4; transform: scale(1); }
+  50% { opacity:1; transform: scale(1.05); }
+}
+/* SVG pulse line */
+.hero-ecg {
+  position: absolute;
+  top: 110px; right: 20px;
+  width: 240px;
+  opacity: 0.25;
+}
+
+.hero-content { position: relative; z-index: 1; }
+.hero-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.hero-eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 24px; height: 1px;
+  background: var(--red);
+}
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+.hero-title em {
+  color: var(--red);
+  font-style: italic;
+}
+.hero-subtitle {
+  font-size: 16px;
+  color: var(--text2);
+  margin-bottom: 24px;
+  max-width: 520px;
+}
+.hero-meta {
+  display: flex;
+  gap: 24px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--text3);
+}
+.hero-meta-item { display: flex; flex-direction: column; gap: 2px; }
+.hero-meta-item span { color: var(--text); font-size: 16px; font-family: 'Playfair Display', serif; }
+
+/* ─── HOME CARDS ─────────────────────────────────────── */
+.home-body { padding: 36px 48px; }
+.home-section-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 16px;
+}
+.module-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 36px;
+}
+.module-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  cursor: pointer;
+  transition: all 0.22s;
+  position: relative;
+  overflow: hidden;
+}
+.module-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--card-color, var(--red));
+  transform: scaleX(0);
+  transition: transform 0.22s;
+  transform-origin: left;
+}
+.module-card:hover { border-color: var(--border2); transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.4); }
+.module-card:hover::before { transform: scaleX(1); }
+.module-card-icon { font-size: 26px; margin-bottom: 14px; }
+.module-card h3 { font-size: 15px; font-weight: 500; margin-bottom: 5px; }
+.module-card p { font-size: 12px; color: var(--text3); line-height: 1.5; }
+.module-card-count {
+  position: absolute;
+  top: 14px; right: 14px;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--text3);
+  background: var(--bg3);
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+/* Chirurgiens */
+.surgeons-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 36px;
+}
+.surgeon-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.surgeon-card:hover { border-color: var(--border2); background: var(--bg3); }
+.surgeon-avatar {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--bg3), var(--bg4));
+  border: 2px solid var(--border2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  margin: 0 auto 12px;
+}
+.surgeon-name {
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+.surgeon-role {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--red);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Annonce */
+.notice-bar {
+  background: linear-gradient(90deg, rgba(185,28,28,0.1), rgba(30,58,95,0.1));
+  border: 1px solid rgba(185,28,28,0.2);
+  border-radius: 10px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: var(--text2);
+}
+.notice-dot {
+  width: 8px; height: 8px;
+  background: var(--red);
+  border-radius: 50%;
+  flex-shrink: 0;
+  animation: blink 1.5s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+/* ─── PAGE HEADER ─────────────────────────────────────── */
+.page-wrap { padding: 36px 48px; }
+.page-header {
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.page-header-top {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 6px;
+}
+.page-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  font-weight: 600;
+}
+.ph-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 20px;
+  border: 1px solid;
+}
+.ph-badge-red { color: var(--red); border-color: rgba(185,28,28,0.4); background: var(--red-dim); }
+.ph-badge-blue { color: #60A5FA; border-color: rgba(96,165,250,0.4); background: rgba(96,165,250,0.1); }
+.ph-badge-gold { color: var(--gold-l); border-color: rgba(217,119,6,0.4); background: rgba(217,119,6,0.1); }
+.ph-badge-green { color: #34D399; border-color: rgba(52,211,153,0.4); background: rgba(52,211,153,0.1); }
+.page-header p { font-size: 13px; color: var(--text3); }
+
+/* ─── ANATOMY ─────────────────────────────────────────── */
+.anatomy-tabs {
+  display: flex; gap: 4px; margin-bottom: 24px; flex-wrap: wrap;
+}
+.atab {
+  padding: 7px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--text3);
+  border: 1px solid transparent;
+  transition: all 0.18s;
+  font-family: 'DM Mono', monospace;
+}
+.atab:hover { color: var(--text2); background: var(--bg3); }
+.atab.active { background: var(--red-dim); border-color: rgba(185,28,28,0.35); color: var(--text); }
+
+.anatomy-view { display: none; }
+.anatomy-view.active { display: grid; grid-template-columns: 1fr 1fr 300px; gap: 16px; }
+
+.anatomy-panel {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+}
+.anatomy-panel h4 {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.vessel-btn { cursor: pointer; transition: opacity 0.15s; }
+.vessel-btn:hover { opacity: 0.7; }
+.vessel-btn.sel { filter: drop-shadow(0 0 5px currentColor); }
+
+.info-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+  position: sticky;
+  top: 68px;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+}
+.info-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  color: var(--red);
+  margin-bottom: 12px;
+}
+.info-hint { font-size: 12px; color: var(--text3); font-style: italic; }
+.info-row {
+  display: flex; gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 12.5px;
+}
+.info-row:last-child { border-bottom: none; }
+.info-key {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  width: 80px;
+  flex-shrink: 0;
+  padding-top: 1px;
+}
+
+/* ─── PROCEDURES ─────────────────────────────────────── */
+.proc-filter {
+  display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap;
+}
+.pfilt {
+  padding: 5px 14px; border-radius: 16px; cursor: pointer;
+  font-size: 11px; font-family: 'DM Mono', monospace;
+  border: 1px solid var(--border); color: var(--text3);
+  transition: all 0.18s; letter-spacing: 0.5px;
+}
+.pfilt:hover { color: var(--text2); }
+.pfilt.active { color: var(--text); border-color: var(--pf-color, var(--red)); background: rgba(255,255,255,0.05); }
+
+.proc-grid { display: flex; flex-direction: column; gap: 10px; }
+.proc-item {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.proc-item:hover { border-color: var(--border2); }
+.proc-item.hidden { display: none; }
+
+.proc-head {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px 20px; cursor: pointer;
+}
+.proc-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 6px; flex-shrink: 0;
+}
+.proc-head h3 { font-size: 14px; font-weight: 500; flex: 1; }
+.proc-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+.ptag {
+  font-size: 9px; font-family: 'DM Mono', monospace;
+  padding: 2px 7px; border-radius: 8px; border: 1px solid;
+  letter-spacing: 0.5px; white-space: nowrap;
+}
+.ptag-endo { color:#34D399; border-color:rgba(52,211,153,.35); background:rgba(52,211,153,.08); }
+.ptag-pontage { color:#60A5FA; border-color:rgba(96,165,250,.35); background:rgba(96,165,250,.08); }
+.ptag-endovasc { color:#A78BFA; border-color:rgba(167,139,250,.35); background:rgba(167,139,250,.08); }
+.ptag-amputation { color:#FB923C; border-color:rgba(251,146,60,.35); background:rgba(251,146,60,.08); }
+.ptag-urgence { color:#F87171; border-color:rgba(248,113,113,.35); background:rgba(248,113,113,.08); }
+.ptag-conjoint { color:#FBBF24; border-color:rgba(251,191,36,.35); background:rgba(251,191,36,.08); }
+
+.proc-chev { color: var(--text3); font-size: 10px; transition: transform 0.25s; flex-shrink: 0; }
+.proc-body {
+  display: none;
+  padding: 0 20px 20px;
+  border-top: 1px solid var(--border);
+}
+.proc-body.open { display: block; }
+.proc-desc { font-size: 13px; color: var(--text2); margin: 16px 0; }
+
+.steps { display: flex; flex-direction: column; gap: 0; }
+.step-item { display: flex; gap: 16px; padding-bottom: 16px; position: relative; }
+.step-item:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 13px; top: 28px; bottom: 0;
+  width: 1px; background: var(--border);
+}
+.step-n {
+  width: 28px; height: 28px;
+  background: var(--red);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; font-weight: 500;
+  flex-shrink: 0; z-index: 1;
+}
+.step-c h4 { font-size: 13px; font-weight: 500; margin-bottom: 3px; }
+.step-c p { font-size: 12px; color: var(--text3); }
+
+.pearl {
+  margin-top: 16px;
+  background: rgba(180,83,9,0.08);
+  border: 1px solid rgba(180,83,9,0.25);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+.pearl h4 {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--gold-l);
+  margin-bottom: 8px;
+}
+.pearl ul { list-style: none; }
+.pearl li { font-size: 12px; color: var(--text2); padding: 3px 0; }
+.pearl li::before { content: '→ '; color: var(--gold-l); }
+
+/* ─── KARDEX ─────────────────────────────────────────── */
+.kardex-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px;
+}
+.kardex-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 10px; overflow: hidden; cursor: pointer;
+  transition: all 0.2s;
+}
+.kardex-card:hover { border-color: var(--border2); transform: translateY(-2px); }
+.kardex-head {
+  padding: 18px 20px;
+  background: linear-gradient(135deg, var(--bg3), var(--bg2));
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 14px;
+}
+.kardex-avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--red-dim); border: 1px solid rgba(185,28,28,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+}
+.kardex-dr { font-size: 15px; font-weight: 500; }
+.kardex-spec {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; color: var(--text3);
+  letter-spacing: 1px; text-transform: uppercase;
+  margin-top: 2px;
+}
+.kardex-body { padding: 16px 20px; }
+.kardex-placeholder {
+  text-align: center; padding: 30px 0;
+  color: var(--text3); font-size: 12px;
+}
+.kardex-placeholder div { font-size: 28px; margin-bottom: 10px; }
+.kardex-tag-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.kdtag {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; color: var(--text2);
+  background: var(--bg3); border: 1px solid var(--border);
+  padding: 3px 9px; border-radius: 6px;
+}
+
+/* ─── QUIZ ────────────────────────────────────────────── */
+.quiz-wrap { max-width: 720px; }
+.quiz-progress {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 24px;
+}
+.quiz-bar-bg {
+  flex: 1; height: 4px; background: var(--bg3); border-radius: 2px; overflow: hidden;
+}
+.quiz-bar-fill {
+  height: 100%; background: var(--red); border-radius: 2px;
+  transition: width 0.4s ease;
+}
+.quiz-score {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; color: var(--text3);
+}
+.quiz-score span { color: var(--text); }
+
+.qcard {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 12px; padding: 28px; margin-bottom: 14px;
+}
+.qcard-meta {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
+}
+.qcard-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; color: var(--red);
+  background: var(--red-dim); border: 1px solid rgba(185,28,28,0.3);
+  padding: 2px 9px; border-radius: 10px;
+}
+.qcard-cat {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; color: var(--text3); letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.qcard-q {
+  font-size: 15px; font-family: 'Playfair Display', serif;
+  margin-bottom: 20px; line-height: 1.5;
+}
+.qopts { display: flex; flex-direction: column; gap: 8px; }
+.qopt {
+  padding: 12px 16px; border: 1px solid var(--border);
+  border-radius: 8px; cursor: pointer; font-size: 13px;
+  text-align: left; color: var(--text); background: transparent;
+  transition: all 0.18s; width: 100%;
+}
+.qopt:hover:not(:disabled) { border-color: var(--border2); background: var(--bg3); }
+.qopt.correct { border-color: #34D399; background: rgba(52,211,153,0.1); color: #34D399; }
+.qopt.wrong { border-color: #F87171; background: rgba(248,113,113,0.1); color: #F87171; }
+.qopt.show-c { border-color: rgba(52,211,153,0.3); background: rgba(52,211,153,0.04); }
+.qexpl {
+  display: none; margin-top: 16px; padding: 14px 16px;
+  background: var(--bg3); border-radius: 8px;
+  font-size: 13px; color: var(--text2);
+  border-left: 3px solid var(--red);
+  line-height: 1.6;
+}
+.qexpl.show { display: block; }
+
+/* ─── SCROLLBAR ──────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.15); }
+
+/* ─── WIP ────────────────────────────────────────────── */
+.wip {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 12px; padding: 60px 40px; text-align: center;
+}
+.wip-icon { font-size: 48px; margin-bottom: 16px; }
+.wip h3 { font-size: 18px; margin-bottom: 8px; }
+.wip p { font-size: 13px; color: var(--text3); }
+</style>
+</head>
+<body>
+
+<!-- ═══ SIDEBAR ═════════════════════════════════════════ -->
+<nav id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-logo">
+      <div class="brand-icon">🫀</div>
+      <div>
+        <div class="brand-name">Atlas Vasculaire</div>
+        <div class="brand-hospital">Hôpital du Sacré-Cœur</div>
+      </div>
+    </div>
+    <div class="brand-sub">HSCM · Chirurgie Vasculaire</div>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Principal</div>
+    <div class="nav-item active" onclick="show('home',this)">
+      <span class="nav-icon">🏠</span> Accueil
+    </div>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Anatomie</div>
+    <div class="nav-item" onclick="show('anatomy',this)">
+      <span class="nav-icon">🫀</span> Planches anatomiques
+      <span class="nav-arrow" id="arr-anatomy">›</span>
+    </div>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Chirurgies</div>
+    <div class="nav-item" onclick="show('procedures',this);filterProc('all')">
+      <span class="nav-icon">🔪</span> Toutes les procédures
+    </div>
+    <div class="nav-item" onclick="show('procedures',this);filterProc('endarteriectomie')" style="padding-left:32px;font-size:12px;">
+      <span class="nav-icon" style="font-size:11px;">↳</span> Endartériectomies
+    </div>
+    <div class="nav-item" onclick="show('procedures',this);filterProc('pontage')" style="padding-left:32px;font-size:12px;">
+      <span class="nav-icon" style="font-size:11px;">↳</span> Pontages
+    </div>
+    <div class="nav-item" onclick="show('procedures',this);filterProc('endovasculaire')" style="padding-left:32px;font-size:12px;">
+      <span class="nav-icon" style="font-size:11px;">↳</span> Endovasculaire
+    </div>
+    <div class="nav-item" onclick="show('procedures',this);filterProc('amputation')" style="padding-left:32px;font-size:12px;">
+      <span class="nav-icon" style="font-size:11px;">↳</span> Amputations
+    </div>
+    <div class="nav-item" onclick="show('procedures',this);filterProc('urgence')" style="padding-left:32px;font-size:12px;">
+      <span class="nav-icon" style="font-size:11px;">↳</span> Urgences
+    </div>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Référence</div>
+    <div class="nav-item" onclick="show('kardex',this)">
+      <span class="nav-icon">📋</span> Kardex chirurgiens
+    </div>
+    <div class="nav-item" onclick="show('quiz',this)">
+      <span class="nav-icon">🧠</span> Quiz bloc opératoire
+    </div>
+  </div>
+
+  <div class="sidebar-footer">
+    HSCM · Bloc vasculaire<br>
+    <span>Version 1.0 — 2026</span>
+  </div>
+</nav>
+
+<!-- ═══ MAIN ═════════════════════════════════════════════ -->
+<main id="main">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-breadcrumb">HSCM / Chirurgie Vasculaire / <span id="bc">Accueil</span></div>
+    <div class="topbar-badge">USAGE INTERNE</div>
+  </div>
+
+  <!-- ══ HOME ══════════════════════════════════════════ -->
+  <div id="sec-home" class="section active">
+
+    <div class="home-hero">
+      <div class="hero-bg"></div>
+      <div class="hero-grid"></div>
+      <div class="hero-pulse"></div>
+      <!-- ECG line SVG -->
+      <svg class="hero-ecg" viewBox="0 0 240 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polyline points="0,30 30,30 40,30 50,10 60,50 70,20 80,30 120,30 130,30 140,10 150,50 160,20 170,30 240,30"
+          stroke="#B91C1C" stroke-width="1.5" fill="none" opacity="0.8"/>
+      </svg>
+
+      <div class="hero-content">
+        <div class="hero-eyebrow">Référence clinique officielle</div>
+        <h1 class="hero-title">Atlas de <em>Chirurgie</em><br>Vasculaire</h1>
+        <p class="hero-subtitle">Hôpital du Sacré-Cœur de Montréal — Bloc opératoire vasculaire. Ressource de formation pour infirmières et résidents en chirurgie vasculaire.</p>
+        <div class="hero-meta">
+          <div class="hero-meta-item">Procédures<span>18+</span></div>
+          <div class="hero-meta-item">Planches<span>6</span></div>
+          <div class="hero-meta-item">Chirurgiens<span>4</span></div>
+          <div class="hero-meta-item">Questions quiz<span>15+</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="home-body">
+
+      <div class="notice-bar">
+        <div class="notice-dot"></div>
+        <div>Document à usage interne — <strong>Hôpital du Sacré-Cœur de Montréal</strong> · Service de chirurgie vasculaire · Mise à jour continue</div>
+      </div>
+
+      <div class="home-section-title">Modules</div>
+      <div class="module-grid">
+        <div class="module-card" style="--card-color:#B91C1C" onclick="show('anatomy',document.querySelector('[onclick*=anatomy]'))">
+          <div class="module-card-count">6 planches</div>
+          <div class="module-card-icon">🫀</div>
+          <h3>Anatomie vasculaire</h3>
+          <p>Vue systémique complète, aorte, carotides, membres supérieurs et inférieurs — planches détaillées et simplifiées interactives</p>
+        </div>
+        <div class="module-card" style="--card-color:#2563EB" onclick="show('procedures',document.querySelector('[onclick*=procedures]'))">
+          <div class="module-card-count">18 procédures</div>
+          <div class="module-card-icon">🔪</div>
+          <h3>Procédures chirurgicales</h3>
+          <p>Endartériectomies, pontages ouverts, chirurgie endovasculaire (EVAR/TEVAR/FEVAR), amputations et embolectomie</p>
+        </div>
+        <div class="module-card" style="--card-color:#B45309" onclick="show('kardex',document.querySelector('[onclick*=kardex]'))">
+          <div class="module-card-count">4 chirurgiens</div>
+          <div class="module-card-icon">📋</div>
+          <h3>Kardex chirurgiens</h3>
+          <p>Préférences opératoires de Drs Febrer, Fortin, Rizkallah et Blair — matériel, positionnement, spécificités</p>
+        </div>
+        <div class="module-card" style="--card-color:#7C3AED" onclick="show('quiz',document.querySelector('[onclick*=quiz]'))">
+          <div class="module-card-count">15 questions</div>
+          <div class="module-card-icon">🧠</div>
+          <h3>Quiz bloc opératoire</h3>
+          <p>Auto-évaluation adaptée aux infirmières de bloc — instrumentiste, circulante, urgences peropératoires</p>
+        </div>
+      </div>
+
+      <div class="home-section-title">Équipe chirurgicale</div>
+      <div class="surgeons-grid">
+        <div class="surgeon-card" onclick="show('kardex',document.querySelector('[onclick*=kardex]'))">
+          <div class="surgeon-avatar">👨‍⚕️</div>
+          <div class="surgeon-name">Dr Febrer</div>
+          <div class="surgeon-role">Chirurgie vasculaire</div>
+        </div>
+        <div class="surgeon-card" onclick="show('kardex',document.querySelector('[onclick*=kardex]'))">
+          <div class="surgeon-avatar">👨‍⚕️</div>
+          <div class="surgeon-name">Dr Fortin</div>
+          <div class="surgeon-role">Chirurgie vasculaire</div>
+        </div>
+        <div class="surgeon-card" onclick="show('kardex',document.querySelector('[onclick*=kardex]'))">
+          <div class="surgeon-avatar">👨‍⚕️</div>
+          <div class="surgeon-name">Dr Rizkallah</div>
+          <div class="surgeon-role">Chirurgie vasculaire</div>
+        </div>
+        <div class="surgeon-card" onclick="show('kardex',document.querySelector('[onclick*=kardex]'))">
+          <div class="surgeon-avatar">👩‍⚕️</div>
+          <div class="surgeon-name">Dr Blair</div>
+          <div class="surgeon-role">Chirurgie vasculaire</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ ANATOMY ════════════════════════════════════════ -->
+  <div id="sec-anatomy" class="section">
+    <div class="page-wrap">
+      <div class="page-header">
+        <div class="page-header-top">
+          <h2>Planches anatomiques</h2>
+          <span class="ph-badge ph-badge-red">Anatomie</span>
+        </div>
+        <p>Cliquez sur un vaisseau pour afficher les informations cliniques. Vue détaillée et vue simplifiée disponibles.</p>
+      </div>
+
+      <div class="anatomy-tabs">
+        <div class="atab active" onclick="switchAnatomy('systemic',this)">Vue systemique complete</div>
+        <div class="atab" onclick="switchAnatomy('aorte',this)">Aorte abdominale</div>
+        <div class="atab" onclick="switchAnatomy('carotide',this)">Carotides</div>
+        <div class="atab" onclick="switchAnatomy('femoral',this)">Territoire femoro-poplite</div>
+        <div class="atab" onclick="switchAnatomy('jambier',this)">Reseau jambier</div>
+        <div class="atab" onclick="switchAnatomy('superieur',this)">Membres superieurs</div>
+      </div>
+      <!-- Systemic view -->
+      <div id="anat-systemic" class="anatomy-view active">
+        <div class="anatomy-panel">
+          <h4>Vue détaillée — Système vasculaire complet</h4>
+          <svg viewBox="0 0 220 520" xmlns="http://www.w3.org/2000/svg" style="width:100%">
+            <!-- Silhouette -->
+            <ellipse cx="110" cy="28" rx="24" ry="27" fill="rgba(240,200,170,0.18)" stroke="rgba(200,170,140,0.35)" stroke-width="0.8"/>
+            <rect x="99" y="53" width="22" height="20" fill="rgba(240,200,170,0.15)" rx="2"/>
+            <path d="M72 73 L148 73 L145 168 L75 168 Z" fill="rgba(240,200,170,0.12)" stroke="rgba(200,170,140,0.25)" stroke-width="0.7"/>
+            <path d="M75 168 L145 168 L152 205 L58 205 Z" fill="rgba(240,200,170,0.10)" stroke="rgba(200,170,140,0.25)" stroke-width="0.7"/>
+            <rect x="60" y="205" width="30" height="140" fill="rgba(240,200,170,0.10)" stroke="rgba(200,170,140,0.25)" stroke-width="0.7" rx="5"/>
+            <rect x="130" y="205" width="30" height="140" fill="rgba(240,200,170,0.10)" stroke="rgba(200,170,140,0.25)" stroke-width="0.7" rx="5"/>
+            <rect x="38" y="75" width="22" height="78" fill="rgba(240,200,170,0.10)" stroke="rgba(200,170,140,0.25)" stroke-width="0.7" rx="5"/>
+            <rect x="160" y="75" width="22" height="78" fill="rgba(240,200,170,0.10)" stroke="rgba(200,170,140,0.25)" stroke-width="0.7" rx="5"/>
+            <!-- Crosse aortique -->
+            <path class="vessel-btn" data-v="arch" onclick="infoV('arch')"
+              d="M110 79 C104 70 90 67 87 73 C84 78 89 84 110 84" stroke="#B91C1C" stroke-width="6" fill="none" stroke-linecap="round"/>
+            <!-- Aorte descendante thoracique -->
+            <line class="vessel-btn" data-v="thoracique" onclick="infoV('thoracique')"
+              x1="110" y1="79" x2="110" y2="130" stroke="#B91C1C" stroke-width="6" stroke-linecap="round"/>
+            <!-- Aorte abdominale -->
+            <line class="vessel-btn" data-v="aorte" onclick="infoV('aorte')"
+              x1="110" y1="130" x2="110" y2="197" stroke="#B91C1C" stroke-width="6" stroke-linecap="round"/>
+            <!-- Carotides communes -->
+            <line class="vessel-btn" data-v="carotide" onclick="infoV('carotide')"
+              x1="97" y1="55" x2="90" y2="30" stroke="#DC2626" stroke-width="3.5" stroke-linecap="round"/>
+            <line class="vessel-btn" data-v="carotide" onclick="infoV('carotide')"
+              x1="123" y1="55" x2="130" y2="30" stroke="#DC2626" stroke-width="3.5" stroke-linecap="round"/>
+            <!-- Carotides internes (vers haut crâne) -->
+            <line class="vessel-btn" data-v="carotide" onclick="infoV('carotide')"
+              x1="90" y1="30" x2="88" y2="10" stroke="#DC2626" stroke-width="2" stroke-linecap="round" stroke-dasharray="3,2"/>
+            <line class="vessel-btn" data-v="carotide" onclick="infoV('carotide')"
+              x1="130" y1="30" x2="132" y2="10" stroke="#DC2626" stroke-width="2" stroke-linecap="round" stroke-dasharray="3,2"/>
+            <!-- Artères sous-clavières -->
+            <line class="vessel-btn" data-v="subclaviere" onclick="infoV('subclaviere')"
+              x1="87" y1="75" x2="48" y2="80" stroke="#DC2626" stroke-width="3.5" stroke-linecap="round"/>
+            <line class="vessel-btn" data-v="subclaviere" onclick="infoV('subclaviere')"
+              x1="133" y1="75" x2="172" y2="80" stroke="#DC2626" stroke-width="3.5" stroke-linecap="round"/>
+            <!-- Artères axillaires -->
+            <line class="vessel-btn" data-v="axillaire" onclick="infoV('axillaire')"
+              x1="48" y1="80" x2="41" y2="100" stroke="#DC2626" stroke-width="3" stroke-linecap="round"/>
+            <line class="vessel-btn" data-v="axillaire" onclick="infoV('axillaire')"
+              x1="172" y1="80" x2="179" y2="100" stroke="#DC2626" stroke-width="3" stroke-linecap="round"/>
+            <!-- Artères brachiales -->
+            <line class="vessel-btn" data-v="brachiale" onclick="infoV('brachiale')"
+              x1="41" y1="100" x2="40" y2="148" stroke="#DC2626" stroke-width="2.5" stroke-linecap="round"/>
+            <line class="vessel-btn" data-v="brachiale" onclick="infoV('brachiale')"
+              x1="179" y1="100" x2="180" y2="148" stroke="#DC2626" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- Radiale + cubitale -->
+            <line class="vessel-btn" data-v="radiale" onclick="infoV('radiale')"
+              x1="40" y1="148" x2="37" y2="153" stroke="#EF4444" stroke-width="2" stroke-linecap="round"/>
+            <line class="vessel-btn" data-v="radiale" onclick="infoV('radiale')"
+              x1="40" y1="148" x2="43" y2="153" stroke="#EF4444" stroke-width="2" stroke-linecap="round"/>
+            <line class="vessel-btn" data-v="radiale" onclick="infoV('radiale')"
+              x1="180" y1="148" x2="177" y2="153" stroke="#EF4444" stroke-width="2" stroke-linecap="round"/>
+            <line class="vessel-btn" data-v="radiale" onclick="infoV('radiale')"
+              x1="180" y1="148" x2="183" y2="153" stroke="#EF4444" stroke-width="2" stroke-linecap="round"/>
+            <!-- Tronc coeliaque -->
+            <line class="vessel-btn" data-v="tc" onclick="infoV('tc')"
+              x1="110" y1="108" x2="80" y2="108" stroke="#DC2626" stroke-width="4" stroke-linecap="round"/>
+            <line class="vessel-btn" data-v="tc" onclick="infoV('tc')"
+              x1="110" y1="108" x2="140" y2="108" stroke="#DC2626" stroke-width="3.5" stroke-linecap="round"/>
+            <!-- Artère mésentérique supérieure -->
+            <line class="vessel-btn" data-v="ams" onclick="infoV('ams')"
+              x1="110" y1="118" x2="82" y2="132" stroke="#DC2626" stroke-width="3.5" stroke-linecap="round"/>
+            <line class="vessel-btn" data-v="ams" onclick="infoV('ams')"
+              x1="110" y1="118" x2="138" y2="132" stroke="#DC2626" stroke-width="3" stroke-linecap="round"/>
+            <!-- Artères rénales -->
+            <line class="vessel-btn" data-v="renales" onclick="infoV('renales')"
+              x1="107" y1="128" x2="78" y2="128" stroke="#DC2626" stroke-width="4" stroke-linecap="round"/>
+            <line class="vessel-btn" data-v="renales" onclick="infoV('renales')"
+              x1="113" y1="128" x2="142" y2="128" stroke="#DC2626" stroke-width="4" stroke-linecap="round"/>
+            <!-- Reins -->
+            <ellipse cx="68" cy="128" rx="12" ry="18" fill="rgba(169,83,28,0.3)" stroke="rgba(169,83,28,0.5)" stroke-width="0.8"/>
+            <ellipse cx="152" cy="128" rx="12" ry="18" fill="rgba(169,83,28,0.3)" stroke="rgba(169,83,28,0.5)" stroke-width="0.8"/>
+            <!-- Artère mésentérique inférieure -->
+            <line class="vessel-btn" data-v="ami" onclick="infoV('ami')"
+              x1="110" y1="165" x2="85" y2="175" stroke="#DC2626" stroke-width="3" stroke-linecap="round"/>
+            <line class="vessel-btn" data-v="ami" onclick="infoV('ami')"
+              x1="85" y1="175" x2="82" y2="185" stroke="#EF4444" stroke-width="2" stroke-linecap="round"/>
+            <!-- Bifurcation aorto-iliaque -->
+            <line class="vessel-btn" data-v="bif" onclick="infoV('bif')"
+              x1="110" y1="197" x2="82" y2="220" stroke="#B91C1C" stroke-width="5.5" stroke-linecap="round"/>
+            <line class="vessel-btn" data-v="bif" onclick="infoV('bif')"
+              x1="110" y1="197" x2="138" y2="220" stroke="#B91C1C" stroke-width="5.5" stroke-linecap="round"/>
+            <!-- Iliaques internes -->
+            <line class="vessel-btn" data-v="iliaque-int" onclick="infoV('iliaque-int')"
+              x1="82" y1="220" x2="68" y2="232" stroke="#DC2626" stroke-width="3" stroke-linecap="round"/>
+            <line class="vessel-btn" data-v="iliaque-int" onclick="infoV('iliaque-int')"
+              x1="138" y1="220" x2="152" y2="232" stroke="#DC2626" stroke-width="3" stroke-linecap="round"/>
+            <!-- Iliaques externes → fémorales communes -->
+            <line class="vessel-btn" data-v="fem" onclick="infoV('fem')"
+              x1="82" y1="220" x2="75" y2="235" stroke="#B91C1C" stroke-width="5" stroke-linecap="round"/>
+            <line class="vessel-btn" data-v="fem" onclick="infoV('fem')"
+              x1="138" y1="220" x2="145" y2="235" stroke="#B91C1C" stroke-width="5" stroke-linecap="round"/>
+            <!-- Fémorales -->
+            <line class="vessel-btn" data-v="fem" onclick="infoV('fem')"
+              x1="75" y1="235" x2="75" y2="300" stroke="#B91C1C" stroke-width="4.5" stroke-linecap="round"/>
+            <line class="vessel-btn" data-v="fem" onclick="infoV('fem')"
+              x1="145" y1="235" x2="145" y2="300" stroke="#B91C1C" stroke-width="4.5" stroke-linecap="round"/>
+            <!-- Fémorales profondes -->
+            <line class="vessel-btn" data-v="fem-prof" onclick="infoV('fem-prof')"
+              x1="75" y1="245" x2="58" y2="262" stroke="#DC2626" stroke-width="3" stroke-linecap="round"/>
+            <line class="vessel-btn" data-v="fem-prof" onclick="infoV('fem-prof')"
+              x1="145" y1="245" x2="162" y2="262" stroke="#DC2626" stroke-width="3" stroke-linecap="round"/>
+            <!-- Artères poplitées -->
+            <line class="vessel-btn" data-v="poplit" onclick="infoV('poplit')"
+              x1="75" y1="300" x2="75" y2="330" stroke="#DC2626" stroke-width="4" stroke-linecap="round"/>
+            <line class="vessel-btn" data-v="poplit" onclick="infoV('poplit')"
+              x1="145" y1="300" x2="145" y2="330" stroke="#DC2626" stroke-width="4" stroke-linecap="round"/>
+            <!-- Tibiales -->
+            <line class="vessel-btn" data-v="tibant" onclick="infoV('tibant')"
+              x1="75" y1="330" x2="65" y2="345" stroke="#EF4444" stroke-width="2.5" stroke-linecap="round"/>
+            <line class="vessel-btn" data-v="tibant" onclick="infoV('tibant')"
+              x1="145" y1="330" x2="155" y2="345" stroke="#EF4444" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- Tibiales postérieures -->
+            <line class="vessel-btn" data-v="tibpost" onclick="infoV('tibpost')"
+              x1="75" y1="330" x2="80" y2="345" stroke="#EF4444" stroke-width="2.5" stroke-linecap="round"/>
+            <line class="vessel-btn" data-v="tibpost" onclick="infoV('tibpost')"
+              x1="145" y1="330" x2="140" y2="345" stroke="#EF4444" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- Péronières -->
+            <line class="vessel-btn" data-v="peroniere" onclick="infoV('peroniere')"
+              x1="80" y1="345" x2="78" y2="360" stroke="#EF4444" stroke-width="2" stroke-linecap="round" stroke-dasharray="3,2"/>
+            <line class="vessel-btn" data-v="peroniere" onclick="infoV('peroniere')"
+              x1="140" y1="345" x2="142" y2="360" stroke="#EF4444" stroke-width="2" stroke-linecap="round" stroke-dasharray="3,2"/>
+            <!-- Veines caves -->
+            <line x1="117" y1="197" x2="117" y2="79" stroke="#1E3A5F" stroke-width="4.5" stroke-linecap="round" opacity="0.65"/>
+            <!-- Veine porte -->
+            <line x1="117" y1="130" x2="135" y2="120" stroke="#1E3A5F" stroke-width="2.5" stroke-linecap="round" opacity="0.5"/>
+            <!-- Labels -->
+            <text x="135" y="80" fill="#475569" font-size="6" font-family="monospace">Crosse aortique</text>
+            <text x="135" y="112" fill="#475569" font-size="6" font-family="monospace">Tronc coeliaque</text>
+            <text x="155" y="122" fill="#475569" font-size="6" font-family="monospace">Art. renales</text>
+            <text x="135" y="132" fill="#475569" font-size="6" font-family="monospace">Art. mes. sup.</text>
+            <text x="135" y="168" fill="#475569" font-size="6" font-family="monospace">Art. mes. inf.</text>
+            <text x="118" y="201" fill="#475569" font-size="6" font-family="monospace">Bifurcation L4</text>
+            <text x="57" y="272" fill="#475569" font-size="6" font-family="monospace">Fem. commune</text>
+            <text x="150" y="315" fill="#475569" font-size="6" font-family="monospace">Poplitee</text>
+            <text x="150" y="348" fill="#475569" font-size="6" font-family="monospace">Tibiales</text>
+            <text x="120" y="130" fill="rgba(30,58,95,0.7)" font-size="5.5" font-family="monospace">VCI</text>
+          </svg>
+        </div>
+        <div class="anatomy-panel">
+          <h4>Schéma simplifié — Axes principaux</h4>
+          <svg viewBox="0 0 200 500" xmlns="http://www.w3.org/2000/svg" style="width:100%">
+            <text x="100" y="18" text-anchor="middle" fill="#94A3B8" font-size="8" font-family="monospace">Carotides communes</text>
+            <line x1="100" y1="22" x2="100" y2="42" stroke="#B91C1C" stroke-width="5"/>
+            <text x="100" y="52" text-anchor="middle" fill="#94A3B8" font-size="7" font-family="monospace">Crosse aortique</text>
+            <line x1="60" y1="51" x2="140" y2="51" stroke="#DC2626" stroke-width="3"/>
+            <text x="22" y="54" fill="#64748B" font-size="6" font-family="monospace">S/clav. g.</text>
+            <text x="152" y="54" fill="#64748B" font-size="6" font-family="monospace">S/clav. d.</text>
+            <line x1="100" y1="51" x2="100" y2="80" stroke="#B91C1C" stroke-width="5"/>
+            <text x="100" y="88" text-anchor="middle" fill="#94A3B8" font-size="7" font-family="monospace">Aorte thoracique descendante</text>
+            <line x1="100" y1="92" x2="100" y2="120" stroke="#B91C1C" stroke-width="5"/>
+            <text x="100" y="128" text-anchor="middle" fill="#94A3B8" font-size="7" font-family="monospace">Tronc coeliaque</text>
+            <line x1="65" y1="127" x2="135" y2="127" stroke="#DC2626" stroke-width="3"/>
+            <line x1="100" y1="127" x2="100" y2="148" stroke="#B91C1C" stroke-width="5"/>
+            <text x="100" y="156" text-anchor="middle" fill="#94A3B8" font-size="7" font-family="monospace">Art. mesenterique superieure</text>
+            <line x1="68" y1="155" x2="132" y2="155" stroke="#DC2626" stroke-width="3"/>
+            <text x="100" y="168" text-anchor="middle" fill="#94A3B8" font-size="7" font-family="monospace">Art. renales</text>
+            <line x1="70" y1="167" x2="130" y2="167" stroke="#DC2626" stroke-width="3.5"/>
+            <line x1="100" y1="167" x2="100" y2="192" stroke="#B91C1C" stroke-width="5"/>
+            <text x="100" y="200" text-anchor="middle" fill="#94A3B8" font-size="7" font-family="monospace">Art. mesenterique inferieure</text>
+            <line x1="100" y1="192" x2="80" y2="200" stroke="#DC2626" stroke-width="2.5"/>
+            <line x1="100" y1="200" x2="100" y2="225" stroke="#B91C1C" stroke-width="5"/>
+            <text x="100" y="233" text-anchor="middle" fill="#94A3B8" font-size="7" font-family="monospace">Bifurcation aorto-iliaque (L4)</text>
+            <line x1="100" y1="236" x2="65" y2="260" stroke="#B91C1C" stroke-width="4.5"/>
+            <line x1="100" y1="236" x2="135" y2="260" stroke="#B91C1C" stroke-width="4.5"/>
+            <text x="48" y="270" text-anchor="middle" fill="#94A3B8" font-size="7" font-family="monospace">Iliaque comm. g.</text>
+            <text x="152" y="270" text-anchor="middle" fill="#94A3B8" font-size="7" font-family="monospace">Iliaque comm. d.</text>
+            <line x1="65" y1="260" x2="65" y2="305" stroke="#DC2626" stroke-width="4"/>
+            <line x1="135" y1="260" x2="135" y2="305" stroke="#DC2626" stroke-width="4"/>
+            <text x="50" y="310" text-anchor="middle" fill="#94A3B8" font-size="7" font-family="monospace">Fem. commune</text>
+            <text x="150" y="310" text-anchor="middle" fill="#94A3B8" font-size="7" font-family="monospace">Fem. commune</text>
+            <line x1="65" y1="305" x2="65" y2="370" stroke="#DC2626" stroke-width="3.5"/>
+            <line x1="135" y1="305" x2="135" y2="370" stroke="#DC2626" stroke-width="3.5"/>
+            <text x="50" y="375" text-anchor="middle" fill="#94A3B8" font-size="7" font-family="monospace">Poplitee</text>
+            <text x="150" y="375" text-anchor="middle" fill="#94A3B8" font-size="7" font-family="monospace">Poplitee</text>
+            <line x1="65" y1="370" x2="58" y2="400" stroke="#EF4444" stroke-width="2.5"/>
+            <line x1="65" y1="370" x2="72" y2="400" stroke="#EF4444" stroke-width="2.5"/>
+            <line x1="135" y1="370" x2="128" y2="400" stroke="#EF4444" stroke-width="2.5"/>
+            <line x1="135" y1="370" x2="142" y2="400" stroke="#EF4444" stroke-width="2.5"/>
+            <text x="50" y="410" text-anchor="middle" fill="#64748B" font-size="6.5" font-family="monospace">Tib. ant.</text>
+            <text x="78" y="410" text-anchor="middle" fill="#64748B" font-size="6.5" font-family="monospace">Tib. post.</text>
+            <text x="128" y="410" text-anchor="middle" fill="#64748B" font-size="6.5" font-family="monospace">Tib. ant.</text>
+            <text x="150" y="410" text-anchor="middle" fill="#64748B" font-size="6.5" font-family="monospace">Tib. post.</text>
+          </svg>
+        </div>
+        <div class="info-card" id="vessel-info">
+          <p class="info-hint">Cliquez sur un vaisseau pour afficher ses informations cliniques</p>
+        </div>
+      </div>
+
+      <!-- AORTE ABDOMINALE -->
+      <div id="anat-aorte" class="anatomy-view">
+        <div class="anatomy-panel">
+          <h4>Aorte abdominale — Vue détaillée</h4>
+          <svg viewBox="0 0 280 480" xmlns="http://www.w3.org/2000/svg" style="width:100%">
+            <!-- Vertebres -->
+            <g opacity="0.45">
+              <rect x="120" y="30" width="40" height="16" rx="3" fill="#D4B896"/>
+              <rect x="122" y="26" width="36" height="6" rx="2" fill="#C4A882"/>
+              <rect x="120" y="60" width="40" height="16" rx="3" fill="#D4B896"/>
+              <rect x="120" y="90" width="40" height="16" rx="3" fill="#D4B896"/>
+              <rect x="120" y="120" width="40" height="16" rx="3" fill="#D4B896"/>
+              <rect x="120" y="150" width="40" height="16" rx="3" fill="#D4B896"/>
+              <rect x="120" y="180" width="40" height="16" rx="3" fill="#D4B896"/>
+              <rect x="120" y="210" width="40" height="16" rx="3" fill="#D4B896"/>
+              <rect x="120" y="240" width="40" height="16" rx="3" fill="#D4B896"/>
+              <rect x="120" y="270" width="40" height="16" rx="3" fill="#D4B896"/>
+              <rect x="120" y="300" width="40" height="16" rx="3" fill="#D4B896"/>
+              <!-- Disques -->
+              <rect x="123" y="46" width="34" height="5" rx="2" fill="#E8D0B0" opacity="0.7"/>
+              <rect x="123" y="76" width="34" height="5" rx="2" fill="#E8D0B0" opacity="0.7"/>
+              <rect x="123" y="106" width="34" height="5" rx="2" fill="#E8D0B0" opacity="0.7"/>
+              <rect x="123" y="136" width="34" height="5" rx="2" fill="#E8D0B0" opacity="0.7"/>
+              <rect x="123" y="166" width="34" height="5" rx="2" fill="#E8D0B0" opacity="0.7"/>
+              <rect x="123" y="196" width="34" height="5" rx="2" fill="#E8D0B0" opacity="0.7"/>
+              <rect x="123" y="226" width="34" height="5" rx="2" fill="#E8D0B0" opacity="0.7"/>
+              <rect x="123" y="256" width="34" height="5" rx="2" fill="#E8D0B0" opacity="0.7"/>
+              <rect x="123" y="286" width="34" height="5" rx="2" fill="#E8D0B0" opacity="0.7"/>
+            </g>
+            <!-- Diaphragme -->
+            <path d="M20 32 C80 48 200 48 260 32" stroke="#E8A598" stroke-width="2.5" fill="rgba(232,165,152,0.15)"/>
+            <text x="22" y="27" fill="#9B7B72" font-size="8" font-family="monospace">Diaphragme (T12)</text>
+            <!-- Aorte principale -->
+            <line class="vessel-btn" data-v="aorte" onclick="infoV('aorte')"
+              x1="140" y1="32" x2="140" y2="358" stroke="#B91C1C" stroke-width="10" stroke-linecap="round"/>
+            <line x1="140" y1="32" x2="140" y2="358" stroke="#DC2626" stroke-width="7" stroke-linecap="round" pointer-events="none"/>
+            <line x1="140" y1="32" x2="140" y2="358" stroke="rgba(239,68,68,0.4)" stroke-width="3" stroke-linecap="round" pointer-events="none"/>
+            <!-- Tronc coeliaque -->
+            <g class="vessel-btn" data-v="tc" onclick="infoV('tc')">
+              <line x1="140" y1="68" x2="105" y2="68" stroke="#B91C1C" stroke-width="6" stroke-linecap="round"/>
+              <line x1="105" y1="68" x2="72" y2="58" stroke="#DC2626" stroke-width="4" stroke-linecap="round"/>
+              <line x1="105" y1="68" x2="68" y2="76" stroke="#DC2626" stroke-width="3.5" stroke-linecap="round"/>
+              <line x1="140" y1="68" x2="175" y2="63" stroke="#DC2626" stroke-width="5" stroke-linecap="round"/>
+              <line x1="175" y1="63" x2="200" y2="55" stroke="#DC2626" stroke-width="3.5" stroke-linecap="round"/>
+              <line x1="175" y1="63" x2="198" y2="72" stroke="#DC2626" stroke-width="3" stroke-linecap="round"/>
+              <line x1="175" y1="63" x2="192" y2="80" stroke="#DC2626" stroke-width="2.5" stroke-linecap="round"/>
+            </g>
+            <!-- Rate -->
+            <ellipse cx="55" cy="62" rx="15" ry="20" fill="rgba(120,60,120,0.3)" stroke="rgba(120,60,120,0.5)" stroke-width="0.8"/>
+            <text x="33" y="90" fill="#7B5B7B" font-size="7" font-family="monospace">Rate</text>
+            <!-- Foie -->
+            <path d="M185 48 C220 52 238 65 232 82 C226 95 205 90 185 82 C178 75 180 58 185 48 Z" fill="rgba(139,90,43,0.3)" stroke="rgba(139,90,43,0.5)" stroke-width="0.8"/>
+            <text x="204" y="72" fill="#7B5033" font-size="7" font-family="monospace">Foie</text>
+            <!-- Art. mesenterique superieure -->
+            <g class="vessel-btn" data-v="ams" onclick="infoV('ams')">
+              <line x1="140" y1="88" x2="90" y2="110" stroke="#DC2626" stroke-width="5" stroke-linecap="round"/>
+              <line x1="90" y1="110" x2="75" y2="125" stroke="#EF4444" stroke-width="3.5" stroke-linecap="round"/>
+              <line x1="90" y1="110" x2="80" y2="140" stroke="#EF4444" stroke-width="3" stroke-linecap="round"/>
+              <line x1="90" y1="110" x2="72" y2="155" stroke="#EF4444" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="140" y1="88" x2="160" y2="105" stroke="#DC2626" stroke-width="3.5" stroke-linecap="round"/>
+            </g>
+            <!-- Arteres renales -->
+            <g class="vessel-btn" data-v="renales" onclick="infoV('renales')">
+              <line x1="137" y1="110" x2="92" y2="110" stroke="#B91C1C" stroke-width="6" stroke-linecap="round"/>
+              <line x1="143" y1="110" x2="188" y2="110" stroke="#B91C1C" stroke-width="5.5" stroke-linecap="round"/>
+            </g>
+            <!-- Reins -->
+            <ellipse cx="76" cy="110" rx="17" ry="25" fill="rgba(169,83,28,0.35)" stroke="#A0522D" stroke-width="1"/>
+            <ellipse cx="204" cy="110" rx="17" ry="25" fill="rgba(169,83,28,0.35)" stroke="#A0522D" stroke-width="1"/>
+            <text x="62" y="145" fill="#7D5030" font-size="7" font-family="monospace">Rein g.</text>
+            <text x="192" y="145" fill="#7D5030" font-size="7" font-family="monospace">Rein d.</text>
+            <!-- Arteres lombaires -->
+            <g opacity="0.6">
+              <line x1="137" y1="155" x2="112" y2="155" stroke="#DC2626" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="143" y1="155" x2="168" y2="155" stroke="#DC2626" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="137" y1="185" x2="112" y2="185" stroke="#DC2626" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="143" y1="185" x2="168" y2="185" stroke="#DC2626" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="137" y1="215" x2="112" y2="215" stroke="#DC2626" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="143" y1="215" x2="168" y2="215" stroke="#DC2626" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="137" y1="245" x2="112" y2="245" stroke="#DC2626" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="143" y1="245" x2="168" y2="245" stroke="#DC2626" stroke-width="2.5" stroke-linecap="round"/>
+            </g>
+            <!-- Art. mesenterique inferieure -->
+            <g class="vessel-btn" data-v="ami" onclick="infoV('ami')">
+              <line x1="140" y1="278" x2="100" y2="295" stroke="#DC2626" stroke-width="4.5" stroke-linecap="round"/>
+              <line x1="100" y1="295" x2="88" y2="312" stroke="#EF4444" stroke-width="3.5" stroke-linecap="round"/>
+              <line x1="100" y1="295" x2="95" y2="320" stroke="#EF4444" stroke-width="3" stroke-linecap="round"/>
+            </g>
+            <!-- Bifurcation -->
+            <g class="vessel-btn" data-v="bif" onclick="infoV('bif')">
+              <line x1="140" y1="358" x2="98" y2="400" stroke="#B91C1C" stroke-width="8" stroke-linecap="round"/>
+              <line x1="140" y1="358" x2="182" y2="400" stroke="#B91C1C" stroke-width="8" stroke-linecap="round"/>
+              <!-- Iliaque int gauche -->
+              <line x1="98" y1="400" x2="72" y2="420" stroke="#DC2626" stroke-width="5" stroke-linecap="round"/>
+              <!-- Iliaque ext gauche -->
+              <line x1="98" y1="400" x2="90" y2="435" stroke="#DC2626" stroke-width="6" stroke-linecap="round"/>
+              <!-- Iliaque int droite -->
+              <line x1="182" y1="400" x2="208" y2="420" stroke="#DC2626" stroke-width="5" stroke-linecap="round"/>
+              <!-- Iliaque ext droite -->
+              <line x1="182" y1="400" x2="190" y2="435" stroke="#DC2626" stroke-width="6" stroke-linecap="round"/>
+            </g>
+            <!-- VCI -->
+            <line x1="152" y1="355" x2="152" y2="32" stroke="#1E3A5F" stroke-width="7" stroke-linecap="round" opacity="0.6"/>
+            <line x1="152" y1="355" x2="152" y2="32" stroke="#2563EB" stroke-width="4" stroke-linecap="round" opacity="0.5"/>
+            <!-- Labels -->
+            <text x="155" y="42" fill="#64748B" font-size="7.5" font-family="monospace">Aorte abdominale</text>
+            <text x="155" y="72" fill="#64748B" font-size="7" font-family="monospace">Tronc coeliaque (T12-L1)</text>
+            <text x="155" y="92" fill="#64748B" font-size="7" font-family="monospace">Art. mesenterique sup. (L1)</text>
+            <text x="155" y="114" fill="#64748B" font-size="7" font-family="monospace">Art. renales (L1-L2)</text>
+            <text x="155" y="160" fill="#64748B" font-size="7" font-family="monospace">Art. lombaires</text>
+            <text x="155" y="282" fill="#64748B" font-size="7" font-family="monospace">Art. mesenterique inf. (L3)</text>
+            <text x="148" y="362" fill="#64748B" font-size="7" font-family="monospace">Bifurcation aorto-iliaque (L4)</text>
+            <text x="155" y="115" fill="rgba(37,99,235,0.8)" font-size="7" font-family="monospace">VCI</text>
+            <text x="58" y="407" fill="#64748B" font-size="6.5" font-family="monospace">III interne g.</text>
+            <text x="68" y="442" fill="#64748B" font-size="6.5" font-family="monospace">III externe g.</text>
+            <text x="188" y="407" fill="#64748B" font-size="6.5" font-family="monospace">III interne d.</text>
+            <text x="180" y="442" fill="#64748B" font-size="6.5" font-family="monospace">III externe d.</text>
+          </svg>
+        </div>
+        <div class="anatomy-panel">
+          <h4>Schéma simplifié — Branches aortiques</h4>
+          <svg viewBox="0 0 200 460" xmlns="http://www.w3.org/2000/svg" style="width:100%">
+            <text x="100" y="15" text-anchor="middle" fill="#94A3B8" font-size="8" font-family="monospace">T12 — Hiatus aortique</text>
+            <line x1="100" y1="18" x2="100" y2="48" stroke="#B91C1C" stroke-width="7"/>
+            <rect x="82" y="38" width="36" height="18" rx="3" fill="rgba(185,28,28,0.15)" stroke="rgba(185,28,28,0.4)" stroke-width="0.8"/>
+            <text x="100" y="50" text-anchor="middle" fill="#DC2626" font-size="7" font-family="monospace" font-weight="bold">Tronc coeliaque</text>
+            <line x1="70" y1="47" x2="40" y2="40" stroke="#DC2626" stroke-width="3"/>
+            <line x1="70" y1="47" x2="38" y2="52" stroke="#DC2626" stroke-width="2.5"/>
+            <line x1="130" y1="47" x2="162" y2="47" stroke="#DC2626" stroke-width="3"/>
+            <text x="20" y="42" fill="#64748B" font-size="6" font-family="monospace">Art. gastrique g.</text>
+            <text x="20" y="56" fill="#64748B" font-size="6" font-family="monospace">Art. splenique</text>
+            <text x="164" y="50" fill="#64748B" font-size="6" font-family="monospace">Art. hepatique</text>
+            <line x1="100" y1="56" x2="100" y2="86" stroke="#B91C1C" stroke-width="7"/>
+            <rect x="65" y="76" width="70" height="18" rx="3" fill="rgba(185,28,28,0.15)" stroke="rgba(185,28,28,0.4)" stroke-width="0.8"/>
+            <text x="100" y="88" text-anchor="middle" fill="#DC2626" font-size="7" font-family="monospace" font-weight="bold">Art. mesenterique sup.</text>
+            <line x1="72" y1="85" x2="50" y2="96" stroke="#DC2626" stroke-width="2.5"/>
+            <line x1="72" y1="85" x2="48" y2="108" stroke="#DC2626" stroke-width="2"/>
+            <line x1="128" y1="85" x2="150" y2="96" stroke="#DC2626" stroke-width="2.5"/>
+            <text x="22" y="100" fill="#64748B" font-size="6" font-family="monospace">Intestin grele</text>
+            <text x="22" y="112" fill="#64748B" font-size="6" font-family="monospace">Colon droit</text>
+            <line x1="100" y1="94" x2="100" y2="124" stroke="#B91C1C" stroke-width="7"/>
+            <rect x="65" y="114" width="70" height="18" rx="3" fill="rgba(185,28,28,0.15)" stroke="rgba(185,28,28,0.4)" stroke-width="0.8"/>
+            <text x="100" y="126" text-anchor="middle" fill="#DC2626" font-size="7" font-family="monospace" font-weight="bold">Arteres renales</text>
+            <line x1="65" y1="123" x2="32" y2="123" stroke="#DC2626" stroke-width="4"/>
+            <line x1="135" y1="123" x2="168" y2="123" stroke="#DC2626" stroke-width="4"/>
+            <text x="14" y="127" fill="#64748B" font-size="6" font-family="monospace">Rein g.</text>
+            <text x="170" y="127" fill="#64748B" font-size="6" font-family="monospace">Rein d.</text>
+            <line x1="100" y1="132" x2="100" y2="182" stroke="#B91C1C" stroke-width="7"/>
+            <text x="100" y="158" text-anchor="middle" fill="#475569" font-size="6.5" font-family="monospace">Art. lombaires (x4 paires)</text>
+            <rect x="65" y="172" width="70" height="18" rx="3" fill="rgba(185,28,28,0.15)" stroke="rgba(185,28,28,0.4)" stroke-width="0.8"/>
+            <text x="100" y="184" text-anchor="middle" fill="#DC2626" font-size="7" font-family="monospace" font-weight="bold">Art. mesenterique inf.</text>
+            <line x1="78" y1="181" x2="50" y2="196" stroke="#DC2626" stroke-width="2.5"/>
+            <text x="20" y="202" fill="#64748B" font-size="6" font-family="monospace">Colon gauche</text>
+            <line x1="100" y1="190" x2="100" y2="228" stroke="#B91C1C" stroke-width="7"/>
+            <rect x="60" y="218" width="80" height="18" rx="3" fill="rgba(185,28,28,0.2)" stroke="rgba(185,28,28,0.5)" stroke-width="1"/>
+            <text x="100" y="230" text-anchor="middle" fill="#DC2626" font-size="7.5" font-family="monospace" font-weight="bold">BIFURCATION L4</text>
+            <line x1="100" y1="236" x2="60" y2="270" stroke="#B91C1C" stroke-width="6"/>
+            <line x1="100" y1="236" x2="140" y2="270" stroke="#B91C1C" stroke-width="6"/>
+            <text x="38" y="278" text-anchor="middle" fill="#94A3B8" font-size="7" font-family="monospace">Iliaque comm. g.</text>
+            <text x="162" y="278" text-anchor="middle" fill="#94A3B8" font-size="7" font-family="monospace">Iliaque comm. d.</text>
+            <line x1="60" y1="270" x2="40" y2="300" stroke="#DC2626" stroke-width="4"/>
+            <line x1="60" y1="270" x2="68" y2="300" stroke="#DC2626" stroke-width="5"/>
+            <line x1="140" y1="270" x2="160" y2="300" stroke="#DC2626" stroke-width="4"/>
+            <line x1="140" y1="270" x2="132" y2="300" stroke="#DC2626" stroke-width="5"/>
+            <text x="22" y="308" fill="#64748B" font-size="6" font-family="monospace">III interne</text>
+            <text x="58" y="308" fill="#64748B" font-size="6" font-family="monospace">III externe</text>
+            <text x="122" y="308" fill="#64748B" font-size="6" font-family="monospace">III externe</text>
+            <text x="155" y="308" fill="#64748B" font-size="6" font-family="monospace">III interne</text>
+          </svg>
+        </div>
+        <div class="info-card" id="vessel-info-aorte">
+          <p class="info-hint">Cliquez sur un vaisseau pour afficher ses informations</p>
+        </div>
+      </div>
+
+      <!-- CAROTIDES -->
+      <div id="anat-carotide" class="anatomy-view">
+        <div class="anatomy-panel">
+          <h4>Bifurcation carotidienne — Vue détaillée</h4>
+          <svg viewBox="0 0 260 440" xmlns="http://www.w3.org/2000/svg" style="width:100%">
+            <!-- Cou silhouette -->
+            <rect x="90" y="20" width="80" height="380" fill="rgba(240,200,170,0.12)" stroke="rgba(200,170,140,0.3)" stroke-width="0.8" rx="10"/>
+            <!-- Trachee -->
+            <rect x="118" y="30" width="24" height="360" fill="rgba(100,160,200,0.2)" stroke="rgba(100,160,200,0.4)" stroke-width="0.7" rx="5"/>
+            <text x="130" y="95" text-anchor="middle" fill="#4A8FAA" font-size="7" font-family="monospace" transform="rotate(90,130,95)">Trachee</text>
+            <!-- SCM (muscle) -->
+            <rect x="91" y="25" width="16" height="370" fill="rgba(200,120,100,0.15)" stroke="rgba(200,120,100,0.3)" stroke-width="0.7" rx="3"/>
+            <text x="99" y="210" fill="#B07060" font-size="7" font-family="monospace" transform="rotate(90,99,210)">Muscle SCM</text>
+            <!-- Carotide commune -->
+            <line class="vessel-btn" data-v="carotide-com" onclick="infoV('carotide-com')"
+              x1="110" y1="400" x2="110" y2="245" stroke="#B91C1C" stroke-width="9" stroke-linecap="round"/>
+            <line x1="110" y1="400" x2="110" y2="245" stroke="#DC2626" stroke-width="6" stroke-linecap="round" pointer-events="none"/>
+            <!-- Bulbe carotidien -->
+            <ellipse class="vessel-btn" data-v="bulbe" onclick="infoV('bulbe')"
+              cx="110" cy="238" rx="13" ry="18" fill="rgba(185,28,28,0.3)" stroke="#B91C1C" stroke-width="1.5"/>
+            <!-- Plaque atheromateuse -->
+            <path d="M100 232 C98 238 99 246 104 248 C108 250 112 246 112 240 C112 234 108 228 104 228 Z"
+              fill="rgba(120,100,10,0.7)" stroke="rgba(90,70,5,0.8)" stroke-width="0.8"/>
+            <text x="80" y="243" fill="#8B7B10" font-size="7" font-family="monospace">Plaque</text>
+            <!-- Carotide interne -->
+            <line class="vessel-btn" data-v="carotide-int" onclick="infoV('carotide-int')"
+              x1="106" y1="220" x2="102" y2="30" stroke="#B91C1C" stroke-width="7" stroke-linecap="round"/>
+            <line x1="106" y1="220" x2="102" y2="30" stroke="#DC2626" stroke-width="5" stroke-linecap="round" pointer-events="none"/>
+            <!-- Carotide externe -->
+            <line class="vessel-btn" data-v="carotide-ext" onclick="infoV('carotide-ext')"
+              x1="114" y1="220" x2="130" y2="30" stroke="#B91C1C" stroke-width="6" stroke-linecap="round"/>
+            <line x1="114" y1="220" x2="130" y2="30" stroke="#DC2626" stroke-width="4" stroke-linecap="round" pointer-events="none"/>
+            <!-- Branches carotide externe -->
+            <line class="vessel-btn" data-v="branches-ce" onclick="infoV('branches-ce')"
+              x1="120" y1="190" x2="155" y2="183" stroke="#EF4444" stroke-width="3" stroke-linecap="round"/>
+            <line class="vessel-btn" data-v="branches-ce" onclick="infoV('branches-ce')"
+              x1="122" y1="160" x2="160" y2="150" stroke="#EF4444" stroke-width="3" stroke-linecap="round"/>
+            <line class="vessel-btn" data-v="branches-ce" onclick="infoV('branches-ce')"
+              x1="124" y1="130" x2="162" y2="118" stroke="#EF4444" stroke-width="2.5" stroke-linecap="round"/>
+            <line class="vessel-btn" data-v="branches-ce" onclick="infoV('branches-ce')"
+              x1="126" y1="100" x2="164" y2="90" stroke="#EF4444" stroke-width="2.5" stroke-linecap="round"/>
+            <line class="vessel-btn" data-v="branches-ce" onclick="infoV('branches-ce')"
+              x1="128" y1="68" x2="166" y2="58" stroke="#EF4444" stroke-width="2" stroke-linecap="round"/>
+            <!-- Veine jugulaire interne -->
+            <line class="vessel-btn" data-v="jugulaire" onclick="infoV('jugulaire')"
+              x1="152" y1="400" x2="152" y2="30" stroke="#1E3A5F" stroke-width="8" stroke-linecap="round" opacity="0.75"/>
+            <line x1="152" y1="400" x2="152" y2="30" stroke="#2563EB" stroke-width="5" stroke-linecap="round" opacity="0.6" pointer-events="none"/>
+            <!-- Nerf vague -->
+            <line class="vessel-btn" data-v="nerf-vague" onclick="infoV('nerf-vague')"
+              x1="131" y1="400" x2="131" y2="30" stroke="#F59E0B" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="5,3" opacity="0.8"/>
+            <!-- Labels -->
+            <text x="60" y="400" fill="#64748B" font-size="7.5" font-family="monospace">Carotide commune</text>
+            <text x="60" y="248" fill="#64748B" font-size="7.5" font-family="monospace">Bifurcation (C3-C4)</text>
+            <line x1="80" y1="245" x2="98" y2="240" stroke="#475569" stroke-width="0.7"/>
+            <text x="60" y="195" fill="#64748B" font-size="7" font-family="monospace">Art. thyroidienne sup.</text>
+            <line x1="115" y1="193" x2="154" y2="184" stroke="#475569" stroke-width="0.5"/>
+            <text x="168" y="155" fill="#64748B" font-size="7" font-family="monospace">Art. linguale</text>
+            <text x="168" y="122" fill="#64748B" font-size="7" font-family="monospace">Art. faciale</text>
+            <text x="168" y="93" fill="#64748B" font-size="7" font-family="monospace">Art. temporale sup.</text>
+            <text x="168" y="62" fill="#64748B" font-size="7" font-family="monospace">Art. maxillaire</text>
+            <text x="160" y="380" fill="rgba(30,58,95,0.8)" font-size="7.5" font-family="monospace">Jugulaire interne</text>
+            <text x="136" y="380" fill="#D97706" font-size="7" font-family="monospace">N. vague (X)</text>
+            <text x="62" y="55" fill="#64748B" font-size="7.5" font-family="monospace">Carotide interne</text>
+            <text x="135" y="40" fill="#64748B" font-size="7.5" font-family="monospace">Carotide externe</text>
+          </svg>
+        </div>
+        <div class="anatomy-panel">
+          <h4>Schéma simplifie — Bifurcation carotidienne</h4>
+          <svg viewBox="0 0 200 440" xmlns="http://www.w3.org/2000/svg" style="width:100%">
+            <text x="100" y="18" text-anchor="middle" fill="#94A3B8" font-size="8" font-family="monospace">Artere carotide commune</text>
+            <line x1="100" y1="22" x2="100" y2="150" stroke="#B91C1C" stroke-width="8"/>
+            <text x="100" y="158" text-anchor="middle" fill="#64748B" font-size="7" font-family="monospace">BULBE CAROTIDIEN</text>
+            <ellipse cx="100" cy="148" rx="18" ry="14" fill="rgba(185,28,28,0.2)" stroke="#B91C1C" stroke-width="1.5"/>
+            <line x1="100" y1="162" x2="72" y2="240" stroke="#B91C1C" stroke-width="7"/>
+            <line x1="100" y1="162" x2="128" y2="240" stroke="#B91C1C" stroke-width="5.5"/>
+            <text x="50" y="250" text-anchor="middle" fill="#94A3B8" font-size="7.5" font-family="monospace">Carotide INTERNE</text>
+            <text x="152" y="250" text-anchor="middle" fill="#94A3B8" font-size="7.5" font-family="monospace">Carotide EXTERNE</text>
+            <text x="40" y="262" fill="#475569" font-size="6.5" font-family="monospace">Pas de branche</text>
+            <text x="40" y="272" fill="#475569" font-size="6.5" font-family="monospace">cervicale</text>
+            <text x="40" y="282" fill="#475569" font-size="6.5" font-family="monospace">Circulation cerebrale</text>
+            <line x1="72" y1="240" x2="72" y2="420" stroke="#B91C1C" stroke-width="7"/>
+            <line x1="128" y1="240" x2="128" y2="260" stroke="#B91C1C" stroke-width="5.5"/>
+            <line x1="128" y1="260" x2="148" y2="272" stroke="#EF4444" stroke-width="3"/>
+            <line x1="128" y1="260" x2="148" y2="295" stroke="#EF4444" stroke-width="3"/>
+            <line x1="128" y1="260" x2="148" y2="318" stroke="#EF4444" stroke-width="2.5"/>
+            <line x1="128" y1="260" x2="148" y2="341" stroke="#EF4444" stroke-width="2.5"/>
+            <line x1="128" y1="260" x2="148" y2="364" stroke="#EF4444" stroke-width="2"/>
+            <text x="152" y="275" fill="#64748B" font-size="6.5" font-family="monospace">Art. thyroidienne sup.</text>
+            <text x="152" y="298" fill="#64748B" font-size="6.5" font-family="monospace">Art. linguale</text>
+            <text x="152" y="321" fill="#64748B" font-size="6.5" font-family="monospace">Art. faciale</text>
+            <text x="152" y="344" fill="#64748B" font-size="6.5" font-family="monospace">Art. temporale superficielle</text>
+            <text x="152" y="367" fill="#64748B" font-size="6.5" font-family="monospace">Art. maxillaire interne</text>
+            <text x="72" y="430" text-anchor="middle" fill="#94A3B8" font-size="7" font-family="monospace">Siphon carotidien</text>
+            <text x="72" y="440" text-anchor="middle" fill="#64748B" font-size="6.5" font-family="monospace">(intracrânien)</text>
+          </svg>
+        </div>
+        <div class="info-card" id="vessel-info-carotide">
+          <p class="info-hint">Cliquez sur un vaisseau pour afficher ses informations</p>
+        </div>
+      </div>
+
+      <!-- TERRITOIRE FEMORAL -->
+      <div id="anat-femoral" class="anatomy-view">
+        <div class="anatomy-panel">
+          <h4>Territoire femoro-poplite — Vue détaillée</h4>
+          <svg viewBox="0 0 260 500" xmlns="http://www.w3.org/2000/svg" style="width:100%">
+            <!-- Cuisse -->
+            <path d="M70 30 L190 30 L185 200 L75 200 Z" fill="rgba(240,200,170,0.12)" stroke="rgba(200,170,140,0.25)" stroke-width="0.7"/>
+            <!-- Genou -->
+            <rect x="72" y="200" width="116" height="38" fill="rgba(212,184,150,0.35)" stroke="rgba(160,133,108,0.5)" stroke-width="0.8" rx="5"/>
+            <text x="130" y="223" text-anchor="middle" fill="#7B6048" font-size="7.5" font-family="monospace">Genou — Creux poplite</text>
+            <!-- Jambe -->
+            <path d="M75 238 L185 238 L178 480" stroke="rgba(200,170,140,0.25)" stroke-width="0.7" fill="rgba(240,200,170,0.10)"/>
+            <path d="M75 238 L185 238 L178 480 L82 480 Z" fill="rgba(240,200,170,0.10)" stroke="rgba(200,170,140,0.25)" stroke-width="0.7"/>
+            <!-- Ligament inguinal -->
+            <line x1="70" y1="30" x2="190" y2="30" stroke="#8B6914" stroke-width="2" stroke-dasharray="6,3"/>
+            <text x="100" y="24" fill="#8B6914" font-size="7" font-family="monospace">Ligament inguinal</text>
+            <!-- Iliaque externe entrant -->
+            <line x1="130" y1="0" x2="130" y2="30" stroke="#B91C1C" stroke-width="8" stroke-linecap="round"/>
+            <!-- Femoral commune -->
+            <line class="vessel-btn" data-v="fem-com" onclick="infoV('fem-com')"
+              x1="130" y1="30" x2="130" y2="80" stroke="#B91C1C" stroke-width="8" stroke-linecap="round"/>
+            <line x1="130" y1="30" x2="130" y2="80" stroke="#DC2626" stroke-width="5" stroke-linecap="round" pointer-events="none"/>
+            <!-- Femoral profonde -->
+            <line class="vessel-btn" data-v="fem-prof" onclick="infoV('fem-prof')"
+              x1="130" y1="72" x2="90" y2="120" stroke="#DC2626" stroke-width="7" stroke-linecap="round"/>
+            <line x1="130" y1="72" x2="90" y2="120" stroke="#EF4444" stroke-width="4.5" stroke-linecap="round" pointer-events="none"/>
+            <!-- Branches perforantes -->
+            <line x1="98" y1="108" x2="72" y2="118" stroke="#EF4444" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>
+            <line x1="93" y1="120" x2="68" y2="132" stroke="#EF4444" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+            <line x1="90" y1="134" x2="66" y2="148" stroke="#EF4444" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+            <!-- Femoral superficielle -->
+            <line class="vessel-btn" data-v="fem-sup" onclick="infoV('fem-sup')"
+              x1="130" y1="80" x2="128" y2="200" stroke="#B91C1C" stroke-width="7" stroke-linecap="round"/>
+            <line x1="130" y1="80" x2="128" y2="200" stroke="#DC2626" stroke-width="4.5" stroke-linecap="round" pointer-events="none"/>
+            <!-- Canal des adducteurs (Hunter) -->
+            <rect x="118" y="140" width="28" height="48" fill="rgba(100,160,220,0.12)" stroke="rgba(100,160,220,0.3)" stroke-width="0.8" rx="4"/>
+            <text x="150" y="158" fill="#4A7AAA" font-size="6.5" font-family="monospace">Canal des adducteurs</text>
+            <text x="150" y="168" fill="#4A7AAA" font-size="6.5" font-family="monospace">(Hunter)</text>
+            <!-- Poplitee sus-articulaire -->
+            <line class="vessel-btn" data-v="poplit-sus" onclick="infoV('poplit-sus')"
+              x1="128" y1="200" x2="130" y2="238" stroke="#DC2626" stroke-width="7" stroke-linecap="round"/>
+            <line x1="128" y1="200" x2="130" y2="238" stroke="#EF4444" stroke-width="4.5" stroke-linecap="round" pointer-events="none"/>
+            <!-- Poplitee sous-articulaire -->
+            <line class="vessel-btn" data-v="poplit-sous" onclick="infoV('poplit-sous')"
+              x1="130" y1="238" x2="130" y2="290" stroke="#DC2626" stroke-width="7" stroke-linecap="round"/>
+            <line x1="130" y1="238" x2="130" y2="290" stroke="#EF4444" stroke-width="4.5" stroke-linecap="round" pointer-events="none"/>
+            <!-- Trifurcation -->
+            <circle cx="130" cy="290" r="6" fill="#B91C1C" stroke="#DC2626" stroke-width="1.5"/>
+            <text x="140" y="295" fill="#B91C1C" font-size="7" font-family="monospace" font-weight="bold">Trifurcation</text>
+            <!-- Tibiale anterieure -->
+            <line class="vessel-btn" data-v="tibant" onclick="infoV('tibant')"
+              x1="130" y1="290" x2="100" y2="310" stroke="#DC2626" stroke-width="5" stroke-linecap="round"/>
+            <line x1="100" y1="310" x2="98" y2="480" stroke="#EF4444" stroke-width="4" stroke-linecap="round" class="vessel-btn" data-v="tibant" onclick="infoV('tibant')"/>
+            <!-- Tronc tibio-peronnier -->
+            <line class="vessel-btn" data-v="tibpost" onclick="infoV('tibpost')"
+              x1="130" y1="290" x2="138" y2="310" stroke="#DC2626" stroke-width="5" stroke-linecap="round"/>
+            <!-- Tibiale posterieure -->
+            <line class="vessel-btn" data-v="tibpost" onclick="infoV('tibpost')"
+              x1="138" y1="310" x2="142" y2="480" stroke="#EF4444" stroke-width="4" stroke-linecap="round"/>
+            <!-- Peroniere -->
+            <line class="vessel-btn" data-v="peroniere" onclick="infoV('peroniere')"
+              x1="138" y1="310" x2="150" y2="420" stroke="#EF4444" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="6,2"/>
+            <!-- Veine femorale -->
+            <line class="vessel-btn" data-v="veine-fem" onclick="infoV('veine-fem')"
+              x1="148" y1="30" x2="146" y2="240" stroke="#1E3A5F" stroke-width="7" stroke-linecap="round" opacity="0.7"/>
+            <line x1="148" y1="30" x2="146" y2="240" stroke="#2563EB" stroke-width="4.5" stroke-linecap="round" opacity="0.55" pointer-events="none"/>
+            <!-- Grande saphenee -->
+            <line class="vessel-btn" data-v="sapehne" onclick="infoV('sapehne')"
+              x1="78" y1="30" x2="76" y2="480" stroke="#1E3A5F" stroke-width="3" stroke-linecap="round" opacity="0.6" stroke-dasharray="7,3"/>
+            <!-- Nerf femoral -->
+            <line class="vessel-btn" data-v="nerf-fem" onclick="infoV('nerf-fem')"
+              x1="108" y1="30" x2="105" y2="110" stroke="#F59E0B" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="4,3" opacity="0.85"/>
+            <!-- Labels -->
+            <text x="12" y="38" fill="#64748B" font-size="7" font-family="monospace">Iliaque externe</text>
+            <text x="158" y="56" fill="#64748B" font-size="7" font-family="monospace">Femorale commune</text>
+            <text x="52" y="100" fill="#64748B" font-size="7" font-family="monospace">Femorale profonde</text>
+            <text x="35" y="122" fill="#64748B" font-size="6.5" font-family="monospace">Branches perforantes</text>
+            <text x="158" y="140" fill="#64748B" font-size="7" font-family="monospace">Femorale superficielle</text>
+            <text x="158" y="215" fill="#64748B" font-size="7" font-family="monospace">Poplitee sus-articulaire (P1)</text>
+            <text x="158" y="265" fill="#64748B" font-size="7" font-family="monospace">Poplitee sous-articulaire (P3)</text>
+            <text x="62" y="398" fill="#64748B" font-size="7" font-family="monospace">Tibiale anterieure</text>
+            <text x="158" y="395" fill="#64748B" font-size="7" font-family="monospace">Tibiale posterieure</text>
+            <text x="158" y="440" fill="#64748B" font-size="7" font-family="monospace">Peroniere</text>
+            <text x="155" y="100" fill="rgba(30,58,95,0.8)" font-size="7" font-family="monospace">Veine femorale</text>
+            <text x="50" y="460" fill="rgba(30,58,95,0.7)" font-size="7" font-family="monospace">Grande saphenee</text>
+            <text x="96" y="46" fill="#D97706" font-size="7" font-family="monospace">Nerf femoral</text>
+          </svg>
+        </div>
+        <div class="anatomy-panel">
+          <h4>Schéma simplifie — Bifurcation femorale</h4>
+          <svg viewBox="0 0 200 500" xmlns="http://www.w3.org/2000/svg" style="width:100%">
+            <line x1="100" y1="10" x2="100" y2="38" stroke="#B91C1C" stroke-width="7" stroke-dasharray="6,3"/>
+            <text x="100" y="8" text-anchor="middle" fill="#64748B" font-size="7" font-family="monospace">Iliaque externe</text>
+            <text x="100" y="50" text-anchor="middle" fill="#94A3B8" font-size="8" font-family="monospace">FEMORALE COMMUNE</text>
+            <rect x="65" y="40" width="70" height="18" rx="3" fill="rgba(185,28,28,0.15)" stroke="rgba(185,28,28,0.4)" stroke-width="0.8"/>
+            <line x1="100" y1="58" x2="100" y2="90" stroke="#B91C1C" stroke-width="7"/>
+            <text x="100" y="98" text-anchor="middle" fill="#94A3B8" font-size="7.5" font-family="monospace">BIFURCATION FEMORALE</text>
+            <line x1="100" y1="100" x2="60" y2="140" stroke="#DC2626" stroke-width="6"/>
+            <line x1="100" y1="100" x2="128" y2="140" stroke="#B91C1C" stroke-width="7"/>
+            <text x="35" y="150" text-anchor="middle" fill="#94A3B8" font-size="7" font-family="monospace">Fem. PROFONDE</text>
+            <text x="148" y="150" text-anchor="middle" fill="#94A3B8" font-size="7" font-family="monospace">Fem. SUPERFICIELLE</text>
+            <line x1="60" y1="140" x2="44" y2="165" stroke="#EF4444" stroke-width="3"/>
+            <line x1="60" y1="140" x2="42" y2="190" stroke="#EF4444" stroke-width="2.5"/>
+            <line x1="60" y1="140" x2="40" y2="215" stroke="#EF4444" stroke-width="2"/>
+            <text x="20" y="169" fill="#64748B" font-size="6" font-family="monospace">1re perforante</text>
+            <text x="20" y="194" fill="#64748B" font-size="6" font-family="monospace">2e perforante</text>
+            <text x="20" y="219" fill="#64748B" font-size="6" font-family="monospace">3e perforante</text>
+            <line x1="128" y1="140" x2="128" y2="250" stroke="#B91C1C" stroke-width="7"/>
+            <rect x="110" y="185" width="36" height="30" fill="rgba(100,160,220,0.1)" stroke="rgba(100,160,220,0.3)" stroke-width="0.8" rx="3"/>
+            <text x="128" y="198" text-anchor="middle" fill="#4A7AAA" font-size="6" font-family="monospace">Canal de</text>
+            <text x="128" y="208" text-anchor="middle" fill="#4A7AAA" font-size="6" font-family="monospace">Hunter</text>
+            <line x1="128" y1="250" x2="128" y2="310" stroke="#DC2626" stroke-width="7"/>
+            <text x="128" y="280" fill="#94A3B8" font-size="7" font-family="monospace" text-anchor="middle">Artere POPLITEE</text>
+            <line x1="128" y1="310" x2="90" y2="345" stroke="#DC2626" stroke-width="5"/>
+            <line x1="128" y1="310" x2="140" y2="345" stroke="#DC2626" stroke-width="5"/>
+            <text x="72" y="355" text-anchor="middle" fill="#94A3B8" font-size="7" font-family="monospace">Tib. ant.</text>
+            <text x="148" y="355" text-anchor="middle" fill="#94A3B8" font-size="7" font-family="monospace">Tronc tibio-peronnier</text>
+            <line x1="90" y1="345" x2="90" y2="480" stroke="#EF4444" stroke-width="4"/>
+            <line x1="140" y1="345" x2="130" y2="480" stroke="#EF4444" stroke-width="4"/>
+            <line x1="140" y1="345" x2="155" y2="430" stroke="#EF4444" stroke-width="3" stroke-dasharray="5,2"/>
+            <text x="90" y="490" text-anchor="middle" fill="#64748B" font-size="6.5" font-family="monospace">Tibiale ant.</text>
+            <text x="130" y="490" text-anchor="middle" fill="#64748B" font-size="6.5" font-family="monospace">Tibiale post.</text>
+            <text x="155" y="440" fill="#64748B" font-size="6" font-family="monospace">Peroniere</text>
+          </svg>
+        </div>
+        <div class="info-card" id="vessel-info-femoral">
+          <p class="info-hint">Cliquez sur un vaisseau pour afficher ses informations</p>
+        </div>
+      </div>
+
+      <!-- RESEAU JAMBIER -->
+      <div id="anat-jambier" class="anatomy-view">
+        <div class="anatomy-panel">
+          <h4>Reseau jambier — Coupe transversale et trajets</h4>
+          <svg viewBox="0 0 260 480" xmlns="http://www.w3.org/2000/svg" style="width:100%">
+            <!-- Coupe transversale jambe -->
+            <ellipse cx="130" cy="100" rx="90" ry="70" fill="rgba(240,200,170,0.15)" stroke="rgba(200,170,140,0.4)" stroke-width="1"/>
+            <!-- Tibia -->
+            <path d="M115 44 L145 44 L150 90 L148 118 L112 118 L110 90 Z" fill="rgba(212,184,150,0.55)" stroke="#A0856C" stroke-width="1"/>
+            <text x="130" y="85" text-anchor="middle" fill="#7B6048" font-size="8" font-family="monospace">Tibia</text>
+            <!-- Perone / fibula -->
+            <ellipse cx="192" cy="88" rx="14" ry="20" fill="rgba(212,184,150,0.5)" stroke="#A0856C" stroke-width="1"/>
+            <text x="192" y="91" text-anchor="middle" fill="#7B6048" font-size="7" font-family="monospace">Fibula</text>
+            <!-- Membrane interosseuse -->
+            <line x1="150" y1="88" x2="178" y2="88" stroke="#A0856C" stroke-width="1.5" stroke-dasharray="3,2"/>
+            <text x="162" y="82" text-anchor="middle" fill="#8B7060" font-size="6" font-family="monospace">Memb. inteross.</text>
+            <!-- Compartiment anterieur -->
+            <path d="M148 52 L175 60 L178 80 L150 90" fill="rgba(200,180,220,0.2)" stroke="rgba(150,130,170,0.4)" stroke-width="0.8"/>
+            <text x="165" y="68" text-anchor="middle" fill="#7B6098" font-size="7" font-family="monospace">Loge ant.</text>
+            <!-- Compartiment posterieur -->
+            <path d="M112 120 L148 120 L150 155 L110 155" fill="rgba(180,220,200,0.2)" stroke="rgba(130,170,150,0.4)" stroke-width="0.8"/>
+            <text x="130" y="142" text-anchor="middle" fill="#608060" font-size="7" font-family="monospace">Loge post.</text>
+            <!-- Tibiale anterieure (loge anterieure) -->
+            <circle class="vessel-btn" data-v="tibant" onclick="infoV('tibant')" cx="162" cy="72" r="6" fill="#B91C1C" stroke="#DC2626" stroke-width="1.5"/>
+            <circle cx="156" cy="72" r="4" fill="#1E3A5F" opacity="0.7"/>
+            <circle cx="168" cy="72" r="4" fill="#1E3A5F" opacity="0.7"/>
+            <!-- Tibiale posterieure (loge posterieure) -->
+            <circle class="vessel-btn" data-v="tibpost" onclick="infoV('tibpost')" cx="112" cy="138" r="6" fill="#B91C1C" stroke="#DC2626" stroke-width="1.5"/>
+            <circle cx="106" cy="138" r="4" fill="#1E3A5F" opacity="0.7"/>
+            <circle cx="118" cy="138" r="4" fill="#1E3A5F" opacity="0.7"/>
+            <!-- Peroniere -->
+            <circle class="vessel-btn" data-v="peroniere" onclick="infoV('peroniere')" cx="172" cy="118" r="5.5" fill="#B91C1C" stroke="#DC2626" stroke-width="1.5"/>
+            <circle cx="167" cy="118" r="3.5" fill="#1E3A5F" opacity="0.7"/>
+            <!-- Legendes coupe -->
+            <text x="175" y="68" fill="#64748B" font-size="7" font-family="monospace">Art. tibiale ant.</text>
+            <text x="120" y="148" fill="#64748B" font-size="7" font-family="monospace">Art. tibiale post.</text>
+            <text x="178" y="122" fill="#64748B" font-size="7" font-family="monospace">Art. peroniere</text>
+            <text x="130" y="186" text-anchor="middle" fill="#64748B" font-size="8" font-family="monospace">● Artere  ○ Veines satellites</text>
+            <!-- Trajets longitudinaux -->
+            <text x="130" y="215" text-anchor="middle" fill="#94A3B8" font-size="8.5" font-family="monospace" font-weight="bold">Trajets longitudinaux</text>
+            <!-- Tibiale anterieure -->
+            <rect x="15" y="225" width="60" height="14" rx="3" fill="rgba(185,28,28,0.15)" stroke="rgba(185,28,28,0.4)" stroke-width="0.8"/>
+            <text x="45" y="235" text-anchor="middle" fill="#DC2626" font-size="7" font-family="monospace">Tibiale ant.</text>
+            <line x1="45" y1="239" x2="45" y2="460" stroke="#DC2626" stroke-width="4" stroke-linecap="round"/>
+            <text x="45" y="474" text-anchor="middle" fill="#64748B" font-size="6.5" font-family="monospace">Dos du pied</text>
+            <!-- Tibiale posterieure -->
+            <rect x="95" y="225" width="70" height="14" rx="3" fill="rgba(185,28,28,0.15)" stroke="rgba(185,28,28,0.4)" stroke-width="0.8"/>
+            <text x="130" y="235" text-anchor="middle" fill="#DC2626" font-size="7" font-family="monospace">Tibiale post.</text>
+            <line x1="130" y1="239" x2="130" y2="460" stroke="#DC2626" stroke-width="4" stroke-linecap="round"/>
+            <text x="130" y="474" text-anchor="middle" fill="#64748B" font-size="6.5" font-family="monospace">Art. plantaires</text>
+            <!-- Peroniere -->
+            <rect x="190" y="225" width="60" height="14" rx="3" fill="rgba(185,28,28,0.15)" stroke="rgba(185,28,28,0.4)" stroke-width="0.8"/>
+            <text x="220" y="235" text-anchor="middle" fill="#DC2626" font-size="7" font-family="monospace">Peroniere</text>
+            <line x1="220" y1="239" x2="220" y2="420" stroke="#DC2626" stroke-width="4" stroke-linecap="round" stroke-dasharray="7,3"/>
+            <text x="220" y="434" text-anchor="middle" fill="#64748B" font-size="6.5" font-family="monospace">Sus-malleolaire</text>
+            <text x="220" y="444" text-anchor="middle" fill="#64748B" font-size="6.5" font-family="monospace">lateral</text>
+            <!-- Niveaux -->
+            <line x1="10" y1="310" x2="240" y2="310" stroke="rgba(255,255,255,0.1)" stroke-width="0.8" stroke-dasharray="4,4"/>
+            <text x="7" y="315" fill="#475569" font-size="6.5" font-family="monospace">Mi-jambe</text>
+            <line x1="10" y1="390" x2="240" y2="390" stroke="rgba(255,255,255,0.1)" stroke-width="0.8" stroke-dasharray="4,4"/>
+            <text x="7" y="395" fill="#475569" font-size="6.5" font-family="monospace">Cheville</text>
+          </svg>
+        </div>
+        <div class="anatomy-panel">
+          <h4>Schéma simplifie — Axes jambiers</h4>
+          <svg viewBox="0 0 200 500" xmlns="http://www.w3.org/2000/svg" style="width:100%">
+            <text x="100" y="18" text-anchor="middle" fill="#94A3B8" font-size="8" font-family="monospace">Artere POPLITEE</text>
+            <line x1="100" y1="22" x2="100" y2="55" stroke="#B91C1C" stroke-width="7"/>
+            <text x="100" y="64" text-anchor="middle" fill="#94A3B8" font-size="7.5" font-family="monospace">TRIFURCATION POPLITEE</text>
+            <circle cx="100" cy="56" r="7" fill="#B91C1C" stroke="#DC2626" stroke-width="1.5"/>
+            <line x1="100" y1="63" x2="55" y2="90" stroke="#DC2626" stroke-width="5"/>
+            <line x1="100" y1="63" x2="115" y2="90" stroke="#DC2626" stroke-width="5"/>
+            <text x="35" y="100" fill="#94A3B8" font-size="7.5" font-family="monospace">Tibiale anterieure</text>
+            <text x="120" y="100" fill="#94A3B8" font-size="7.5" font-family="monospace">Tronc tibio-peronnier</text>
+            <line x1="55" y1="90" x2="55" y2="460" stroke="#DC2626" stroke-width="5"/>
+            <line x1="115" y1="90" x2="100" y2="135" stroke="#DC2626" stroke-width="5"/>
+            <line x1="100" y1="135" x2="90" y2="460" stroke="#DC2626" stroke-width="4"/>
+            <line x1="100" y1="135" x2="140" y2="380" stroke="#DC2626" stroke-width="4" stroke-dasharray="6,3"/>
+            <text x="145" y="390" fill="#64748B" font-size="6.5" font-family="monospace">Peroniere</text>
+            <text x="145" y="400" fill="#64748B" font-size="6.5" font-family="monospace">(sus-malleolaire)</text>
+            <text x="38" y="282" fill="#64748B" font-size="6.5" font-family="monospace" transform="rotate(-90,38,282)">Loge anterieure</text>
+            <text x="75" y="282" fill="#64748B" font-size="6.5" font-family="monospace" transform="rotate(-90,75,282)">Loge post. profonde</text>
+            <text x="55" y="470" text-anchor="middle" fill="#94A3B8" font-size="7" font-family="monospace">Dos du pied</text>
+            <text x="90" y="470" text-anchor="middle" fill="#94A3B8" font-size="7" font-family="monospace">Arteres plantaires</text>
+            <line x1="55" y1="258" x2="78" y2="258" stroke="rgba(255,255,255,0.1)" stroke-width="0.8" stroke-dasharray="3,3"/>
+            <line x1="10" y1="200" x2="185" y2="200" stroke="rgba(255,255,255,0.08)" stroke-width="0.8" stroke-dasharray="4,4"/>
+            <text x="10" y="198" fill="#334155" font-size="6" font-family="monospace">Tiers prox.</text>
+            <line x1="10" y1="330" x2="185" y2="330" stroke="rgba(255,255,255,0.08)" stroke-width="0.8" stroke-dasharray="4,4"/>
+            <text x="10" y="328" fill="#334155" font-size="6" font-family="monospace">Tiers dist.</text>
+          </svg>
+        </div>
+        <div class="info-card" id="vessel-info-jambier">
+          <p class="info-hint">Cliquez sur un vaisseau pour afficher ses informations</p>
+        </div>
+      </div>
+
+      <!-- MEMBRES SUPERIEURS -->
+      <div id="anat-superieur" class="anatomy-view">
+        <div class="anatomy-panel">
+          <h4>Arteres du membre superieur — Vue detaillee</h4>
+          <svg viewBox="0 0 240 500" xmlns="http://www.w3.org/2000/svg" style="width:100%">
+            <!-- Epaule -->
+            <ellipse cx="120" cy="45" rx="60" ry="38" fill="rgba(240,200,170,0.12)" stroke="rgba(200,170,140,0.25)" stroke-width="0.7"/>
+            <!-- Bras -->
+            <rect x="88" y="80" width="64" height="150" fill="rgba(240,200,170,0.10)" stroke="rgba(200,170,140,0.25)" stroke-width="0.7" rx="8"/>
+            <!-- Coude -->
+            <rect x="85" y="228" width="70" height="26" fill="rgba(212,184,150,0.3)" stroke="rgba(160,133,108,0.4)" stroke-width="0.7" rx="4"/>
+            <text x="120" y="244" text-anchor="middle" fill="#7B6048" font-size="7" font-family="monospace">Pli du coude</text>
+            <!-- Avant-bras -->
+            <rect x="90" y="254" width="60" height="150" fill="rgba(240,200,170,0.10)" stroke="rgba(200,170,140,0.25)" stroke-width="0.7" rx="6"/>
+            <!-- Poignet -->
+            <rect x="90" y="402" width="60" height="18" fill="rgba(212,184,150,0.25)" stroke="rgba(160,133,108,0.4)" stroke-width="0.7" rx="3"/>
+            <text x="120" y="414" text-anchor="middle" fill="#7B6048" font-size="7" font-family="monospace">Poignet</text>
+            <!-- Sous-claviere -->
+            <line class="vessel-btn" data-v="subclaviere" onclick="infoV('subclaviere')"
+              x1="60" y1="28" x2="120" y2="28" stroke="#B91C1C" stroke-width="8" stroke-linecap="round"/>
+            <line x1="60" y1="28" x2="120" y2="28" stroke="#DC2626" stroke-width="5.5" stroke-linecap="round" pointer-events="none"/>
+            <!-- Axillaire -->
+            <line class="vessel-btn" data-v="axillaire" onclick="infoV('axillaire')"
+              x1="120" y1="28" x2="120" y2="80" stroke="#B91C1C" stroke-width="8" stroke-linecap="round"/>
+            <line x1="120" y1="28" x2="120" y2="80" stroke="#DC2626" stroke-width="5.5" stroke-linecap="round" pointer-events="none"/>
+            <!-- Branches axillaire -->
+            <line x1="120" y1="45" x2="85" y2="55" stroke="#EF4444" stroke-width="3" stroke-linecap="round" opacity="0.8"/>
+            <line x1="120" y1="55" x2="82" y2="68" stroke="#EF4444" stroke-width="3" stroke-linecap="round" opacity="0.8"/>
+            <line x1="120" y1="65" x2="155" y2="58" stroke="#EF4444" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>
+            <!-- Humerale (brachiale) -->
+            <line class="vessel-btn" data-v="brachiale" onclick="infoV('brachiale')"
+              x1="120" y1="80" x2="118" y2="230" stroke="#B91C1C" stroke-width="7" stroke-linecap="round"/>
+            <line x1="120" y1="80" x2="118" y2="230" stroke="#DC2626" stroke-width="4.5" stroke-linecap="round" pointer-events="none"/>
+            <!-- Bifurcation coude -->
+            <circle cx="118" cy="230" r="6" fill="#B91C1C" stroke="#DC2626" stroke-width="1.5"/>
+            <!-- Radiale -->
+            <line class="vessel-btn" data-v="radiale" onclick="infoV('radiale')"
+              x1="118" y1="230" x2="105" y2="254" stroke="#DC2626" stroke-width="5.5" stroke-linecap="round"/>
+            <line x1="105" y1="254" x2="102" y2="418" stroke="#EF4444" stroke-width="4.5" stroke-linecap="round" class="vessel-btn" data-v="radiale" onclick="infoV('radiale')"/>
+            <!-- Cubitale (ulnaire) -->
+            <line class="vessel-btn" data-v="cubitale" onclick="infoV('cubitale')"
+              x1="118" y1="230" x2="132" y2="254" stroke="#DC2626" stroke-width="5.5" stroke-linecap="round"/>
+            <line x1="132" y1="254" x2="135" y2="418" stroke="#EF4444" stroke-width="4.5" stroke-linecap="round" class="vessel-btn" data-v="cubitale" onclick="infoV('cubitale')"/>
+            <!-- Arcade palmaire -->
+            <path d="M102 418 C108 430 128 430 135 418" stroke="#EF4444" stroke-width="4" fill="none" stroke-linecap="round"/>
+            <path d="M105 426 C108 436 128 436 132 426" stroke="#EF4444" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.6"/>
+            <!-- Branches interosseuses -->
+            <line x1="105" y1="265" x2="95" y2="278" stroke="#EF4444" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>
+            <line x1="132" y1="265" x2="142" y2="278" stroke="#EF4444" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>
+            <!-- Veine basilique / cephalique -->
+            <line x1="76" y1="80" x2="74" y2="250" stroke="#1E3A5F" stroke-width="4" stroke-linecap="round" opacity="0.6" stroke-dasharray="7,3"/>
+            <line x1="164" y1="80" x2="162" y2="250" stroke="#1E3A5F" stroke-width="4" stroke-linecap="round" opacity="0.6" stroke-dasharray="7,3"/>
+            <!-- Labels -->
+            <text x="20" y="24" fill="#64748B" font-size="7.5" font-family="monospace">Sous-claviere</text>
+            <text x="168" y="56" fill="#64748B" font-size="7" font-family="monospace">Branches axillaires</text>
+            <text x="168" y="155" fill="#64748B" font-size="7.5" font-family="monospace">Art. humerale</text>
+            <text x="168" y="165" fill="#64748B" font-size="7" font-family="monospace">(brachiale)</text>
+            <text x="168" y="237" fill="#64748B" font-size="7" font-family="monospace">Bifurcation (pli coude)</text>
+            <text x="52" y="340" fill="#64748B" font-size="7.5" font-family="monospace">Art. radiale</text>
+            <text x="144" y="340" fill="#64748B" font-size="7.5" font-family="monospace">Art. cubitale</text>
+            <text x="120" y="460" text-anchor="middle" fill="#64748B" font-size="7.5" font-family="monospace">Arcades palmaires</text>
+            <text x="62" y="180" fill="rgba(30,58,95,0.7)" font-size="7" font-family="monospace">V. cephalique</text>
+            <text x="152" y="180" fill="rgba(30,58,95,0.7)" font-size="7" font-family="monospace">V. basilique</text>
+          </svg>
+        </div>
+        <div class="anatomy-panel">
+          <h4>Schéma simplifié — Axe arteriel du membre superieur</h4>
+          <svg viewBox="0 0 200 500" xmlns="http://www.w3.org/2000/svg" style="width:100%">
+            <text x="100" y="18" text-anchor="middle" fill="#64748B" font-size="7.5" font-family="monospace">Crosse aortique</text>
+            <line x1="100" y1="22" x2="100" y2="45" stroke="#B91C1C" stroke-width="6" stroke-dasharray="5,3"/>
+            <text x="100" y="54" text-anchor="middle" fill="#94A3B8" font-size="8" font-family="monospace">Art. SOUS-CLAVIERE</text>
+            <rect x="55" y="44" width="90" height="16" rx="3" fill="rgba(185,28,28,0.15)" stroke="rgba(185,28,28,0.4)" stroke-width="0.8"/>
+            <line x1="100" y1="60" x2="100" y2="90" stroke="#B91C1C" stroke-width="7"/>
+            <text x="100" y="100" text-anchor="middle" fill="#94A3B8" font-size="8" font-family="monospace">Art. AXILLAIRE</text>
+            <rect x="62" y="90" width="76" height="16" rx="3" fill="rgba(185,28,28,0.15)" stroke="rgba(185,28,28,0.4)" stroke-width="0.8"/>
+            <line x1="78" y1="98" x2="42" y2="112" stroke="#EF4444" stroke-width="2.5"/>
+            <line x1="78" y1="98" x2="40" y2="128" stroke="#EF4444" stroke-width="2"/>
+            <line x1="122" y1="98" x2="158" y2="112" stroke="#EF4444" stroke-width="2.5"/>
+            <text x="22" y="116" fill="#64748B" font-size="6" font-family="monospace">Thoracique lat.</text>
+            <text x="22" y="132" fill="#64748B" font-size="6" font-family="monospace">Subscapulaire</text>
+            <text x="160" y="116" fill="#64748B" font-size="6" font-family="monospace">Acromio-thoracique</text>
+            <line x1="100" y1="106" x2="100" y2="220" stroke="#B91C1C" stroke-width="7"/>
+            <text x="100" y="165" fill="#94A3B8" font-size="8" font-family="monospace" text-anchor="middle">Art. HUMERALE</text>
+            <text x="100" y="178" fill="#64748B" font-size="6.5" font-family="monospace" text-anchor="middle">(Gouttiere bicipitale mediale)</text>
+            <text x="100" y="230" text-anchor="middle" fill="#94A3B8" font-size="7.5" font-family="monospace">BIFURCATION — PLI DU COUDE</text>
+            <line x1="100" y1="234" x2="65" y2="270" stroke="#DC2626" stroke-width="6"/>
+            <line x1="100" y1="234" x2="135" y2="270" stroke="#DC2626" stroke-width="6"/>
+            <text x="45" y="280" text-anchor="middle" fill="#94A3B8" font-size="7.5" font-family="monospace">Art. RADIALE</text>
+            <text x="155" y="280" text-anchor="middle" fill="#94A3B8" font-size="7.5" font-family="monospace">Art. CUBITALE</text>
+            <text x="32" y="294" fill="#64748B" font-size="6" font-family="monospace">Pouls radial</text>
+            <text x="32" y="304" fill="#64748B" font-size="6" font-family="monospace">au poignet</text>
+            <text x="130" y="294" fill="#64748B" font-size="6" font-family="monospace">Pouls cubital</text>
+            <line x1="65" y1="270" x2="65" y2="420" stroke="#DC2626" stroke-width="5"/>
+            <line x1="135" y1="270" x2="135" y2="420" stroke="#DC2626" stroke-width="5"/>
+            <path d="M65 420 C78 444 122 444 135 420" stroke="#DC2626" stroke-width="5" fill="none"/>
+            <text x="100" y="460" text-anchor="middle" fill="#94A3B8" font-size="7.5" font-family="monospace">ARCADES PALMAIRES</text>
+            <text x="100" y="472" text-anchor="middle" fill="#64748B" font-size="6.5" font-family="monospace">Superficielle + profonde</text>
+            <text x="100" y="484" text-anchor="middle" fill="#64748B" font-size="6.5" font-family="monospace">Art. digitales communes</text>
+          </svg>
+        </div>
+        <div class="info-card" id="vessel-info-superieur">
+          <p class="info-hint">Cliquez sur un vaisseau pour afficher ses informations</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+    <!-- ══ PROCEDURES ════════════════════════════════════ -->
+  <div id="sec-procedures" class="section">
+    <div class="page-wrap">
+      <div class="page-header">
+        <div class="page-header-top">
+          <h2>Procédures chirurgicales</h2>
+          <span class="ph-badge ph-badge-blue">18 procédures</span>
+        </div>
+        <p>Chirurgie ouverte, endovasculaire et amputations — étapes, matériel et perles opératoires.</p>
+      </div>
+
+      <div class="proc-filter">
+        <div class="pfilt active" style="--pf-color:#E2E8F0" onclick="filterProc('all',this)">Toutes</div>
+        <div class="pfilt" style="--pf-color:#34D399" onclick="filterProc('endarteriectomie',this)">Endartériectomies</div>
+        <div class="pfilt" style="--pf-color:#60A5FA" onclick="filterProc('pontage',this)">Pontages</div>
+        <div class="pfilt" style="--pf-color:#A78BFA" onclick="filterProc('endovasculaire',this)">Endovasculaire</div>
+        <div class="pfilt" style="--pf-color:#FB923C" onclick="filterProc('amputation',this)">Amputations</div>
+        <div class="pfilt" style="--pf-color:#F87171" onclick="filterProc('urgence',this)">Urgences</div>
+      </div>
+
+      <div class="proc-grid" id="proc-grid">
+
+        <!-- 01 Endarterectomie carotidienne -->
+        <div class="proc-item" data-cat="endarteriectomie">
+          <div class="proc-head" onclick="toggleP(this)">
+            <div class="proc-num">01</div>
+            <h3>Endartériectomie carotidienne</h3>
+            <div class="proc-tags"><span class="ptag ptag-endo">Endartériectomie</span></div>
+            <span class="proc-chev">▼</span>
+          </div>
+          <div class="proc-body">
+            <p class="proc-desc">Désobstruction de la bifurcation carotidienne pour sténose athéromateuse symptomatique ≥ 50 % ou asymptomatique ≥ 70 %.</p>
+            <div class="steps">
+              <div class="step-item"><div class="step-n">1</div><div class="step-c"><h4>Installation</h4><p>Décubitus dorsal, tête en légère extension et rotation controlatérale, billot sous les épaules. Monitoring neuro (oxymétrie cérébrale ou patient éveillé).</p></div></div>
+              <div class="step-item"><div class="step-n">2</div><div class="step-c"><h4>Voie d'abord</h4><p>Incision au bord antérieur du sterno-cléido-mastoïdien. Dissection entre sterno-cléido-mastoïdien et paquet vasculonerveux. Contrôle carotide commune, carotide interne, carotide externe.</p></div></div>
+              <div class="step-item"><div class="step-n">3</div><div class="step-c"><h4>Clampage</h4><p>Héparinisation 50–100 unités/kg IV. Clampage carotide commune → carotide interne → carotide externe. Évaluation tolérance hémodynamique. Shunt si nécessaire (Pruitt-Inahara).</p></div></div>
+              <div class="step-item"><div class="step-n">4</div><div class="step-c"><h4>Endartériectomie</h4><p>Artériotomie longitudinale carotide commune–carotide interne. Décollement plaque au plan de la media. End-point distal soigneux — aucun clapet intimal flottant.</p></div></div>
+              <div class="step-item"><div class="step-n">5</div><div class="step-c"><h4>Fermeture + déclampage</h4><p>Patch veineux ou synthétique (Dacron/PTFE). Déclampage carotide externe → carotide commune → carotide interne. Écho-Doppler peropératoire. Protamine.</p></div></div>
+            </div>
+            <div class="pearl"><h4>⚡ Perles</h4><ul><li>Identifier nerf vague et anse cervicale</li><li>Patch systématique si artère &lt; 5 mm</li><li>Déclampage toujours carotide externe avant carotide interne</li><li>Vérifier end-point distal avant fermeture</li></ul></div>
+          </div>
+        </div>
+
+        <!-- 02 Endarterectomie fémorale -->
+        <div class="proc-item" data-cat="endarteriectomie">
+          <div class="proc-head" onclick="toggleP(this)">
+            <div class="proc-num">02</div>
+            <h3>Endartériectomie fémorale</h3>
+            <div class="proc-tags"><span class="ptag ptag-endo">Endartériectomie</span></div>
+            <span class="proc-chev">▼</span>
+          </div>
+          <div class="proc-body">
+            <p class="proc-desc">Désobstruction de la bifurcation fémorale commune. Souvent associée à un pontage ou procédure iliaque endovasculaire.</p>
+            <div class="steps">
+              <div class="step-item"><div class="step-n">1</div><div class="step-c"><h4>Voie d'abord inguinale</h4><p>Incision verticale sur le pouls fémoral ou oblique au pli inguinal. Ligature minutieuse des lymphatiques.</p></div></div>
+              <div class="step-item"><div class="step-n">2</div><div class="step-c"><h4>Dissection et contrôle</h4><p>Contrôle fémorale commune, fémorale profonde, fémorale superficielle. Identification et protection du nerf fémoral (latéral). Héparinisation 50 unités/kg.</p></div></div>
+              <div class="step-item"><div class="step-n">3</div><div class="step-c"><h4>Artériotomie et désobstruction</h4><p>Artériotomie longitudinale sur la bifurcation. Extension en fémorale profonde jusqu'à la 1re branche perforante si nécessaire.</p></div></div>
+              <div class="step-item"><div class="step-n">4</div><div class="step-c"><h4>Patch et fermeture</h4><p>Patch veineux (grande saphène) ou prothétique. Drain aspiratif. Écho-Doppler avant fermeture cutanée.</p></div></div>
+            </div>
+            <div class="pearl"><h4>⚡ Perles</h4><ul><li>Drain aspiratif systématique — risque lymphocèle</li><li>Contrôle fémorale profonde jusqu'à 1re perforante</li><li>Protéger nerf fémoral latéralement</li></ul></div>
+          </div>
+        </div>
+
+        <!-- 03 Pontage fémoro-poplité -->
+        <div class="proc-item" data-cat="pontage">
+          <div class="proc-head" onclick="toggleP(this)">
+            <div class="proc-num">03</div>
+            <h3>Pontage fémoro-poplité sus/sous-articulaire</h3>
+            <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span></div>
+            <span class="proc-chev">▼</span>
+          </div>
+          <div class="proc-body">
+            <p class="proc-desc">Court-circuitage occlusion fémorale superficielle. Sus-articulaire (P1) ou sous-articulaire (P3) selon la lésion et la longueur disponible.</p>
+            <div class="steps">
+              <div class="step-item"><div class="step-n">1</div><div class="step-c"><h4>Préparation du greffon</h4><p>Grande saphène interne prélevée (gold standard). Si absente : PTFE 6–8 mm ou Dacron.</p></div></div>
+              <div class="step-item"><div class="step-n">2</div><div class="step-c"><h4>Abord proximal et distal</h4><p>Sus-articulaire : voie interne cuisse. Sous-articulaire : voie interne jambe entre les deux gastrocnémiens.</p></div></div>
+              <div class="step-item"><div class="step-n">3</div><div class="step-c"><h4>Tunnellisation et anastomoses</h4><p>Tunnel sous-cutané médial. Anastomoses termino-latérales Prolène 5/0 ou 6/0. Vérifier absence de torsion.</p></div></div>
+            </div>
+            <div class="pearl"><h4>⚡ Perles</h4><ul><li>Saphène obligatoire pour le pontage sous-articulaire</li><li>Écho-Doppler peropératoire systématique</li><li>antiagrégant plaquettaire double postopératoire si prothèse</li></ul></div>
+          </div>
+        </div>
+
+        <!-- 04 Pontage fémoro-tibial -->
+        <div class="proc-item" data-cat="pontage">
+          <div class="proc-head" onclick="toggleP(this)">
+            <div class="proc-num">04</div>
+            <h3>Pontage fémoro-tibial / péronier</h3>
+            <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span></div>
+            <span class="proc-chev">▼</span>
+          </div>
+          <div class="proc-body">
+            <p class="proc-desc">Sauvetage de membre. Anastomose distale sur tibiale antérieure, tibiale postérieure ou péronière. Toujours saphène autologue.</p>
+            <div class="steps">
+              <div class="step-item"><div class="step-n">1</div><div class="step-c"><h4>Bilan préopératoire</h4><p>Angio-scanner ou artériographie pour valider la qualité du lit d'aval. Echo-Doppler des saphènes. ABI < 0.4.</p></div></div>
+              <div class="step-item"><div class="step-n">2</div><div class="step-c"><h4>Prélèvement saphène</h4><p>Grande saphène ipsilatérale préférée. Endoscopie ou incisions étagées. Inversée ou in-situ (valvulotome).</p></div></div>
+              <div class="step-item"><div class="step-n">3</div><div class="step-c"><h4>Abord distal</h4><p>tibiale antérieure : voie antéro-latérale. tibiale postérieure : voie interne de jambe. Péronière : fibulectomie partielle ou voie postérieure.</p></div></div>
+              <div class="step-item"><div class="step-n">4</div><div class="step-c"><h4>Anastomoses</h4><p>Prolène 6/0 ou 7/0 sur tibiales. Loupe obligatoire. Écho-Doppler ou angiographie peropératoire de contrôle.</p></div></div>
+            </div>
+            <div class="pearl"><h4>⚡ Perles</h4><ul><li>Jamais de prothèse sous le genou — résultats inacceptables</li><li>Loupe grossissante ou microscope pour anastomose distale</li><li>Lit d'aval impératif avant de débuter</li></ul></div>
+          </div>
+        </div>
+
+        <!-- 05 Pontage aorto-bifémoral -->
+        <div class="proc-item" data-cat="pontage">
+          <div class="proc-head" onclick="toggleP(this)">
+            <div class="proc-num">05</div>
+            <h3>Pontage aorto-bifémoral</h3>
+            <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span></div>
+            <span class="proc-chev">▼</span>
+          </div>
+          <div class="proc-body">
+            <p class="proc-desc">Gold standard syndrome de Leriche — lésions tibiale antérieureSC C/D aorto-iliaques. Prothèse bifurquée Dacron 18×9 mm.</p>
+            <div class="steps">
+              <div class="step-item"><div class="step-n">1</div><div class="step-c"><h4>Laparotomie / abord rétropéritonéal</h4><p>Laparotomie xipho-pubienne ou abord rétropéritonéal gauche. Exposition aorte sous-rénale. Mobilisation duodénum.</p></div></div>
+              <div class="step-item"><div class="step-n">2</div><div class="step-c"><h4>Clampage aortique</h4><p>Héparinisation 100 unités/kg. Clampage sous-rénal. Aortotomie transversale.</p></div></div>
+              <div class="step-item"><div class="step-n">3</div><div class="step-c"><h4>Anastomose proximale</h4><p>Termino-terminale (Leriche) ou termino-latérale. Prolène 3/0. Vérifier orientation prothèse.</p></div></div>
+              <div class="step-item"><div class="step-n">4</div><div class="step-c"><h4>Tunnellisation + anastomoses fémorales</h4><p>Tunnels rétropéritonéaux pré-iliaques. Abords inguinaux bilatéraux. Anastomoses distales Prolène 4/0–5/0.</p></div></div>
+              <div class="step-item"><div class="step-n">5</div><div class="step-c"><h4>Fermeture et surveillance</h4><p>Fermeture rétropéritonéale sur la prothèse. Déclampage progressif. scanner rein à 48h.</p></div></div>
+            </div>
+            <div class="pearl"><h4>⚡ Perles</h4><ul><li>Préserver artère mésentérique inférieure si pas de réseau de Riolan</li><li>Créatinine 48h postopératoire systématique</li><li>Prévenir dysfonction érectile — préserver plexus hypogastrique</li><li>Perméabilité à 5 ans &gt; 85 %</li></ul></div>
+          </div>
+        </div>
+
+        <!-- 06 Pontage aorto-aortique -->
+        <div class="proc-item" data-cat="pontage">
+          <div class="proc-head" onclick="toggleP(this)">
+            <div class="proc-num">06</div>
+            <h3>Pontage aorto-aortique (tube aortique)</h3>
+            <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span></div>
+            <span class="proc-chev">▼</span>
+          </div>
+          <div class="proc-body">
+            <p class="proc-desc">Remplacement de l'aorte abdominale sous-rénale par un tube prothétique droit. Indiqué pour anévrisme aortique sans atteinte iliaque.</p>
+            <div class="steps">
+              <div class="step-item"><div class="step-n">1</div><div class="step-c"><h4>Exposition aortique</h4><p>Laparotomie médiane ou abord rétropéritonéal. Contrôle aorte sous-rénale et bifurcation. Contrôle iliaques.</p></div></div>
+              <div class="step-item"><div class="step-n">2</div><div class="step-c"><h4>Résection du sac anévrismal</h4><p>Héparinisation 100 unités/kg. Clampage. Ouverture du sac. Contrôle des ostia lombaires par points en X. Fermeture artère mésentérique inférieure si nécessaire.</p></div></div>
+              <div class="step-item"><div class="step-n">3</div><div class="step-c"><h4>Anastomoses proximale et distale</h4><p>Anastomoses termino-terminales Prolène 3/0. Tube Dacron 18–20 mm. Fermeture du sac anévrismal sur la prothèse.</p></div></div>
+            </div>
+            <div class="pearl"><h4>⚡ Perles</h4><ul><li>Exclure anévrisme de l'aorte abdominale sans atteinte iliaque — sinon pontage bifémoral</li><li>Col aortique proximal ≥ 10 mm obligatoire pour clampage stable</li></ul></div>
+          </div>
+        </div>
+
+        <!-- 07 Pontage aorto-bi-iliaque -->
+        <div class="proc-item" data-cat="pontage">
+          <div class="proc-head" onclick="toggleP(this)">
+            <div class="proc-num">07</div>
+            <h3>Pontage aorto-bi-iliaque</h3>
+            <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span></div>
+            <span class="proc-chev">▼</span>
+          </div>
+          <div class="proc-body">
+            <p class="proc-desc">Variante du pontage aorto-bifémoral avec anastomoses distales sur les iliaques communes ou externes. Lorsque les fémorales communes sont saines.</p>
+            <div class="steps">
+              <div class="step-item"><div class="step-n">1</div><div class="step-c"><h4>Abord et clampage</h4><p>Identique au pontage aorto-bifémoral. Prothèse bifurquée Dacron 16×8 ou 18×9 mm.</p></div></div>
+              <div class="step-item"><div class="step-n">2</div><div class="step-c"><h4>Anastomoses distales iliaques</h4><p>Anastomoses termino-latérales sur iliaques communes ou externes. Prolène 4/0. Éviter l'artère iliaque interne — vascularisation pelvienne.</p></div></div>
+            </div>
+            <div class="pearl"><h4>⚡ Perles</h4><ul><li>Préserver au moins une iliaque interne pour la vascularisation pelvienne et rectale</li><li>Éviter si plaque calcifiée au site d'anastomose iliaque</li></ul></div>
+          </div>
+        </div>
+
+        <!-- 08 Pontage aorte thoracique conjoint -->
+        <div class="proc-item" data-cat="pontage">
+          <div class="proc-head" onclick="toggleP(this)">
+            <div class="proc-num">08</div>
+            <h3>Chirurgie aorte thoracique — cas conjoint cardiaque</h3>
+            <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span><span class="ptag ptag-conjoint">Conjoint</span></div>
+            <span class="proc-chev">▼</span>
+          </div>
+          <div class="proc-body">
+            <p class="proc-desc">Procédure en équipe conjointe chirurgie vasculaire + cardiaque. Anévrisme de l'aorte thoracique ou thoraco-abdominale. Circulation extracorporelle.</p>
+            <div class="steps">
+              <div class="step-item"><div class="step-n">1</div><div class="step-c"><h4>Coordination équipes</h4><p>Briefing conjoint vasculaire + cardiaque + perfusionniste. Plan de clampage, protection médullaire, drainage liquide céphalo-rachidien si type I-iliaque.</p></div></div>
+              <div class="step-item"><div class="step-n">2</div><div class="step-c"><h4>Abord et carotide externeC</h4><p>Sternotomie ± thoracotomie. Canulation fémorale ou aortique. Hypothermie modérée (28–32°C). Protection médullaire.</p></div></div>
+              <div class="step-item"><div class="step-n">3</div><div class="step-c"><h4>Remplacement aortique</h4><p>Résection du segment anévrismal. Réimplantation coronaires si nécessaire. Prothèse Dacron. Déclampage progressif.</p></div></div>
+            </div>
+            <div class="pearl"><h4>⚡ Perles (infirmière bloc)</h4><ul><li>Préparer matériel carotide externeC complet + set vasculaire</li><li>Drainage liquide céphalo-rachidien préopératoireératoire si anévrisme thoraco-abdominal étendu</li><li>Monitoring oxymétrie cérébrale médullaire peropératoire</li><li>Transfusion anticipée — commande Pfémorale commune + plaquettes</li></ul></div>
+          </div>
+        </div>
+
+        <!-- 09 Embolectomie -->
+        <div class="proc-item" data-cat="urgence">
+          <div class="proc-head" onclick="toggleP(this)">
+            <div class="proc-num">09</div>
+            <h3>Embolectomie à la sonde de Fogarty</h3>
+            <div class="proc-tags"><span class="ptag ptag-urgence">Urgence</span></div>
+            <span class="proc-chev">▼</span>
+          </div>
+          <div class="proc-body">
+            <p class="proc-desc">Désobstruction artérielle par embolie aiguë (membre inférieur ou supérieur). Urgence chirurgicale — ischémie aiguë de stade IIb/iliaque.</p>
+            <div class="steps">
+              <div class="step-item"><div class="step-n">1</div><div class="step-c"><h4>Évaluation clinique</h4><p>6P : Pain, Pallor, Pulselessness, Paralysis, Paresthesia, Poikilothermia. Évaluation stade Rutherford. Pas de délai.</p></div></div>
+              <div class="step-item"><div class="step-n">2</div><div class="step-c"><h4>Abord artériel</h4><p>membre inférieur : abord fémoral inguinal. membre supérieur : abord huméral au pli du coude ou axillaire. Artériotomie transversale.</p></div></div>
+              <div class="step-item"><div class="step-n">3</div><div class="step-c"><h4>Embolectomie au Fogarty</h4><p>Sonde Fogarty 3F (distal) à 5F (proximal). Passages jusqu'à reflux satisfaisant proximal et distal. Héparinisation.</p></div></div>
+              <div class="step-item"><div class="step-n">4</div><div class="step-c"><h4>Contrôle et fermeture</h4><p>Angiographie peropératoire si résultat insuffisant. Fermeture artériotomie transversale. Écho-Doppler.</p></div></div>
+            </div>
+            <div class="pearl"><h4>⚡ Perles urgence</h4><ul><li>Ne jamais gonfler le ballonnet sans résistance — risque de rupture</li><li>Fogarty 3F pour tibiales, 4F pour poplitée, 5F pour fémorale</li><li>Si résultat insuffisant : angiographie peropératoire → décision thrombolyse ou pontage</li><li>Fasciotomie systématique si ischémie &gt; 6h</li></ul></div>
+          </div>
+        </div>
+
+        <!-- 10 Amputation AK -->
+        <div class="proc-item" data-cat="amputation">
+          <div class="proc-head" onclick="toggleP(this)">
+            <div class="proc-num">10</div>
+            <h3>Amputation trans-fémorale (AK — au-dessus du genou)</h3>
+            <div class="proc-tags"><span class="ptag ptag-amputation">Amputation</span></div>
+            <span class="proc-chev">▼</span>
+          </div>
+          <div class="proc-body">
+            <p class="proc-desc">Amputation du membre inférieur au tiers moyen ou distal du fémur. Indiquée si ischémie critique avec lésions non reconstructibles ou nécrose étendue.</p>
+            <div class="steps">
+              <div class="step-item"><div class="step-n">1</div><div class="step-c"><h4>Niveau de section</h4><p>Tiers distal du fémur — jamais trop proximal pour permettre la prothèse. Lambeau postérieur myocutané (quadriceps).</p></div></div>
+              <div class="step-item"><div class="step-n">2</div><div class="step-c"><h4>Section et hémostase</h4><p>Ligature fémorale commune et fémorale profonde. Section fémur à la scie oscillante. Régularisation de la tranche osseuse.</p></div></div>
+              <div class="step-item"><div class="step-n">3</div><div class="step-c"><h4>Myoplastie et fermeture</h4><p>Myoplastie des groupes musculaires pour recouvrir le fémur. Fermeture en 2 plans. Drain aspiratif.</p></div></div>
+            </div>
+            <div class="pearl"><h4>⚡ Perles</h4><ul><li>Lambeau postérieur préférable — meilleure vascularisation</li><li>Section fémur à 12–15 cm sous le petit trochanter min.</li><li>Antalgiques multimodaux postopératoire — douleurs fantômes fréquentes</li></ul></div>
+          </div>
+        </div>
+
+        <!-- 11 Amputation BK -->
+        <div class="proc-item" data-cat="amputation">
+          <div class="proc-head" onclick="toggleP(this)">
+            <div class="proc-num">11</div>
+            <h3>Amputation trans-tibiale (BK — sous le genou)</h3>
+            <div class="proc-tags"><span class="ptag ptag-amputation">Amputation</span></div>
+            <span class="proc-chev">▼</span>
+          </div>
+          <div class="proc-body">
+            <p class="proc-desc">Amputation conservant le genou — meilleure réhabilitation prothétique que l'AK. Possible si la poplitée est perméable.</p>
+            <div class="steps">
+              <div class="step-item"><div class="step-n">1</div><div class="step-c"><h4>Lambeau postérieur long</h4><p>Technique de Burgess — lambeau postérieur myocutané long. Section tibiale au tiers proximal (8–12 cm sous le plateau tibial).</p></div></div>
+              <div class="step-item"><div class="step-n">2</div><div class="step-c"><h4>Section osseuse</h4><p>Tibia tronqué en biseau antérieur. Fibula sectionnée 1–2 cm au-dessus du tibia. Régularisation des tranches.</p></div></div>
+              <div class="step-item"><div class="step-n">3</div><div class="step-c"><h4>Myoplastie + fermeture</h4><p>Rabattement lambeau postérieur (gastrocnémiens). Myoplastie antérieure. Fermeture sans tension. Drain.</p></div></div>
+            </div>
+            <div class="pearl"><h4>⚡ Perles</h4><ul><li>Garder ≥ 8 cm de tibia sous le plateau pour prothèse</li><li>Évaluation préopératoire : TcPO₂ &gt; 20 mmHg au site de section</li><li>BK toujours préférable à AK si possible</li></ul></div>
+          </div>
+        </div>
+
+        <!-- 12 Amputation orteils -->
+        <div class="proc-item" data-cat="amputation">
+          <div class="proc-head" onclick="toggleP(this)">
+            <div class="proc-num">12</div>
+            <h3>Amputation d'orteils / rayon</h3>
+            <div class="proc-tags"><span class="ptag ptag-amputation">Amputation</span></div>
+            <span class="proc-chev">▼</span>
+          </div>
+          <div class="proc-body">
+            <p class="proc-desc">Amputation d'un ou plusieurs orteils, voire d'un rayon complet (orteil + métatarse). Gangrène localisée, ostéomyélite.</p>
+            <div class="steps">
+              <div class="step-item"><div class="step-n">1</div><div class="step-c"><h4>Niveau de section</h4><p>Désarticulation IPP ou IPD, ou résection métatarsienne (rayon). Lambeau plantaire préférentiel.</p></div></div>
+              <div class="step-item"><div class="step-n">2</div><div class="step-c"><h4>Curetage osseux</h4><p>Si ostéomyélite — curetage soigneux jusqu'à os sain saignant. Biopsies osseuses si doute.</p></div></div>
+              <div class="step-item"><div class="step-n">3</div><div class="step-c"><h4>Fermeture ou cicatrisation dirigée</h4><p>Fermeture primaire si tissus sains. Sinon cicatrisation dirigée ou VAC thérapie. Antibiothérapie adaptée.</p></div></div>
+            </div>
+            <div class="pearl"><h4>⚡ Perles</h4><ul><li>TcPO₂ préopératoire — prédicteur de cicatrisation</li><li>Toujours optimiser la revascularisation avant amputation mineure</li><li>Ne pas fermer sous tension — récidive garantie</li></ul></div>
+          </div>
+        </div>
+
+        <!-- 13 Dilatation/stent iliaque -->
+        <div class="proc-item" data-cat="endovasculaire">
+          <div class="proc-head" onclick="toggleP(this)">
+            <div class="proc-num">13</div>
+            <h3>Angioplastie / stent iliaque</h3>
+            <div class="proc-tags"><span class="ptag ptag-endovasc">Endovasculaire</span></div>
+            <span class="proc-chev">▼</span>
+          </div>
+          <div class="proc-body">
+            <p class="proc-desc">Revascularisation endovasculaire des lésions iliaques tibiale antérieureSC A/B. En salle hybride ou bloc vasculaire avec scopie.</p>
+            <div class="steps">
+              <div class="step-item"><div class="step-n">1</div><div class="step-c"><h4>Accès artériel</h4><p>Ponction fémorale controlatérale en cross-over ou homolatérale. Technique de Seldinger. Introducteur 6–7F.</p></div></div>
+              <div class="step-item"><div class="step-n">2</div><div class="step-c"><h4>Angiographie diagnostique</h4><p>Angio numérisée de l'axe ilio-fémoral. Mesure de la lésion. Sélection du matériel.</p></div></div>
+              <div class="step-item"><div class="step-n">3</div><div class="step-c"><h4>Dilatation et stenting</h4><p>Pré-dilatation si occlusion. Stent autoexpansible ou monté sur ballon selon la localisation. Contrôle angio post-stent.</p></div></div>
+            </div>
+            <div class="pearl"><h4>⚡ Perles bloc</h4><ul><li>Préparer introducteur 6F, fil guide 0.035", ballon + stent selon taille mesurée</li><li>Héparine 5000 unités IV peropératoire</li><li>Pansement compressif 6h postopératoire — risque hématome ponction</li></ul></div>
+          </div>
+        </div>
+
+        <!-- 14 Dilatation/stent fémoral -->
+        <div class="proc-item" data-cat="endovasculaire">
+          <div class="proc-head" onclick="toggleP(this)">
+            <div class="proc-num">14</div>
+            <h3>Angioplastie / stent fémoro-poplité</h3>
+            <div class="proc-tags"><span class="ptag ptag-endovasc">Endovasculaire</span></div>
+            <span class="proc-chev">▼</span>
+          </div>
+          <div class="proc-body">
+            <p class="proc-desc">Revascularisation endovasculaire des lésions de la fémorale superficielle et poplitée tibiale antérieureSC A/B. Stents actifs (drug-eluting) ou ballon actif (ballon actif (Drug Coated Balloon)).</p>
+            <div class="steps">
+              <div class="step-item"><div class="step-n">1</div><div class="step-c"><h4>Abord et navigation</h4><p>Ponction fémorale controlatérale. Cross-over iliaque. Franchissement de la lésion avec fil guide hydrophile.</p></div></div>
+              <div class="step-item"><div class="step-n">2</div><div class="step-c"><h4>Dilatation ± stenting</h4><p>Ballon actif (ballon actif (Drug Coated Balloon)) préféré pour fémorale superficielle. Stent actif si dissection post-angioplastie ou retraitement. Stent nitinol autoexpansible.</p></div></div>
+              <div class="step-item"><div class="step-n">3</div><div class="step-c"><h4>Contrôle et compression</h4><p>Angio contrôle. Closure device (Angioseal, Perclose) ou compression manuelle 15 min. Écho postopératoire.</p></div></div>
+            </div>
+            <div class="pearl"><h4>⚡ Perles</h4><ul><li>ballon actif (Drug Coated Balloon) (Drug Coated Balloon) préféré à stent nu pour fémorale superficielle</li><li>Antiplaquettaire double pendant 3 mois post-ballon actif (Drug Coated Balloon)</li></ul></div>
+          </div>
+        </div>
+
+        <!-- 15 Stent membre supérieur -->
+        <div class="proc-item" data-cat="endovasculaire">
+          <div class="proc-head" onclick="toggleP(this)">
+            <div class="proc-num">15</div>
+            <h3>Angioplastie membre supérieur</h3>
+            <div class="proc-tags"><span class="ptag ptag-endovasc">Endovasculaire</span></div>
+            <span class="proc-chev">▼</span>
+          </div>
+          <div class="proc-body">
+            <p class="proc-desc">Sténose sous-clavière (vol sous-clavier), axillaire ou humérale. Abord radial ou fémoral selon la localisation.</p>
+            <div class="steps">
+              <div class="step-item"><div class="step-n">1</div><div class="step-c"><h4>Abord</h4><p>Ponction radiale (préférée) ou fémorale. Introducteur 5–6F. Anticoagulation 5000 unités IV.</p></div></div>
+              <div class="step-item"><div class="step-n">2</div><div class="step-c"><h4>Dilatation et stent</h4><p>Sous-clavière : stent couvert ou nu selon la sévérité. Ostium : stent monté sur ballon. Contrôle angio post-stent.</p></div></div>
+            </div>
+            <div class="pearl"><h4>⚡ Perles</h4><ul><li>Vol sous-clavier : inversal du flux dans la vertébrale ipsilatérale — vérifier avant et après</li><li>antiagrégant plaquettaire simple 3 mois post-stent</li></ul></div>
+          </div>
+        </div>
+
+        <!-- 16 EVAR -->
+        <div class="proc-item" data-cat="endovasculaire">
+          <div class="proc-head" onclick="toggleP(this)">
+            <div class="proc-num">16</div>
+            <h3>EVAR — Endoprothèse aortique (anévrisme de l'aorte abdominale)</h3>
+            <div class="proc-tags"><span class="ptag ptag-endovasc">Endovasculaire</span></div>
+            <span class="proc-chev">▼</span>
+          </div>
+          <div class="proc-body">
+            <p class="proc-desc">Exclusion endovasculaire d'un anévrisme de l'aorte abdominale sous-rénale. Col proximal ≥ 15 mm, angulation ≤ 60°, iliaques ≥ 8 mm.</p>
+            <div class="steps">
+              <div class="step-item"><div class="step-n">1</div><div class="step-c"><h4>Accès bilatéral</h4><p>Abord chirurgical fémoral bilatéral ou ponction percutanée. Introducteur 12–18F selon l'endoprothèse. Héparinisation 100 unités/kg.</p></div></div>
+              <div class="step-item"><div class="step-n">2</div><div class="step-c"><h4>Déploiement corps principal</h4><p>Positionnement sous scopie avec repères osseux. Déploiement au niveau des artères rénales. Corps principal + jambe controlatérale.</p></div></div>
+              <div class="step-item"><div class="step-n">3</div><div class="step-c"><h4>Contrôle et étanchéité</h4><p>Angio de contrôle : recherche endofuite type I et II. Ballon de mise en forme des extrémités. Scanner à M1 puis annuel.</p></div></div>
+            </div>
+            <div class="pearl"><h4>⚡ Perles bloc</h4><ul><li>Vérifier température salle — endoprothèse thermosensible</li><li>Préparer introducteurs 12F, 18F, cathéters angio, ballon de conformation</li><li>Scopie calibrée — marqueurs radio-opaques à 1 cm</li><li>Scanner 1 mois + annuel — surveillance endofuite obligatoire</li></ul></div>
+          </div>
+        </div>
+
+        <!-- 17 TEVAR -->
+        <div class="proc-item" data-cat="endovasculaire">
+          <div class="proc-head" onclick="toggleP(this)">
+            <div class="proc-num">17</div>
+            <h3>TEVAR — Endoprothèse aorte thoracique</h3>
+            <div class="proc-tags"><span class="ptag ptag-endovasc">Endovasculaire</span></div>
+            <span class="proc-chev">▼</span>
+          </div>
+          <div class="proc-body">
+            <p class="proc-desc">Exclusion endovasculaire d'un anévrisme ou d'une dissection de l'aorte thoracique descendante. Nécessite zone d'ancrage proximale ≥ 20 mm.</p>
+            <div class="steps">
+              <div class="step-item"><div class="step-n">1</div><div class="step-c"><h4>Préparation et accès</h4><p>Abord fémoral commun bilatéral (diamètre iliaques ≥ 8 mm). Introducteur 18–24F. Drainage liquide céphalo-rachidien si couverture &gt; T8. Héparinisation 100 unités/kg.</p></div></div>
+              <div class="step-item"><div class="step-n">2</div><div class="step-c"><h4>Déploiement thoracique</h4><p>Positionnement précis sous scopie avec angio native. Pression artérielle contrôlée — tibiale antérieure systolique ≤ 80 mmHg au déploiement. Zone 2 si couverture de la sous-clavière gauche — revascularisation préalable.</p></div></div>
+              <div class="step-item"><div class="step-n">3</div><div class="step-c"><h4>Contrôle et surveillance</h4><p>Angio thoracique complète. Surveillance neurologique postopératoire immédiate. Drain liquide céphalo-rachidien 48–72h si ouvert.</p></div></div>
+            </div>
+            <div class="pearl"><h4>⚡ Perles bloc</h4><ul><li>Drainage liquide céphalo-rachidien préopératoire si T8 ou plus couvert — prévention paraplégie</li><li>tibiale antérieure contrôlée au déploiement — SNP ou adénosine si nécessaire</li><li>Accès fémoral : si iliaque tortueuse → abord rétropéritonéal iliaque</li></ul></div>
+          </div>
+        </div>
+
+        <!-- 18 FEVAR/PEVAR -->
+        <div class="proc-item" data-cat="endovasculaire">
+          <div class="proc-head" onclick="toggleP(this)">
+            <div class="proc-num">18</div>
+            <h3>FEVAR / PEVAR — Endoprothèse fenêtrée / branchée</h3>
+            <div class="proc-tags"><span class="ptag ptag-endovasc">Endovasculaire</span><span class="ptag ptag-conjoint">Complexe</span></div>
+            <span class="proc-chev">▼</span>
+          </div>
+          <div class="proc-body">
+            <p class="proc-desc">Exclusion d'anévrismes juxta/parareaux ou thoraco-abdominaux par endoprothèse sur mesure avec fenêtres ou branches pour les artères viscérales.</p>
+            <div class="steps">
+              <div class="step-item"><div class="step-n">1</div><div class="step-c"><h4>Planification</h4><p>Endoprothèse sur mesure — délai fabrication 4–8 semaines. Simulation 3D. Marquage des ostia rénaux et viscéraux.</p></div></div>
+              <div class="step-item"><div class="step-n">2</div><div class="step-c"><h4>Accès multiples</h4><p>Abords fémoraux bilatéraux. Abords brachiaux ou axillaires si branches ascendantes. Introducteurs multiples 12–24F.</p></div></div>
+              <div class="step-item"><div class="step-n">3</div><div class="step-c"><h4>Déploiement et cathétérisme des branches</h4><p>Déploiement du corps principal. Cathétérisme de chaque fenêtre ou branche. Stent couvert dans chaque artère viscérale. Angio contrôle complet.</p></div></div>
+            </div>
+            <div class="pearl"><h4>⚡ Perles bloc</h4><ul><li>Procédure longue — prévoir 4–8h, 2 opérateurs minimum</li><li>Matériel spécifique : cathéters coudés, fils 0.018", stents couverts Advanta/Atrium</li><li>Héparine continue peropératoire — temps de coagulation activée cible 250–300 sec</li><li>Salle hybride obligatoire — scopie haute résolution</li></ul></div>
+          </div>
+        </div>
+
+      </div><!-- /proc-grid -->
+    </div>
+  </div>
+
+  <!-- ══ KARDEX ══════════════════════════════════════════ -->
+  <div id="sec-kardex" class="section">
+    <div class="page-wrap">
+      <div class="page-header">
+        <div class="page-header-top">
+          <h2>Kardex chirurgiens</h2>
+          <span class="ph-badge ph-badge-gold">Référence bloc</span>
+        </div>
+        <p>Préférences opératoires, matériel spécifique et habitudes de chaque chirurgien vasculaire du service.</p>
+      </div>
+      <div class="kardex-grid">
+
+        <div class="kardex-card">
+          <div class="kardex-head">
+            <div class="kardex-avatar">👨‍⚕️</div>
+            <div>
+              <div class="kardex-dr">Dr Febrer</div>
+              <div class="kardex-spec">Chirurgie vasculaire · HSCM</div>
+            </div>
+          </div>
+          <div class="kardex-body">
+            <div class="kardex-placeholder">
+              <div>📋</div>
+              <p>Kardex en cours de saisie<br>Contenu à transmettre par l'équipe</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="kardex-card">
+          <div class="kardex-head">
+            <div class="kardex-avatar">👨‍⚕️</div>
+            <div>
+              <div class="kardex-dr">Dr Fortin</div>
+              <div class="kardex-spec">Chirurgie vasculaire · HSCM</div>
+            </div>
+          </div>
+          <div class="kardex-body">
+            <div class="kardex-placeholder">
+              <div>📋</div>
+              <p>Kardex en cours de saisie<br>Contenu à transmettre par l'équipe</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="kardex-card">
+          <div class="kardex-head">
+            <div class="kardex-avatar">👨‍⚕️</div>
+            <div>
+              <div class="kardex-dr">Dr Rizkallah</div>
+              <div class="kardex-spec">Chirurgie vasculaire · HSCM</div>
+            </div>
+          </div>
+          <div class="kardex-body">
+            <div class="kardex-placeholder">
+              <div>📋</div>
+              <p>Kardex en cours de saisie<br>Contenu à transmettre par l'équipe</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="kardex-card">
+          <div class="kardex-head">
+            <div class="kardex-avatar">👩‍⚕️</div>
+            <div>
+              <div class="kardex-dr">Dr Blair</div>
+              <div class="kardex-spec">Chirurgie vasculaire · HSCM</div>
+            </div>
+          </div>
+          <div class="kardex-body">
+            <div class="kardex-placeholder">
+              <div>📋</div>
+              <p>Kardex en cours de saisie<br>Contenu à transmettre par l'équipe</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ QUIZ ═══════════════════════════════════════════ -->
+  <div id="sec-quiz" class="section">
+    <div class="page-wrap">
+      <div class="page-header">
+        <div class="page-header-top">
+          <h2>Quiz — Bloc opératoire vasculaire</h2>
+          <span class="ph-badge ph-badge-green">Formation infirmières</span>
+        </div>
+        <p>Questions adaptées aux infirmières de bloc — instrumentiste et circulante. Chirurgie vasculaire ouverte et endovasculaire.</p>
+      </div>
+
+      <div class="quiz-wrap">
+        <div class="quiz-progress">
+          <div class="quiz-bar-bg"><div class="quiz-bar-fill" id="qbar" style="width:0%"></div></div>
+          <div class="quiz-score">Score : <span id="qscore">0</span> / <span id="qtotal">10</span></div>
+        </div>
+
+        <!-- Q1 -->
+        <div class="qcard">
+          <div class="qcard-meta"><span class="qcard-num">Q01</span><span class="qcard-cat">Matériel · Embolectomie</span></div>
+          <div class="qcard-q">Quelle taille de sonde de Fogarty utilise-t-on pour une embolectomie de l'artère fémorale commune ?</div>
+          <div class="qopts">
+            <button class="qopt" onclick="ans(this,false,'e1')">Fogarty 2F</button>
+            <button class="qopt" onclick="ans(this,false,'e1')">Fogarty 3F</button>
+            <button class="qopt" onclick="ans(this,true,'e1')">Fogarty 5F</button>
+            <button class="qopt" onclick="ans(this,false,'e1')">Fogarty 7F</button>
+          </div>
+          <div class="qexpl" id="e1">Le Fogarty 5F est utilisé pour la fémorale commune. Le 3F est réservé aux artères distales (tibiales, poplitée distale). Il ne faut jamais gonfler le ballon sans résistance pour éviter la rupture artérielle.</div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="qcard">
+          <div class="qcard-meta"><span class="qcard-num">Q02</span><span class="qcard-cat">Positionnement · Carotide</span></div>
+          <div class="qcard-q">Lors d'une endartériectomie carotidienne, comment positionne-t-on la tête du patient ?</div>
+          <div class="qopts">
+            <button class="qopt" onclick="ans(this,false,'e2')">Tête en flexion, rotation homolatérale</button>
+            <button class="qopt" onclick="ans(this,true,'e2')">Tête en légère extension, rotation controlatérale</button>
+            <button class="qopt" onclick="ans(this,false,'e2')">Tête en position neutre, sans rotation</button>
+            <button class="qopt" onclick="ans(this,false,'e2')">Tête en hyperextension, rotation homolatérale</button>
+          </div>
+          <div class="qexpl" id="e2">La légère extension expose le cou et la rotation controlatérale dégage le champ opératoire vers la carotide à opérer. Un billot sous les épaules facilite l'exposition. L'hyperextension est à éviter — risque ischémique et inconfort.</div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="qcard">
+          <div class="qcard-meta"><span class="qcard-num">Q03</span><span class="qcard-cat">Matériel · EVAR</span></div>
+          <div class="qcard-q">Quel introducteur utilise-t-on habituellement pour l'introduction du corps principal d'une endoprothèse aortique (EVAR) ?</div>
+          <div class="qopts">
+            <button class="qopt" onclick="ans(this,false,'e3')">5F</button>
+            <button class="qopt" onclick="ans(this,false,'e3')">8F</button>
+            <button class="qopt" onclick="ans(this,true,'e3')">12–18F selon le dispositif</button>
+            <button class="qopt" onclick="ans(this,false,'e3')">24F systématiquement</button>
+          </div>
+          <div class="qexpl" id="e3">Les endoprothèses aortiques nécessitent des introducteurs larges (12 à 18F) selon le fabricant et le diamètre de l'endoprothèse. Il faut vérifier la compatibilité avec les axes iliaques — diamètre minimum 8 mm souvent requis.</div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="qcard">
+          <div class="qcard-meta"><span class="qcard-num">Q04</span><span class="qcard-cat">Urgences · Fasciotomie</span></div>
+          <div class="qcard-q">Après quelle durée d'ischémie aiguë de membre doit-on envisager une fasciotomie systématique post-embolectomie ?</div>
+          <div class="qopts">
+            <button class="qopt" onclick="ans(this,false,'e4')">Après 2 heures</button>
+            <button class="qopt" onclick="ans(this,false,'e4')">Après 4 heures</button>
+            <button class="qopt" onclick="ans(this,true,'e4')">Après 6 heures</button>
+            <button class="qopt" onclick="ans(this,false,'e4')">Toujours systématique</button>
+          </div>
+          <div class="qexpl" id="e4">La fasciotomie est recommandée systématiquement après 6 heures d'ischémie aiguë pour prévenir le syndrome des loges lors de la reperfusion. Elle peut également être indiquée en cas de loge tendue cliniquement même avant 6h.</div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="qcard">
+          <div class="qcard-meta"><span class="qcard-num">Q05</span><span class="qcard-cat">Anticoagulation · Bloc</span></div>
+          <div class="qcard-q">Quelle est la dose habituelle d'héparine non fractionnée administrée avant le clampage dans un pontage aorto-bifémoral ?</div>
+          <div class="qopts">
+            <button class="qopt" onclick="ans(this,false,'e5')">20 UI/kg IV</button>
+            <button class="qopt" onclick="ans(this,false,'e5')">50 UI/kg IV</button>
+            <button class="qopt" onclick="ans(this,true,'e5')">100 UI/kg IV</button>
+            <button class="qopt" onclick="ans(this,false,'e5')">200 UI/kg IV</button>
+          </div>
+          <div class="qexpl" id="e5">La dose standard pour la chirurgie aortique est de 100 UI/kg IV avant le clampage aortique. Pour la chirurgie périphérique (fémorale, carotide), on utilise habituellement 50–100 UI/kg. La neutralisation en fin de procédure se fait avec la protamine (1 mg pour 100 UI d'héparine résiduelle).</div>
+        </div>
+
+        <!-- Q6 -->
+        <div class="qcard">
+          <div class="qcard-meta"><span class="qcard-num">Q06</span><span class="qcard-cat">Matériel · Pontage distal</span></div>
+          <div class="qcard-q">Quel greffon est obligatoire pour un pontage fémoro-tibial ?</div>
+          <div class="qopts">
+            <button class="qopt" onclick="ans(this,false,'e6')">Prothèse PTFE 6 mm</button>
+            <button class="qopt" onclick="ans(this,false,'e6')">Prothèse Dacron 8 mm</button>
+            <button class="qopt" onclick="ans(this,true,'e6')">Grande saphène autologue</button>
+            <button class="qopt" onclick="ans(this,false,'e6')">Prothèse biosynthétique (Omniflow)</button>
+          </div>
+          <div class="qexpl" id="e6">La grande saphène autologue est la seule option acceptable pour les pontages sous le genou (fémoro-tibial ou péronier). Les prothèses synthétiques ont des résultats inacceptables à ce niveau — perméabilité à 2 ans inférieure à 30 %.</div>
+        </div>
+
+        <!-- Q7 -->
+        <div class="qcard">
+          <div class="qcard-meta"><span class="qcard-num">Q07</span><span class="qcard-cat">TEVAR · Complication</span></div>
+          <div class="qcard-q">Quelle est la complication neurologique redoutée spécifique au TEVAR (endoprothèse aorte thoracique) ?</div>
+          <div class="qopts">
+            <button class="qopt" onclick="ans(this,false,'e7')">AVC embolique</button>
+            <button class="qopt" onclick="ans(this,true,'e7')">Paraplégie par ischémie médullaire</button>
+            <button class="qopt" onclick="ans(this,false,'e7')">Neuropathie périphérique</button>
+            <button class="qopt" onclick="ans(this,false,'e7')">Syndrome de Horner</button>
+          </div>
+          <div class="qexpl" id="e7">La paraplégie par ischémie médullaire est la complication neurologique majeure du TEVAR, liée à la couverture des artères intercostales nourricières de la moelle (artère d'Adamkiewicz). Le drainage du LCR en préopératoire et le maintien d'une TA correcte sont les principaux moyens de prévention.</div>
+        </div>
+
+        <!-- Q8 -->
+        <div class="qcard">
+          <div class="qcard-meta"><span class="qcard-num">Q08</span><span class="qcard-cat">Amputation · Niveau</span></div>
+          <div class="qcard-q">Quelle longueur minimale de tibia doit-on conserver sous le plateau tibial pour permettre une prothèse de marche après une amputation BK ?</div>
+          <div class="qopts">
+            <button class="qopt" onclick="ans(this,false,'e8')">3–5 cm</button>
+            <button class="qopt" onclick="ans(this,true,'e8')">8–12 cm</button>
+            <button class="qopt" onclick="ans(this,false,'e8')">15–18 cm</button>
+            <button class="qopt" onclick="ans(this,false,'e8')">Pas de contrainte de longueur</button>
+          </div>
+          <div class="qexpl" id="e8">Une longueur minimale de 8 cm sous le plateau tibial est requise pour l'adaptation d'une prothèse de marche. La longueur idéale est de 12 à 15 cm. En dessous de 8 cm, une amputation trans-fémorale (AK) doit être envisagée.</div>
+        </div>
+
+        <!-- Q9 -->
+        <div class="qcard">
+          <div class="qcard-meta"><span class="qcard-num">Q09</span><span class="qcard-cat">Drain · Inguinal</span></div>
+          <div class="qcard-q">Pourquoi place-t-on systématiquement un drain aspiratif lors d'une endartériectomie ou d'un abord inguinal ?</div>
+          <div class="qopts">
+            <button class="qopt" onclick="ans(this,false,'e9')">Pour surveiller le saignement artériel</button>
+            <button class="qopt" onclick="ans(this,true,'e9')">Pour prévenir la lymphocèle par collection lymphatique</button>
+            <button class="qopt" onclick="ans(this,false,'e9')">Pour permettre l'antibiothérapie locale</button>
+            <button class="qopt" onclick="ans(this,false,'e9')">Pour faciliter la cicatrisation de la plaie</button>
+          </div>
+          <div class="qexpl" id="e9">L'abord inguinal sectionne inévitablement des canaux lymphatiques. Sans drain, une lymphocèle peut se former, augmentant le risque d'infection de plaque prothétique — complication gravissime. Le drain aspiratif réduit significativement ce risque.</div>
+        </div>
+
+        <!-- Q10 -->
+        <div class="qcard">
+          <div class="qcard-meta"><span class="qcard-num">Q10</span><span class="qcard-cat">Déclampage · Carotide</span></div>
+          <div class="qcard-q">Dans quelle ordre déclampe-t-on lors d'une endartériectomie carotidienne ?</div>
+          <div class="qopts">
+            <button class="qopt" onclick="ans(this,false,'e10')">Carotide commune → interne → externe</button>
+            <button class="qopt" onclick="ans(this,false,'e10')">Carotide interne → externe → commune</button>
+            <button class="qopt" onclick="ans(this,true,'e10')">Carotide externe → commune → interne</button>
+            <button class="qopt" onclick="ans(this,false,'e10')">L'ordre n'a pas d'importance</button>
+          </div>
+          <div class="qexpl" id="e10">L'ordre CE → CC → CI est capital : on ouvre d'abord la carotide externe pour purger les éventuels emboles vers la circulation systémique (non cérébrale), puis on rétablit le flux vers la carotide interne et la circulation cérébrale en dernier.</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+// ─── Navigation ──────────────────────────────────────
+const TITLES = {
+  home:'Accueil', anatomy:'Planches anatomiques',
+  procedures:'Procédures chirurgicales', kardex:'Kardex chirurgiens', quiz:'Quiz bloc opératoire'
+};
+
+function show(id, el) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const sec = document.getElementById('sec-'+id);
+  if (sec) sec.classList.add('active');
+  if (el) el.classList.add('active');
+  document.getElementById('bc').textContent = TITLES[id] || id;
+  window.scrollTo(0,0);
+}
+
+// ─── Anatomy tabs ─────────────────────────────────────
+function switchAnatomy(id, el) {
+  document.querySelectorAll('.anatomy-view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.atab').forEach(t => t.classList.remove('active'));
+  const view = document.getElementById('anat-'+id);
+  if (view) view.classList.add('active');
+  if (el) el.classList.add('active');
+  currentInfoPanel = 'vessel-info';
+  if (id === 'aorte') currentInfoPanel = 'vessel-info-aorte';
+  if (id === 'carotide') currentInfoPanel = 'vessel-info-carotide';
+  if (id === 'femoral') currentInfoPanel = 'vessel-info-femoral';
+  if (id === 'jambier') currentInfoPanel = 'vessel-info-jambier';
+  if (id === 'superieur') currentInfoPanel = 'vessel-info-superieur';
+}
+let currentInfoPanel = 'vessel-info';
+
+// ─── Vessel info ──────────────────────────────────────
+const VESSELS = {
+  arch: { name:"Crosse aortique", rows:[["Niveau","T4 — Angle de Louis"],["Branches","Tronc brachio-céphalique, carotide commune gauche, sous-clavière gauche"],["Pathologie","Anévrisme, dissection aortique type A (chirurgie cardiaque urgente)"],["Endovasculaire","Endoprothèse thoracique (TEVAR) zones 0 à 2"],["Important","Zone 0 et 1 nécessitent une déviation des troncs supra-aortiques"]] },
+  thoracique: { name:"Aorte thoracique descendante", rows:[["Trajet","De T4 à T12 — en arrière de l'œsophage"],["Branches","Artères intercostales (dont artère d'Adamkiewicz)"],["Pathologie","Anévrisme thoracique, dissection type B"],["Chirurgie","Endoprothèse thoracique (TEVAR), remplacement chirurgical conjoint"],["Risque","Paraplégie par ischémie médullaire si couverture étendue"]] },
+  aorte: { name:"Aorte abdominale", rows:[["Origine","Hiatus aortique du diaphragme — T12"],["Trajet","Rétropéritonéale, en avant du rachis lombaire"],["Terminaison","Bifurcation aorto-iliaque au niveau de L4"],["Diamètre normal","Inférieur à 25 mm"],["Anévrisme","Traitement si diamètre supérieur ou égal à 55 mm chez l'homme, 50 mm chez la femme"],["Branches viscérales","Tronc cœliaque, artère mésentérique supérieure, artères rénales, artère mésentérique inférieure"],["Chirurgie","Endoprothèse aortique (EVAR), tube aortique, pontage aorto-bifémoral"]] },
+  carotide: { name:"Artères carotides (vue générale)", rows:[["Carotide commune","Bifurcation en C3–C4"],["Carotide interne","Aucune branche cervicale — assure la circulation cérébrale"],["Carotide externe","Huit branches — vascularisation de la face et du cou"],["Sténose significative","Supérieure ou égale à 70 % symptomatique — indication chirurgicale"],["Technique","Endartériectomie avec patch veineux ou synthétique"]] },
+  'carotide-com': { name:"Artère carotide commune", rows:[["Droite","Née du tronc brachio-céphalique"],["Gauche","Née directement de la crosse aortique"],["Trajet","Ascendant dans le cou, en dedans de la veine jugulaire interne"],["Palpation","Pouls carotidien palpable en dedans du muscle sterno-cléido-mastoïdien"],["Surveillance","Écho-Doppler annuel si antécédent d'endartériectomie"]] },
+  'carotide-int': { name:"Artère carotide interne", rows:[["Trajet","Aucune branche dans le cou"],["Terminaison","Siphon carotidien intracrânien"],["Territoire","Cerveau antérieur, œil (artère ophtalmique)"],["Sténose","Indique une endartériectomie si supérieure ou égale à 70 % symptomatique"],["Complication","Accident vasculaire cérébral ischémique, amaurose fugace"]] },
+  'carotide-ext': { name:"Artère carotide externe", rows:[["Branches","Thyroïdienne supérieure, linguale, faciale, temporale superficielle, maxillaire interne, auriculaire postérieure, pharyngienne ascendante, occipitale"],["Territoire","Vascularisation de la face, du scalp, du cou"],["Chirurgie","Ligature parfois nécessaire en cas de saignement post-endartériectomie"],["Embolisation","Possible pour les épistaxis réfractaires ou tumeurs vasculaires"]] },
+  bulbe: { name:"Bulbe carotidien", rows:[["Anatomie","Dilatation à l'origine de la carotide interne"],["Barorécepteurs","Zone sensible à la pression — sinus carotidien"],["Athérosclérose","Site préférentiel de la plaque carotidienne"],["Plaque","La sténose de la carotide interne se mesure au niveau du bulbe"],["Chirurgie","Zone clé de l'endartériectomie carotidienne"]] },
+  'branches-ce': { name:"Branches de la carotide externe", rows:[["Thyroïdienne supérieure","Première branche — vascularise le larynx et la thyroïde"],["Linguale","Vascularise la langue"],["Faciale","Artère principale de la face"],["Temporale superficielle","Palpable devant le tragus — mesure de pression"],["Maxillaire interne","Branche terminale — artère méningée moyenne"]] },
+  jugulaire: { name:"Veine jugulaire interne", rows:[["Trajet","Longe la carotide commune en dehors"],["Rôle chirurgical","Repère anatomique — à préserver lors de l'endartériectomie carotidienne"],["Drainage","Retour veineux cérébral principal"],["Accès veineux","Voie d'abord centrale préférée en réanimation"]] },
+  'nerf-vague': { name:"Nerf vague (X)", rows:[["Trajet","Entre la carotide et la jugulaire dans la gaine vasculaire"],["Risque","Section ou étirement → dysphonie, dysphagie"],["Chirurgie","À identifier et protéger lors de l'endartériectomie carotidienne"],["Lésion","Complication de l'endartériectomie carotidienne — incidence 1 à 5 %"]] },
+  subclaviere: { name:"Artère sous-clavière", rows:[["Droite","Née du tronc brachio-céphalique"],["Gauche","Née directement de la crosse aortique"],["Branches","Artère vertébrale, artère mammaire interne, tronc thyro-cervical"],["Pathologie","Sténose proximale → syndrome de vol sous-clavier"],["Chirurgie","Stent percutané, transposition carotido-sous-clavière"]] },
+  axillaire: { name:"Artère axillaire", rows:[["Trajet","Traversée de l'aisselle — sous le petit pectoral"],["Branches","Artère thoracique latérale, artère subscapulaire, artère acromio-thoracique"],["Chirurgie","Site d'anastomose proximale pour pontage axillo-bifémoral"],["Pontage","Axillo-bifémoral — chirurgie extra-anatomique, patient à haut risque"]] },
+  brachiale: { name:"Artère brachiale (humérale)", rows:[["Trajet","Gouttière bicipitale médiale — face interne du bras"],["Terminaison","Pli du coude → artère radiale et artère cubitale"],["Pouls","Palpable au pli du coude — mesure de la pression artérielle"],["Accès","Embolectomie du membre supérieur, abord pour angioplastie rétrograde"],["Test d'Allen","Comprime les deux artères au poignet pour évaluer les suppléances"]] },
+  radiale: { name:"Artère radiale", rows:[["Trajet","Face antéro-externe de l'avant-bras"],["Pouls","Palpable au poignet côté pouce"],["Terminaison","Arcade palmaire profonde"],["Utilisation","Prélèvement pour greffon coronarien, accès artériel pour cathétérisme"],["Test préalable","Test d'Allen avant tout prélèvement"]] },
+  cubitale: { name:"Artère cubitale (ulnaire)", rows:[["Trajet","Face antéro-interne de l'avant-bras"],["Pouls","Palpable au poignet côté auriculaire"],["Terminaison","Arcade palmaire superficielle"],["Anastomose","Arcade palmaire superficielle avec branche de la radiale"],["Accès","Embolectomie distale du membre supérieur"]] },
+  tc: { name:"Tronc cœliaque", rows:[["Origine","Face antérieure de l'aorte, niveau T12–L1"],["Branches","Artère gastrique gauche, artère splénique, artère hépatique commune"],["Longueur","Un à deux centimètres avant la trifurcation"],["Compression","Syndrome du ligament arqué médian"],["Ischémie","Douleur post-prandiale, angiodysplasie mésentérique"]] },
+  ams: { name:"Artère mésentérique supérieure", rows:[["Origine","Face antérieure de l'aorte, un centimètre sous le tronc cœliaque (L1)"],["Territoire","Intestin grêle, côlon droit, côlon transverse"],["Urgence","Ischémie mésentérique aiguë → chirurgie ou thrombolyse urgente"],["Signes cliniques","Douleur abdominale intense disproportionnée, nausées"],["Traitement","Thrombectomie chirurgicale, pontage aorto-mésentérique, angioplastie"]] },
+  renales: { name:"Artères rénales", rows:[["Niveau","Sous l'artère mésentérique supérieure — L1 à L2"],["Artère rénale droite","Rétrocave — passe derrière la veine cave inférieure"],["Diamètre","Cinq à six millimètres"],["Pathologie","Sténose → hypertension artérielle réno-vasculaire, insuffisance rénale ischémique"],["Traitement","Stent percutané (controverse), pontage aorto-rénal si échec"]] },
+  ami: { name:"Artère mésentérique inférieure", rows:[["Origine","Face antérieure de l'aorte — L3"],["Territoire","Côlon gauche, côlon sigmoïde, rectum supérieur"],["Chirurgie aortique","Peut être ligaturée si réseau de Riolan perméable"],["Réimplantation","Obligatoire si absence de suppléance — ischémie colique gauche"],["Artère de Riolan","Arcade anastomotique entre les deux mésentériques"]] },
+  bif: { name:"Bifurcation aorto-iliaque", rows:[["Niveau","L4 — repère : ombilic"],["Branches","Artère iliaque commune gauche et droite"],["Subdivision","Chaque iliaque commune → iliaque externe + iliaque interne (hypogastrique)"],["Syndrome de Leriche","Occlusion bilatérale : claudication fessière, impuissance, abolition des pouls fémoraux"],["Chirurgie","Pontage aorto-bifémoral (lésions sévères), stents iliaques en kissing (lésions modérées)"]] },
+  'iliaque-int': { name:"Artère iliaque interne (hypogastrique)", rows:[["Territoire","Paroi et viscères pelviens, fesse, organes génitaux"],["Branches","Artère ombilicale, artère utérine, artère honteuse interne, artère glutéale"],["Impuissance","Ischémie des artères honteuses internes → dysfonction érectile dans le syndrome de Leriche"],["Chirurgie","Préserver au moins une iliaque interne lors des pontages aorto-iliaques"],["Ligature","Parfois nécessaire lors de traitement des anévrismes iliaques"]] },
+  'fem-com': { name:"Artère fémorale commune", rows:[["Trajet","Sous le ligament inguinal — triangle de Scarpa"],["Bifurcation","Fémorale commune → fémorale profonde + fémorale superficielle"],["Accès","Site de ponction préférentiel pour la chirurgie endovasculaire"],["Endartériectomie","Désobstruction de la bifurcation avec patch d'élargissement"],["Ponction","Repère : tête fémorale en dedans de l'artère sur la radio"]] },
+  'fem-prof': { name:"Artère fémorale profonde", rows:[["Trajet","Chemine dans la loge postérieure de la cuisse"],["Branches","Trois ou quatre artères perforantes — vascularisation des muscles de la cuisse"],["Importance","Principale voie de suppléance en cas d'occlusion de la fémorale superficielle"],["Chirurgie","Contrôle jusqu'à la première branche perforante lors de l'endartériectomie fémorale"],["Préserver","Toujours contrôler et préserver lors des abords fémoraux"]] },
+  'fem-sup': { name:"Artère fémorale superficielle", rows:[["Trajet","Face antéro-interne de la cuisse → canal des adducteurs (canal de Hunter)"],["Terminaison","Anneau des adducteurs → artère poplitée"],["Pathologie","Site le plus fréquent des occlusions artérielles du membre inférieur"],["Pontage","Fémoropoplité sus ou sous-articulaire"],["Endovasculaire","Angioplastie avec ballon actif (TASC A et B)"]] },
+  'poplit-sus': { name:"Artère poplitée sus-articulaire (P1)", rows:[["Localisation","Au-dessus du genou — dans le creux poplité supérieur"],["Accès chirurgical","Voie interne de cuisse — en dedans du droit interne"],["Anastomose","Site d'anastomose distale pour pontage fémoropoplité sus-articulaire"],["Perméabilité","Meilleure perméabilité à cinq ans comparée au pontage sous-articulaire"],["Greffon","Saphène autologue ou prothèse synthétique (PTFE, Dacron)"]] },
+  'poplit-sous': { name:"Artère poplitée sous-articulaire (P3)", rows:[["Localisation","En dessous du genou — dans le creux poplité inférieur"],["Accès chirurgical","Voie interne de jambe — entre les deux chefs du gastrocnémien"],["Anastomose","Site d'anastomose distale pour pontage fémoropoplité sous-articulaire"],["Greffon","Grande veine saphène interne obligatoire (prothèse synthétique : mauvais résultats)"],["Trifurcation","Se divise en artère tibiale antérieure, artère tibiale postérieure et artère péronière"]] },
+  'veine-fem': { name:"Veine fémorale", rows:[["Trajet","Médiale à l'artère fémorale superficielle dans le canal des adducteurs"],["Rôle chirurgical","Repère anatomique — à identifier et protéger lors des abords fémoraux"],["Thrombose","Thrombose veineuse profonde — traitement anticoagulant"],["Prélèvement","Parfois utilisée comme greffon veineux de grand calibre"]] },
+  sapehne: { name:"Grande veine saphène interne", rows:[["Trajet","Face interne du membre inférieur de la malléole interne jusqu'au pli inguinal"],["Valve de Valsalva","Se jette dans la veine fémorale commune"],["Greffon","Greffon de choix pour tous les pontages infra-inguinaux"],["Prélèvement","Par incisions étagées ou technique endoscopique"],["Préserver","À préserver impérativement chez tout patient artériel"]] },
+  'nerf-fem': { name:"Nerf fémoral", rows:[["Trajet","En dehors de l'artère fémorale commune — triangle de Scarpa"],["Risque","Blessure → anesthésie et déficit moteur du quadriceps"],["Protection","Toujours identifier et rétracter latéralement lors de l'abord fémoral"],["Traction","Éviter la rétraction excessive — neuropraxie possible"]] },
+  tibant: { name:"Artère tibiale antérieure", rows:[["Origine","Trifurcation poplitée"],["Trajet","Passe à travers la membrane interosseuse → loge antérieure de jambe"],["Terminaison","Artère dorsale du pied (pédieuse)"],["Pouls","Palpable sur le dos du pied — entre le premier et deuxième métatarse"],["Accès chirurgical","Voie antéro-latérale de jambe"],["Pontage","Anastomose au tiers distal ou à la cheville — Prolène 6/0 ou 7/0"]] },
+  tibpost: { name:"Artère tibiale postérieure", rows:[["Origine","Tronc tibio-péronier"],["Trajet","Loge postérieure profonde de jambe"],["Terminaison","Artères plantaires médiale et latérale"],["Pouls","Palpable en arrière de la malléole interne"],["Accès chirurgical","Voie interne de jambe"],["Pontage","Site anastomotique préférentiel — meilleure qualité du lit d'aval"]] },
+  peroniere: { name:"Artère péronière (fibulaire)", rows:[["Origine","Tronc tibio-péronier"],["Trajet","Loge postérieure latérale de jambe — le long de la fibula"],["Terminaison","Branches sus-malléolaires latérales — pas d'artère au pied"],["Accès chirurgical","Voie externe avec fibulectomie partielle ou voie postérieure"],["Pontage","Alternative si tibiale antérieure et tibiale postérieure absentes ou non opérables"]] },
+};
+
+function infoV(id) {
+  const v = VESSELS[id];
+  const panelId = currentInfoPanel || 'vessel-info';
+  const panel = document.getElementById(panelId);
+  if (!v) return;
+  panel.innerHTML = `<h3>${v.name}</h3>${v.rows.map(([k,val])=>`<div class="info-row"><span class="info-key">${k}</span><span>${val}</span></div>`).join('')}`;
+  document.querySelectorAll('.vessel-btn').forEach(el => el.classList.remove('sel'));
+  document.querySelectorAll(`[data-v="${id}"]`).forEach(el => el.classList.add('sel'));
+}
+
+// ─── Procedures ──────────────────────────────────────
+function filterProc(cat, el) {
+  document.querySelectorAll('.proc-item').forEach(item => {
+    if (cat === 'all') item.classList.remove('hidden');
+    else item.classList.toggle('hidden', item.dataset.cat !== cat);
+    // Close all on filter change
+    item.querySelector('.proc-body').classList.remove('open');
+    item.querySelector('.proc-chev').style.transform = '';
+  });
+  document.querySelectorAll('.pfilt').forEach(f => f.classList.remove('active'));
+  if (el) el.classList.add('active');
+}
+
+function toggleP(head) {
+  const body = head.nextElementSibling;
+  const chev = head.querySelector('.proc-chev');
+  const isOpen = body.classList.contains('open');
+  document.querySelectorAll('.proc-body').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('.proc-chev').forEach(c => c.style.transform = '');
+  if (!isOpen) {
+    body.classList.add('open');
+    chev.style.transform = 'rotate(180deg)';
+    setTimeout(() => body.scrollIntoView({behavior:'smooth', block:'nearest'}), 50);
+  }
+}
+
+// ─── Quiz ─────────────────────────────────────────────
+let score = 0;
+let answered = 0;
+const total = 10;
+
+function ans(btn, correct, explId) {
+  const opts = btn.closest('.qopts').querySelectorAll('.qopt');
+  opts.forEach(o => o.disabled = true);
+  answered++;
+  if (correct) {
+    btn.classList.add('correct');
+    score++;
+  } else {
+    btn.classList.add('wrong');
+    opts.forEach(o => { if (!o.classList.contains('wrong')) o.classList.add('show-c'); });
+  }
+  document.getElementById(explId).classList.add('show');
+  document.getElementById('qscore').textContent = score;
+  document.getElementById('qbar').style.width = (answered / total * 100) + '%';
+}
+</script>
+</body>
+</html>
