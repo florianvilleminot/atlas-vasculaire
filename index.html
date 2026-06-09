@@ -728,6 +728,41 @@ body {
 }
 .qexpl.show { display: block; }
 
+
+/* ─── KARDEX SECTIONS ────────────────────────────────── */
+.kardex-surgeon.active { display: block; animation: fadeUp 0.3s ease; }
+.kardex-section-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+.ks-block {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+.ks-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 8px;
+}
+.ks-block p { font-size: 12.5px; color: var(--text2); line-height: 1.55; }
+.ks-list { list-style: none; }
+.ks-list li {
+  font-size: 12px;
+  color: var(--text2);
+  padding: 3px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  line-height: 1.45;
+}
+.ks-list li:last-child { border-bottom: none; }
+.ks-list li::before { content: "· "; color: var(--red); }
+
 /* ─── SCROLLBAR ──────────────────────────────────────── */
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -2112,79 +2147,3271 @@ body {
           <h2>Kardex chirurgiens</h2>
           <span class="ph-badge ph-badge-gold">Référence bloc</span>
         </div>
-        <p>Préférences opératoires, matériel spécifique et habitudes de chaque chirurgien vasculaire du service.</p>
+        <p>Préférences opératoires, matériel spécifique et habitudes de chaque chirurgien vasculaire — données issues des fiches officielles du bloc.</p>
       </div>
-      <div class="kardex-grid">
 
-        <div class="kardex-card">
-          <div class="kardex-head">
-            <div class="kardex-avatar">👨‍⚕️</div>
-            <div>
-              <div class="kardex-dr">Dr Febrer</div>
-              <div class="kardex-spec">Chirurgie vasculaire · HSCM</div>
-            </div>
-          </div>
-          <div class="kardex-body">
-            <div class="kardex-placeholder">
-              <div>📋</div>
-              <p>Kardex en cours de saisie<br>Contenu à transmettre par l'équipe</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="kardex-card">
-          <div class="kardex-head">
-            <div class="kardex-avatar">👨‍⚕️</div>
-            <div>
-              <div class="kardex-dr">Dr Fortin</div>
-              <div class="kardex-spec">Chirurgie vasculaire · HSCM</div>
-            </div>
-          </div>
-          <div class="kardex-body">
-            <div class="kardex-placeholder">
-              <div>📋</div>
-              <p>Kardex en cours de saisie<br>Contenu à transmettre par l'équipe</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="kardex-card">
-          <div class="kardex-head">
-            <div class="kardex-avatar">👨‍⚕️</div>
-            <div>
-              <div class="kardex-dr">Dr Rizkallah</div>
-              <div class="kardex-spec">Chirurgie vasculaire · HSCM</div>
-            </div>
-          </div>
-          <div class="kardex-body">
-            <div class="kardex-placeholder">
-              <div>📋</div>
-              <p>Kardex en cours de saisie<br>Contenu à transmettre par l'équipe</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="kardex-card">
-          <div class="kardex-head">
-            <div class="kardex-avatar">👩‍⚕️</div>
-            <div>
-              <div class="kardex-dr">Dr Blair</div>
-              <div class="kardex-spec">Chirurgie vasculaire · HSCM</div>
-            </div>
-          </div>
-          <div class="kardex-body">
-            <div class="kardex-placeholder">
-              <div>📋</div>
-              <p>Kardex en cours de saisie<br>Contenu à transmettre par l'équipe</p>
-            </div>
-          </div>
-        </div>
-
+      <!-- Surgeon tabs -->
+      <div class="anatomy-tabs" style="margin-bottom:24px;">
+        <div class="atab active" onclick="switchKardex('febrer',this)">Dr Febrer</div>
+        <div class="atab" onclick="switchKardex('fortin',this)">Dr Fortin</div>
+        <div class="atab" onclick="switchKardex('rizkallah',this)">Dr Rizkallah</div>
+        <div class="atab" onclick="switchKardex('blair',this)">Dr Blair</div>
       </div>
-    </div>
-  </div>
 
-  <!-- ══ QUIZ ═══════════════════════════════════════════ -->
+      <!-- DR FEBRER -->
+      <div id="kardex-febrer" class="kardex-surgeon active">
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:20px;display:flex;align-items:center;gap:18px;">
+          <div style="width:56px;height:56px;border-radius:50%;background:var(--red-dim);border:2px solid rgba(185,28,28,0.4);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">👨‍⚕️</div>
+          <div>
+            <div style="font-size:18px;font-weight:500;margin-bottom:3px;">Dr Febrer</div>
+            <div style="font-family:monospace;font-size:10px;color:var(--red);letter-spacing:1px;text-transform:uppercase;">Chirurgie vasculaire · HSCM</div>
+            <div style="font-size:12px;color:var(--text3);margin-top:4px;">Gants : 7½ Neopréne (S: 26–F7) — sauf mention contraire</div>
+          </div>
+        </div>
+
+        <!-- Procedures filter -->
+        <div class="proc-filter" style="margin-bottom:16px;">
+          <div class="pfilt active" style="--pf-color:#E2E8F0" onclick="filterKardex('all',this)">Toutes</div>
+          <div class="pfilt" style="--pf-color:#34D399" onclick="filterKardex('endo',this)">Endartériectomies</div>
+          <div class="pfilt" style="--pf-color:#60A5FA" onclick="filterKardex('pontage',this)">Pontages</div>
+          <div class="pfilt" style="--pf-color:#A78BFA" onclick="filterKardex('endovasc',this)">Endovasculaire</div>
+          <div class="pfilt" style="--pf-color:#FB923C" onclick="filterKardex('amputation',this)">Amputations</div>
+          <div class="pfilt" style="--pf-color:#F87171" onclick="filterKardex('autre',this)">Autres</div>
+        </div>
+
+        <div class="proc-grid" id="kardex-grid-febrer">
+
+          <!-- Endartériectomie carotidienne -->
+          <div class="proc-item" data-kcat="endo">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">01</div>
+              <h3>Endartériectomie carotidienne</h3>
+              <div class="proc-tags"><span class="ptag ptag-endo">Endartériectomie</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal, bras le long du corps, flanelle en transverse sur table d'opération. Rouleau sous les épaules. Oreiller sous les genoux. Infirmière du côté opposé à la chirurgie. Chirurgien du côté opéré.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Équipements</div>
+                  <p>Table Mayo, Table de base, bassin régulier. Têtière avec rails à la tête. Machine d'écho (Toshiba CCVT ou BK Médical). Bras de Martin stérile.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Du lobe d'oreille et de la joue jusqu'au mamelon côté opéré, du menton jusqu'au mamelon côté opposé. Badigeon Chlorhexidine 2% + alcool 70% clair (incolore) — S: 27–T1+2.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Lingerie / Champs</div>
+                  <ul class="ks-list">
+                    <li>Custom pack Endartériectomie (S: 53-3A)</li>
+                    <li>Cautère avec aspirateur de fumée (S: 53-B3)</li>
+                    <li>Blouse XXL x1 (S: 53-5D)</li>
+                    <li>Serviettes vertes x2 (S: 53-Y3+4)</li>
+                    <li>Bassin simple (S: 26) · Champ ¾ (S: 53-4B)</li>
+                    <li>Bandes bleues x1 (S: 53-4C)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Plateau Endoprothèse AAA (S: 43-29D)</li>
+                    <li>Pinces de Gérald (S: 40-1B)</li>
+                    <li>Sonde écho Toshiba PLT-1202S (S: 53-6A)</li>
+                    <li>Tapis magnétique (S: 43-45B)</li>
+                    <li>Poignées pour lumières (S: 53-A6)</li>
+                    <li>Écarteur Bras de Martin (S: 43-43E)</li>
+                    <li>Champ Optima Bras de Martin (S: 53-4D)</li>
+                    <li>PRN : Écarteurs Langenbeck (S: 40-1D)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Accessoires</div>
+                  <ul class="ks-list">
+                    <li>Hémoclips Bleu x1 (S: 53-LL5)</li>
+                    <li>Hémoclips Jaune x1 (S: 53-LL4)</li>
+                    <li>Gel écho x1 (S: 26-AA4)</li>
+                    <li>Champ stérile pour écho (S: 26-AA6)</li>
+                    <li>Embout veineux x1 (S: 53-S1)</li>
+                    <li>Caoutchoucs pour pince Fogarty A0C01 (S: 53-W5)</li>
+                    <li>Bag decanter x1 (S: 26-AA1)</li>
+                    <li>Lacet silastics maxi x1 (S: 26-Z3)</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="pearl"><h4>⚡ Notes spécifiques Dr Febrer</h4><ul>
+                <li>Utilise bras de Martin stérile systématiquement</li>
+                <li>Infirmière toujours du côté opposé à la chirurgie</li>
+                <li>Machine d'écho disponible en salle (Toshiba CCVT ou BK Médical)</li>
+              </ul></div>
+            </div>
+          </div>
+
+          <!-- Endartériectomie fémorale -->
+          <div class="proc-item" data-kcat="endo">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">02</div>
+              <h3>Endartériectomie fémorale ou ilio-fémorale</h3>
+              <div class="proc-tags"><span class="ptag ptag-endo">Endartériectomie</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal, bras en croix. Infirmière du côté opposé à la chirurgie. Chirurgien du côté opéré.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Équipements</div>
+                  <p>Table Mayo, table de base, bassin régulier. Vérifier si assistant (prévoir 2e cautère). Vérifier si fluoroscopie (flanelle en transverse, bras le long du corps). Si bilatéral : plateau appendice hernie (S: 53-8C), doubler silastics et sutures. Si angiographie : 2e table de base.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Du nombril aux genoux. Badigeon Chlorhexidine 2% + alcool 70% rosée (S: 27-T5+6).</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Lingerie / Champs</div>
+                  <ul class="ks-list">
+                    <li>Custom Pack Endartériectomie (S: 53-3A)</li>
+                    <li>Universal pack 4 champs (S: 53-4E)</li>
+                    <li>Cautère avec aspirateur de fumée (S: 53-B3)</li>
+                    <li>Blouse XXL x1 (S: 53-5D)</li>
+                    <li>Serviettes vertes x2 (S: 53-Y3+4)</li>
+                    <li>Plateau Endoprothèse AAA (S: 43-29D)</li>
+                    <li>Drape sheet doubler Mayo (S: 53-4E)</li>
+                    <li>Poignées pour lumières (S: 53-A6) · Bassin simple (S: 26)</li>
+                    <li>Pinces de Gérald (S: 40-1B)</li>
+                    <li>Écarteur Bras de Martin (S: 43-43E)</li>
+                    <li>Champ Optima Bras de Martin (S: 53-4D)</li>
+                    <li>PRN : Écarteurs Langenbeck (S: 40-1D)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Accessoires</div>
+                  <ul class="ks-list">
+                    <li>Hémoclips Bleu x1 (S: 53-LL5) · Hémoclips Jaune x1 (S: 53-LL4)</li>
+                    <li>Embout veineux x1 (S: 53-S1)</li>
+                    <li>Caoutchoucs Fogarty A0C01 (S: 53-W5)</li>
+                    <li>Bag decanter x2 (S: 26-AA1)</li>
+                    <li>Lacet silastics mini x2 · maxi x1 (S: 26-Z3)</li>
+                    <li>Crayon marqueur (S: 26-AA3)</li>
+                    <li>Agrafeuse x1 (S: 26-Y7)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pontage fémoro-poplité -->
+          <div class="proc-item" data-kcat="pontage">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">03</div>
+              <h3>Pontage fémoro-poplité</h3>
+              <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal, bras sur planchettes, flanelle en transverse. Infirmière du même côté (sauf pour tibiale antérieure ou pédieuse). Chirurgien assis pour le prélèvement de la veine saphène. Rallonge de carbone aux pieds.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Du nombril à la cheville. Vérifier avec le chirurgien si les deux membres inférieurs doivent être badigeonnés. Badigeon Chlorhexidine 2% + alcool 70% rosée (S: 27-T1+2).</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments principaux</div>
+                  <ul class="ks-list">
+                    <li>Custom pack Fémoro-poplité (S: 53-3A)</li>
+                    <li>Plateau Poplité-tibial (S: 43-29C)</li>
+                    <li>Pinces de Gérald (S: 40-1B)</li>
+                    <li>Drape sheet doubler table Mayo (S: 53-4E)</li>
+                    <li>Poignées pour lumières (S: 53-A6)</li>
+                    <li>Bas large x1 ou 2 (S: 26-T6)</li>
+                    <li>Coban 4 po x1 ou 2 (S: 26-I3)</li>
+                    <li>Écarteur Henley (S: 43-29C)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">PRN (selon indication)</div>
+                  <ul class="ks-list">
+                    <li>Écarteur Bras de Martin (S: 43-43E)</li>
+                    <li>Valvulotomes (S: 43-29C)</li>
+                    <li>Valvulotome LeMaître (S: 53-W1)</li>
+                    <li>Champ Optima Bras de Martin (S: 53-4D)</li>
+                    <li>Plateau appendice hernie ciseau + hémostat (S: 53-8C)</li>
+                    <li>Tunnellisateurs 12'' ou 20'' (S: 40-3C)</li>
+                    <li>Chemises tunnellisateurs orange/vert (S: 40-3C)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Accessoires</div>
+                  <ul class="ks-list">
+                    <li>Hémoclips Bleu x1 (S: 53-LL5) · Hémoclips Jaune x2 (S: 53-LL4)</li>
+                    <li>Surgicel x1 (S: 53-LL7)</li>
+                    <li>Embout veineux x1 (S: 53-S1)</li>
+                    <li>Caoutchoucs Fogarty A0C01 (S: 53-W5)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pontage fémoro-fémoral -->
+          <div class="proc-item" data-kcat="pontage">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">04</div>
+              <h3>Pontage fémoro-fémoral croisé</h3>
+              <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal, bras en croix. Infirmière du côté opposé à la chirurgie. Vérifier si assistant (2e cautère). Vérifier si fluoroscopie (flanelle en transverse, bras le long du corps). Si angiographie : rallonge de carbone et 2e table de base.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Du nombril aux genoux. Badigeon Chlorhexidine 2% + alcool 70% rosée (S: 27-T5+6).</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Universal Pack (S: 53-4E)</li>
+                    <li>Plateau Endoprothèse AAA (S: 43-29D)</li>
+                    <li>Pinces de Gérald (S: 40-1B)</li>
+                    <li>Drape (S: 53-4E) · Champ Mayo (S: 53-4C)</li>
+                    <li>Poignées pour lumières (S: 53-A6) · Raytec x1 (S: 53-C1+2)</li>
+                    <li>PRN : Écarteurs Langenbeck (S: 40-1D)</li>
+                    <li>PRN : Écarteur Bras de Martin (S: 43-43E)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Accessoires</div>
+                  <ul class="ks-list">
+                    <li>Seringue 10ml x1 (S: 26-L2)</li>
+                    <li>Hémoclips Bleu x2 (S: 53-LL5) · Hémoclips Jaune x2 (S: 53-LL4)</li>
+                    <li>Boîte rouge x1 (S: 26-Y4+5)</li>
+                    <li>Aiguille 21 x1 (S: 26-M4)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pontage axillo-bifémoral -->
+          <div class="proc-item" data-kcat="pontage">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">05</div>
+              <h3>Pontage axillo-bifémoral</h3>
+              <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal. Rouleau sous les épaules, beigne sous la tête. Rouleau sur la longueur sous le thorax du côté opéré. Les deux bras sur les planchettes. Coussin en gel sous les genoux et sous le patient le long du corps. Cautère du côté opposé au côté opéré.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Du menton à mi-cuisses (deux aines). Badigeon Chlorhexidine rosée.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Universal Pack · Bassin simple · Blouse XXL x1, L x1</li>
+                    <li>Cautère avec aspirateur de fumée · Succion caoutchouc · Mayo</li>
+                    <li>Raytec x2 · Mesure</li>
+                    <li>Plateau Poplité-tibial (S: 53)</li>
+                    <li>Écarteur Henley (S: 53) PRN</li>
+                    <li>Plateau Pince de Gérald (S: 46)</li>
+                    <li>Poignées pour lumières</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Spéciaux</div>
+                  <ul class="ks-list">
+                    <li>Grand Vi-Drape · Boîte rouge · Seringue 10ml · Bag decanter</li>
+                    <li>Aiguille 21 · Lacets Silastic mini x2, maxi x1</li>
+                    <li>Protecteurs · Caoutchoucs Fogarty taille 1 (A1C01)</li>
+                    <li>Peanuts · Barriers x4</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pontage ilio-fémoral -->
+          <div class="proc-item" data-kcat="pontage">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">06</div>
+              <h3>Pontage ilio-fémoral</h3>
+              <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position et table</div>
+                  <p>Table Mayfield — table inversée (tête aux pieds) avec rallonge au pied. L'infirmière se place du côté opposé au côté opéré. Décubitus dorsal, bras sur les planchettes. FAIRE UN COMPTE COMPLET.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Mi-seins aux genoux. Badigeon Chlorhexidine rosée.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Custom Pack Aorte Abdominale · Cautère avec aspirateur de fumée</li>
+                    <li>Blouse XXL x1 · Serviette · Bassin simple · Raytec x2</li>
+                    <li>Mesure 500ml (S: 46)</li>
+                    <li>Plateau Vasculaire Majeure (S: 53)</li>
+                    <li>Plateau Instruments Longs Vasculaire (S: 53)</li>
+                    <li>Écarteur Omni-Tract 2 plateaux (S: 53)</li>
+                    <li>Plateau Endoprothèse AAA (S: 53) pour : Écarteurs Weitlaner, porte-aiguille autostatique, bull-dog métalliques, pinces dissection manches noirs, pinces Hémoclips, 2 pinces Fogarty angulées</li>
+                    <li>Pinces De Bakey droites (S: 46)</li>
+                    <li>Poignées pour lumières · Drain Penrose ¼'' PRN</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pontage carotido-sous-clavier -->
+          <div class="proc-item" data-kcat="pontage">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">07</div>
+              <h3>Pontage carotido-sous-clavier</h3>
+              <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal, bras le long du corps, flanelle en transverse. Infirmière du côté opposé. Barre en L à la tête. Têtière avec rail. Rouleau sous les épaules. Coussin gel sous les genoux. Gants : 7½ Protegrity.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Du lobe d'oreille et joue jusqu'au mamelon côté opéré, du menton jusqu'au mamelon côté opposé. Badigeon Chlorhexidine 2% + alcool 70% clair (incolore).</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Universal Pack · Cautère avec aspirateur de fumée</li>
+                    <li>Blouse XXL x1 · Serviettes vertes x2 · Bassin simple · Succion caoutchouc</li>
+                    <li>Plateau Endoprothèse AAA · Boîte Rouge (S: 27)</li>
+                    <li>Pinces de Gérald (S: 40) · Tapis magnétique (S: 53)</li>
+                    <li>Poignées pour lumières · Écarteur Bras de Martin</li>
+                    <li>Champ Optima Bras de Martin · V-drape 1050 (S: 27)</li>
+                    <li>PRN : Écarteurs Langenbeck, Écarteur Henley, Pince bipolaire vasculaire</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Accessoires</div>
+                  <ul class="ks-list">
+                    <li>Seringue 10ml x1, 3ml x1 · Aiguille 21 x2</li>
+                    <li>Hémoclips Bleu x2 (S: 53) · Hémoclips Jaune x2 (S: 53)</li>
+                    <li>Boîte rouge x1 · Embout veineux x1 (S: 56)</li>
+                    <li>Caoutchoucs Fogarty A0C01 (S: 56) · Peanut cardiaque (S: 56)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pontage huméro-huméral / embolectomie MS -->
+          <div class="proc-item" data-kcat="pontage">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">08</div>
+              <h3>Pontage huméro-huméral / Embolectomie humérale</h3>
+              <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span><span class="ptag ptag-urgence">Urgence</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Table mayo + Table à main noire (S: 46). Décubitus dorsal, tête sur beigne. Patient le plus près possible du bord de la table. Coussin en gel sous les genoux et sous le patient le long du corps. Gants : 7½ Protégrity.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Bras au complet, épaule jusqu'au menton, ¾ du côté opposé. Badigeon Chlorhexidine 2% incolore + alcool 70%.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Universal Split Pack · Mayo · Blouse XXL x1, L x1</li>
+                    <li>Bassin simple · Succion caoutchouc · Cautère avec aspirateur de fumée</li>
+                    <li>Raytec x2 · Mesure</li>
+                    <li>Plateau Poplité-tibial (S: 53)</li>
+                    <li>Plateau Pince de Gérald (S: 46) · Poignées pour lumières</li>
+                    <li>Bras de Martin PRN (S: 53)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Spéciaux</div>
+                  <ul class="ks-list">
+                    <li>Seringue 10ml · Barrier x2 · Aiguille 21 · Poire asepto</li>
+                    <li>Protecteurs · Lacets silastic mini</li>
+                    <li>Queue de rat jaune · Hémoclip P et M</li>
+                    <li>Boîte rouge · Bag Décanter</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RAAA pontage aorto-aortique -->
+          <div class="proc-item" data-kcat="pontage">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">09</div>
+              <h3>Résection anévrisme aorte abdominale — Pontage aorto-aortique</h3>
+              <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal, bras sur planchettes, coussin en gel sous le patient le long du corps. Coussin en gel sous les genoux. Infirmière à droite du patient. Chirurgien à gauche du patient.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Équipements</div>
+                  <p>Table Mayfield, table de base, bassin haut, table Maquet avec flex. 2 cautères si assistant.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Mi-seins aux genoux. Badigeon Chlorhexidine 70% rosée (S: 27-T5+6).</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Custom Pack Aorte Abdominale (S: 53-3A)</li>
+                    <li>Cautère avec aspirateur de fumée (S: 53-B3)</li>
+                    <li>Blouse XXL x1 (S: 53-5D) · Serviettes vertes x2 (S: 53-Y3+4)</li>
+                    <li>Bassin simple (S: 26) · Compresse Gallon x2 (S: 53-C3+4)</li>
+                    <li>Mesure 1000ml (S: 53-Y5)</li>
+                    <li>Vasculaire Majeure (S: 43-29E)</li>
+                    <li>Instruments Longs Vasculaire (S: 43-29E)</li>
+                    <li>Écarteur Omni-tract 2 plateaux (S: 43-29D)</li>
+                    <li>Curettes (S: 43-32A) · Poignées pour lumières (S: 53-A6)</li>
+                    <li>PRN : Lames obèses Omni-tract (S: 53-8E) · V-Drape grand (S: 26)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Accessoires</div>
+                  <ul class="ks-list">
+                    <li>Hémoclips Bleu x2, Vert x1, Orange x1 (S: 53-LL5)</li>
+                    <li>Caoutchoucs Fogarty Soft 61 (S: 53-W5)</li>
+                    <li>Tubulure auto-transfuseur x1 (S: 56-L6)</li>
+                    <li>Aiguille 21 x1 (S: 26-M4)</li>
+                    <li>Électrode 4 po régulière x1 (S: 53-B4)</li>
+                    <li>Ruban ombilical x1 (S: 53-H7)</li>
+                    <li>Seringue 10ml x1 (S: 26-L2)</li>
+                    <li>Lacet silastics maxi x1 (S: 26-Z3)</li>
+                    <li>Bag decanter x1 (S: 26-AA1)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RAAA aorto-bi-fémoral -->
+          <div class="proc-item" data-kcat="pontage">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">10</div>
+              <h3>Résection anévrisme aorte abdominale — Pontage aorto-bi-fémoral</h3>
+              <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal, bras sur planchettes, coussin en gel sous le patient le long du corps. Infirmière à droite du patient. Chirurgien à gauche du patient. 2 cautères si assistant.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Mi-seins aux genoux. Badigeon Chlorhexidine 70% rosée (S: 27-T5+6).</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments supplémentaires vs tube aortique</div>
+                  <ul class="ks-list">
+                    <li>Aorto-bi-fémoral (S: 43-29C) en plus de la vasculaire majeure</li>
+                    <li>Hémoclips Jaune x2 (S: 53) en plus des autres couleurs</li>
+                    <li>Cordon ombilical x2 (S: 53-H7)</li>
+                    <li>Caoutchoucs Fogarty Soft 61 + A0C01 (S: 53-W5)</li>
+                    <li>Embout veineux x1 (S: 53-S1)</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="pearl"><h4>⚡ Note</h4><ul><li>Même installation que le pontage aorto-aortique — ajouter le plateau aorto-bi-fémoral et doubler les hémoclips</li></ul></div>
+            </div>
+          </div>
+
+          <!-- RAAA aorto-bi-iliaque -->
+          <div class="proc-item" data-kcat="pontage">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">11</div>
+              <h3>Résection anévrisme aorte abdominale — Pontage aorto-bi-iliaque</h3>
+              <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal, bras sur planchettes, coussin en gel sous le patient le long du corps et sous les genoux. Infirmière à droite du patient. Chirurgien à gauche du patient.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Mi-seins aux genoux. Badigeon Chlorhexidine 70% rosée (S: 27-T5+6).</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments / Accessoires</div>
+                  <ul class="ks-list">
+                    <li>Même installation que pontage aorto-aortique</li>
+                    <li>Seringue 10ml x1 (S: 26-L2)</li>
+                    <li>Hémoclips Bleu x2, Vert x1, Orange x1 (S: 53-LL5)</li>
+                    <li>PRN : Lames obèses Omni-tract (S: 53-8E) · V-Drape grand (S: 26)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RAAA approche rétropéritonéale -->
+          <div class="proc-item" data-kcat="pontage">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">12</div>
+              <h3>RAAA / PABI — Approche rétropéritonéale</h3>
+              <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus latéral droit, bras sur planchettes, coussin en gel sous le patient le long du corps. Infirmière à droite du patient. Chirurgien à gauche du patient. Gants : 7½ Protegrity.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Équipements spécifiques</div>
+                  <p>Table Mayfield, table de base, bassin haut, table Maquet avec flex. Matelas à billes. Têtière avec rails à la tête (aligné avec la table). Support thoracique pour bras. Coussin en U entre les jambes. Coussin gel pour aisselles.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>De la nuque jusqu'à mi-cuisse. Badigeon Chlorhexidine 70% rosée.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments supplémentaires</div>
+                  <ul class="ks-list">
+                    <li>Costotome de Berthume (S. 33, thoracique)</li>
+                    <li>Champ magnétique (S: 53)</li>
+                    <li>Drape sheet (renforcer tablette) (S: 53)</li>
+                    <li>Bandes bleues x2 pour coller drape sheet sur champs de tête</li>
+                    <li>PRN : Lames obèses Omni-tract · Écarteurs aorte thoracique (Costotome, Tuffier, Fino Chietto) · Ortho Plastie (Cobb/dépériosteur)</li>
+                    <li>PRN : Aorto-bi-fémoral (S: 53)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Accessoires</div>
+                  <ul class="ks-list">
+                    <li>Hémoclips Bleu x2, Vert x1, Orange x1 (S: 53)</li>
+                    <li>Cordon ombilical x1 (S: 53)</li>
+                    <li>Caoutchoucs Fogarty Soft 61 x1 (S: 56)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RAAT thoracotomie -->
+          <div class="proc-item" data-kcat="pontage">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">13</div>
+              <h3>Résection anévrisme aorte thoracique — Approche thoracotomie</h3>
+              <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span><span class="ptag ptag-conjoint">Thoracique</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus latéral droit. Flex entre appendice xyphoïde et ombilic. Coussin en gel sous le patient le long du corps. Infirmière à droite du patient. Chirurgien à gauche du patient. Gants : 7½ Protegrity.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Équipements</div>
+                  <p>Table Mayfield, table de base, bassin haut, table Maquet avec flex. Matelas à billes. Têtière avec rails à la tête. Support thoracique pour bras. Coussin en U entre les jambes. Coussin gel pour aisselles.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>De la nuque jusqu'à mi-cuisse. Badigeon Chlorhexidine 70% rosée.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Custom Pack Aorte Abdominale (S: 53) — base commune</li>
+                    <li>Aorto-bi-fémoral (S: 53)</li>
+                    <li>Instruments Longs Vasculaire (S: 53)</li>
+                    <li>Écarteur Omni-tract 2 plateaux (S: 53)</li>
+                    <li>Champ magnétique (S: 53) · Costotome de Berthume (S. 33, thoracique)</li>
+                    <li>Curettes (S: 40) · Poignées pour lumières</li>
+                    <li>Drape sheet renforcer tablette · Bandes bleues x2</li>
+                    <li>PRN : Lames obèses Omni-tract · Écarteurs aorte thoracique · Ortho Plastie Cobb/dépériosteur</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Accessoires</div>
+                  <ul class="ks-list">
+                    <li>Hémoclips Bleu x2, Vert x1 (S: 53)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RAAT avec réimplantation rénale -->
+          <div class="proc-item" data-kcat="pontage">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">14</div>
+              <h3>Résection anévrisme aorte thoracique — Avec réimplantation artère rénale</h3>
+              <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span><span class="ptag ptag-conjoint">Thoraco-abdo</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus latéral droit environ 60 degrés. Flex entre appendice xyphoïde et ombilic. Coussin en gel sous le patient. Infirmière à droite du patient. Chirurgien à gauche. Gants : 7½ Protegrity.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Équipements spécifiques</div>
+                  <p>Table Mayfield, table Maquet avec flex. Matelas à billes. Têtière avec rails. Support thoracique pour bras. Coussin en U entre les jambes. Coussin gel pour aisselles. Tablette à la tête pour instruments. S'assurer que les rails de la table d'opération soient dégagés.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>De la nuque jusqu'à mi-cuisses, épaule incluse. En avant jusqu'en dessous des seins. En arrière jusqu'à la table d'opération. Badigeon Chlorhexidine 70% rosée.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Custom Pack Aorte Abdominale (S: 53)</li>
+                    <li>Vasculaire Majeure + Instruments Longs Vasculaire (S: 53)</li>
+                    <li>Écarteur Omni-tract 2 plateaux (S: 53)</li>
+                    <li>Champ magnétique (S: 53) · Costotome de Berthume (S. 33)</li>
+                    <li>Drape sheet (renforcer tablette) · Bandes bleues x2</li>
+                    <li>PRN : Lames obèses, Écarteurs aorte thoracique (Costotome, Tuffier, Fino Chietto), Ortho Plastie Cobb/dépériosteur</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Accessoires</div>
+                  <ul class="ks-list">
+                    <li>Hémoclips Bleu x2, Vert x1, Orange x1 (S: 53)</li>
+                    <li>Cordon ombilical x2 (S: 53)</li>
+                    <li>Caoutchoucs Fogarty Soft 61 x1 (S: 56)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Embolectomie fémorale -->
+          <div class="proc-item" data-kcat="pontage">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">15</div>
+              <h3>Embolectomie fémorale</h3>
+              <div class="proc-tags"><span class="ptag ptag-urgence">Urgence</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal, bras sur les planchettes. Vérifier si fluoroscopie (flanelle en transverse, bras le long du corps). Vérifier si rallonge de carbone nécessaire.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Du nombril aux genoux. Badigeon Chlorhexidine 2% + alcool 70% rosée (S: 27-T5+6).</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Lingerie</div>
+                  <ul class="ks-list">
+                    <li>Universal pack 4 champs (S: 53-4E)</li>
+                    <li>Blouse XXL x1, XL ou Large x1 (S: 53-5D)</li>
+                    <li>Bassin simple (S: 26) · Tubulure succion caoutchouc (S: 53-A2+3)</li>
+                    <li>Cautère avec aspirateur de fumée (S: 53-B3)</li>
+                    <li>Raytec x1 (S: 53-C1+2) · Serviettes vertes x1 (S: 53-Y3+4)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Plateau Poplité-tibial (S: 43-29C)</li>
+                    <li>Champ Optima si Bras de Martin (S: 53-4D)</li>
+                    <li>Écarteur Bras de Martin (S: 43-43E)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Sutures</div>
+                  <ul class="ks-list">
+                    <li>Surgilon 3-0 1918-41 x1 (S: 53-E5)</li>
+                    <li>Polysorb 2.0 811 x2 (S: 53-D3)</li>
+                    <li>Prolène 5-0 8725 x2 (S: 53-F4)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Spéciaux</div>
+                  <ul class="ks-list">
+                    <li>Hémoclips Bleu x1 (S: 53-LL5)</li>
+                    <li>Poire Asepto (S: 26-M1+2)</li>
+                    <li>Seringue 10ml (S: 26-L2) · Seringue 3ml (S: 26-K8)</li>
+                    <li>Aiguille 21 x2 (S: 26-M4)</li>
+                    <li>Lacet silastics maxi x1 (S: 26-Z3)</li>
+                    <li>Caoutchoucs pour pince Fogarty A0C01 (S: 53-W5)</li>
+                    <li>Embout veineux x1 (S: 53-S1) · Boîte rouge (S: 26-Y4+5)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Embolectomie fémoro-poplitée -->
+          <div class="proc-item" data-kcat="pontage">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">16</div>
+              <h3>Embolectomie fémoro-poplitée</h3>
+              <div class="proc-tags"><span class="ptag ptag-urgence">Urgence</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal, bras sur les planchettes. Coussin en gel sous le patient le long du corps et sous les genoux. Nouveau bras en L au niveau de la taille si besoin.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Du nombril au bout des orteils. Jambe appuyée sur support d'ortho. Badigeon Chlorhexidine 2% + alcool 70% incolore.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Custom pack Fémoro-poplité (S: 53-3A)</li>
+                    <li>Plateau Poplité-tibial (S: 43-29C)</li>
+                    <li>Écarteur de Henley (S: 43-29C)</li>
+                    <li>PRN : Écarteur Bras de Martin (S: 43-43E)</li>
+                    <li>Blouse XXL x1 (S: 53-5E) · Bassin simple (S: 26)</li>
+                    <li>Cautère avec aspirateur de fumée (S: 53-B3)</li>
+                    <li>Serviettes vertes (S: 53-Y3+4) · Coban 4 po (S: 26-I3)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Spéciaux</div>
+                  <ul class="ks-list">
+                    <li>Embout veineux (S: 53-S1) · Bas large (S: 26-T6)</li>
+                    <li>Bag decanter (S: 26-AA1) · Drain Penrose ¼'' PRN</li>
+                    <li>Hémoclips jaune (S: 53-LL4) · Hémoclips bleu (S: 53-LL5)</li>
+                    <li>Cathéter Fogarty 3, 4 ou 5 selon demande (S: 53-Mur1)</li>
+                    <li>Poignées de lumière (S: 53-A6) · Crayon marqueur (S: 26-AA3)</li>
+                    <li>Caoutchoucs pour pinces Fogarty A0C01 (S: 53-W5)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Sutures</div>
+                  <ul class="ks-list">
+                    <li>Surgilon 3-0 à la main</li>
+                    <li>Polysorb 2-0 CL-811 x2</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Endoprothèse aortique EVAR salle 26 -->
+          <div class="proc-item" data-kcat="endovasc">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">17</div>
+              <h3>Endoprothèse aortique (EVAR / TEVAR) — Salle 26 angio</h3>
+              <div class="proc-tags"><span class="ptag ptag-endovasc">Endovasculaire</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="pearl" style="margin-bottom:16px;"><h4>⚠ Attention particulière</h4><ul>
+                <li>Aorte abdominale OU aorte thoracique — vérifier avec le chirurgien</li>
+                <li>Toujours avoir une salle d'opération prête pour résection de AAA ou AAT</li>
+                <li>Équipe infirmières + anesthésie descendent à la salle 26, 1er étage, en radiologie</li>
+                <li>Greffons au 5e étage, commande aux achats ou apportés par le représentant</li>
+              </ul></div>
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Ce qu'on descend à la salle 26</div>
+                  <ul class="ks-list">
+                    <li>Appareil de cautère (si possible : pas celui de la salle préparée)</li>
+                    <li>Table de base (pas celle de la salle 30)</li>
+                    <li>Doppler (S: 30)</li>
+                    <li>Support à bassin (pas celui de la salle 30)</li>
+                    <li>Tabliers pour rayons X pour tout le personnel</li>
+                    <li>Panier gris x2 pour endoprothèse (S: 53)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal. Bras le long du corps en hamac avec une flanelle. Gants : 7½ Protexis.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Du nombril aux genoux. Badigeon Chlorhexidine rosée.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Lingerie</div>
+                  <ul class="ks-list">
+                    <li>Blouse XXL x2, XL x1</li>
+                    <li>Couvre-table x1 · Champ ¾ pour doubler la table</li>
+                    <li>Succion caoutchouc PRN · Bassin simple · Raytec x2</li>
+                    <li>Cautère avec aspirateur de fumée PRN</li>
+                    <li>Serviettes vertes x1 · Bande bleue x1 · Barrier x3 PRN</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Plateau angio percutané (S: 53) — si non disponible : plateau instruments chirurgie locale ou base scopie</li>
+                    <li>Plateau Endoprothèse pour AAA (S: 53) PRN</li>
+                    <li>Pinces de Gérald (S: 30) PRN · Succion Blair (S: 30) PRN</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Médicaments / Spéciaux</div>
+                  <ul class="ks-list">
+                    <li>Héparine 2 500 unités (2.5ml) dans 250ml NaCl PRN</li>
+                    <li>Monocryl 4-0 Y823 PRN · Lame 10-11 PRN si ouverture en salle d'angio</li>
+                    <li>Protecteurs instruments</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Angioplastie / stent percutané salle 40 -->
+          <div class="proc-item" data-kcat="endovasc">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">18</div>
+              <h3>Angioplastie et/ou dilatation percutanée ± endoprothèse (stent) — Salle 40</h3>
+              <div class="proc-tags"><span class="ptag ptag-endovasc">Endovasculaire</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="pearl" style="margin-bottom:16px;"><h4>⚠ Notes importantes</h4><ul>
+                <li>Dr Febrer se place face à la fluoroscopie</li>
+                <li>Machine d'écho (petite noire ou beige) dans la salle</li>
+                <li>Pour positionnement table/fluoroscopie/machine écho : se référer au chirurgien</li>
+                <li>Avancer le chariot angio vasculaire bleu du 56 le plus proche de la salle possible</li>
+                <li>Tablier de plomb obligatoire pour tout le personnel</li>
+                <li>Identifier une feuille Notes d'évolution au nom du patient — y coller les étiquettes des ballons et endoprothèses</li>
+              </ul></div>
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal avec flanelle en transverse. Bras le long du corps avec flanelle (sous le patient, comme au cœur). Abdomen dégagé. Rallonge de carbone selon le chirurgien.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>De l'ombilic aux genoux. Badigeon Chlorhexidine 2% avec alcool 70% rosée (27-T3+4). RASAGE des deux aines.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Lingerie</div>
+                  <ul class="ks-list">
+                    <li>Custom pack Angio (S: 43-29A)</li>
+                    <li>Bassin simple (S: 26)</li>
+                    <li>Blouse XXL x1 et L x1 (S: 53-5C et 5D)</li>
+                    <li>Raytec x1 (S: 53-C1+2) · Serviette verte x1 (S: 53-Y3+4)</li>
+                    <li>Champ XL x1 (S: 53-4C) · Bandes bleues x1 (S: 53-4C)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Plateau Angio percutané (S: 40-3B) — si non disponible : plateau scopie de base ou plastie</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Spéciaux</div>
+                  <ul class="ks-list">
+                    <li>Poignées pour lumières (S: 53-A6)</li>
+                    <li>Aiguille 21G (S: 26-M4)</li>
+                    <li>Champ écho stérile (S: 26-AA6) · Gel stérile pour écho (S: 26-AA4)</li>
+                    <li>Crayon-règle (S: 26-AA3)</li>
+                    <li>Champs pour fluoroscopie MTI 4951-20 (S: 26-AA8)</li>
+                    <li>Boîte rouge (S: 26-Y4+5) · Bag decanter x2 (S: 26-AA1)</li>
+                    <li>Seringue 20ml (S: 26-L4)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Médicaments</div>
+                  <ul class="ks-list">
+                    <li>NaCl 0.9% 1000ml (S: 27-M1) avec 5 000 unités Héparine (S: 56-B9)</li>
+                    <li>NaCl 0.9% 250ml (S: 27-N2)</li>
+                    <li>Xylocaïne 2% avec épinéphrine 20ml (S: 56-C16)</li>
+                    <li>Visipaque 320mg/ml — en avoir 2 dans le réchaud (chariot angio bleu) (S: 53-K3) — si non disponible : Isovue 370mg/ml salle 53</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Pansement</div>
+                  <ul class="ks-list">
+                    <li>Stéri-strips (S: 26-I4)</li>
+                    <li>Pansement Leukomed petit (S: 26-H2)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Technique (notes instrumentiste)</div>
+                  <ul class="ks-list">
+                    <li>Ponction avec machine d'écho — mettre champ écho stérile</li>
+                    <li>Dans le bac blanc : 1000ml NaCl avec 5 000 unités Héparine pour irriguer les guides, introducteurs et ballons</li>
+                    <li>Dans un petit bol blanc : 250ml NaCl</li>
+                    <li>Identifier un bol bleu pour le contraste</li>
+                    <li>Deuxième bol bleu pour les déchets (moitié-moitié)</li>
+                    <li>Mouiller 2 serviettes pour les déposer sur les guides afin d'éviter la contamination</li>
+                    <li>Faire le vide d'air avec du NaCl avant d'utiliser le matériel</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Amputation -->
+          <div class="proc-item" data-kcat="amputation">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">19</div>
+              <h3>Amputation (AK / BK)</h3>
+              <div class="proc-tags"><span class="ptag ptag-amputation">Amputation</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal, bras sur les planchettes.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Cautère</div>
+                  <p>Cautère réglé à 40. Cautère à la tête. Instruments sur la table de base.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Chlorhexidine (S: 27-T5+6). Badigeon à la chlorhexidine rosée sur support d'ortho (S: 27-T3+4).</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Lingerie</div>
+                  <ul class="ks-list">
+                    <li>Custom Split Pack (S: 49-19A)</li>
+                    <li>Blouse XXL x1 (S: 53-5D)</li>
+                    <li>Bassin simple (S: 26)</li>
+                    <li>Cautère avec aspirateur de fumée (S: 53-B3)</li>
+                    <li>Compresse Gallon x1 (S: 53-C3+4)</li>
+                    <li>Coban 4 po (S: 26-I3)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Plateau d'Amputation (S: 49-26C)</li>
+                    <li>Moteur oscillant à batterie (S: 49-25B)</li>
+                    <li>Poignées pour lumières (S: 53-A6)</li>
+                    <li>NB : Vérifier la liste dans le Plateau d'Amputation</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Spéciaux</div>
+                  <ul class="ks-list">
+                    <li>Bas large (S: 26-T6)</li>
+                    <li>Lame scie oscillante 5071-553 (S: 26-R5)</li>
+                    <li>Péroxyde (S: 56-A03)</li>
+                    <li>Crayon marqueur (S: 26-AA3)</li>
+                    <li>Drain Penrose ½'' PRN (S: 26-BB5)</li>
+                    <li>Seringue 10ml (S: 26-L2) · Aiguille 19x1 (S: 26-M4) · Aiguille 22½x1 (S: 26-M5)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Sutures</div>
+                  <ul class="ks-list">
+                    <li>Polysorb 2-0 L-13 x1 (S: 53-D3)</li>
+                    <li>Polysorb 2-0 CL-811 x2 (S: 53-D3)</li>
+                    <li>Monosof 3-0 SN-663 x2 + PRN (S: 53-E1)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Médicament</div>
+                  <ul class="ks-list">
+                    <li>Marcaine 0.25% sans épinéphrine 10ml (S: 56-A6)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Amputation trans-métatarsienne -->
+          <div class="proc-item" data-kcat="amputation">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">20</div>
+              <h3>Amputation trans-métatarsienne (orteil)</h3>
+              <div class="proc-tags"><span class="ptag ptag-amputation">Amputation</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal, bras sur les planchettes. Talon appuyé sur support d'ortho avant et pendant l'opération. Gants : 7½ Protegrity.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Chlorhexidine. Badigeon Chlorhexidine 2% + alcool 70% incolore.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Lingerie</div>
+                  <ul class="ks-list">
+                    <li>Universal Split Pack (S: 53) · Bassin simple · Blouse XXL x1, L x1</li>
+                    <li>Gallon x1 · Toile en U · Cautère avec aspirateur de fumée</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Plastie Ortho (S: 49)</li>
+                    <li>Rongeur moyen Perroquet (S: 37-39-49) PRN</li>
+                    <li>Poignées pour lumières (S: 30)</li>
+                    <li>Liston moyenne PRN (S: 30) · Curettes PRN (S: 30)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Spéciaux</div>
+                  <ul class="ks-list">
+                    <li>Barrier x2 · Boîte rouge · Crayon marqueur</li>
+                    <li>Lames 10 et 15</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Sutures et pansement</div>
+                  <ul class="ks-list">
+                    <li>Monosof 3-0 SN-663 x1</li>
+                    <li>Pansement : Compresses fluffées, Surgipad, Kling 3 ou 4''</li>
+                    <li>Drapage : 1 toile en U, 1 split sheet, 1 top sheet</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Biopsie artère temporale -->
+          <div class="proc-item" data-kcat="autre">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">21</div>
+              <h3>Biopsie de l'artère temporale</h3>
+              <div class="proc-tags"><span class="ptag ptag-autre" style="color:#94A3B8;border-color:rgba(148,163,184,.35);background:rgba(148,163,184,.08);">Autre</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal, bras côté opéré le long du corps en hamac. Utiliser table Mayo pour faire une tente pour le patient. Mettre fiole de Bicarbonate dans le réchaud avant l'infiltration. Cautère : Coagulation 20, Cut 20.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Badigeon Chlorhexidine 0.05% aqueux.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Lingerie</div>
+                  <ul class="ks-list">
+                    <li>Pack pédiatrique · Plat carré PRN</li>
+                    <li>Blouse XXL x1</li>
+                    <li>Cautère avec aspirateur de fumée</li>
+                    <li>Drapage : 3 champs bleus + champ pédiatrique</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Base de Plastie — vérifier avec chef d'équipe (S: 43)</li>
+                    <li>Poignées pour lumières · Weitlaner petit x1 PRN</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Sutures</div>
+                  <ul class="ks-list">
+                    <li>Surgilon 4.0 libre</li>
+                    <li>Surgilon 3.0 (1951-41) x1 PRN</li>
+                    <li>Vicryl Rapide 4.0 (VR-845) x1</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Médicaments et spéciaux</div>
+                  <ul class="ks-list">
+                    <li>Xylocaïne 1% ou 2% avec épinéphrine 10ml</li>
+                    <li>Bicarbonate de sodium 8.4% 1ml</li>
+                    <li>Seringue 10ml · Aiguille 21 et 25 7/8</li>
+                    <li>Doppler PRN</li>
+                    <li>Pansement : Op-site en spray</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Fistule artério-veineuse -->
+          <div class="proc-item" data-kcat="autre">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">22</div>
+              <h3>Création de fistule artério-veineuse</h3>
+              <div class="proc-tags"><span class="ptag ptag-autre" style="color:#94A3B8;border-color:rgba(148,163,184,.35);background:rgba(148,163,184,.08);">Autre</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal, oreiller sous les genoux, garrot du côté opéré. Table à main noire, appareil garrot.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Bras au complet. Asepsie et badigeon Chlorhexidine 70% incolore (S: 27-T1+2).</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments principaux</div>
+                  <ul class="ks-list">
+                    <li>Ensemble Main (S: 49-18A)</li>
+                    <li>Blouse XXL, L (S: 53-5C, 5D)</li>
+                    <li>Succion caoutchouc (S: 53-A2+3)</li>
+                    <li>Cautère avec aspirateur de fumée (S: S53-B3)</li>
+                    <li>Plateau Plastie Vasculaire (S: 43-29D)</li>
+                    <li>Poignées pour lumières x1 (S: 53-A6)</li>
+                    <li>Bassin simple (S: 26)</li>
+                    <li>Pince de Gérald (S: 40-1B)</li>
+                    <li>PRN : BB duck (S: 40-1D) · Si greffon : Passe-greffon Impra (S: 40-3B) · Champ Mayo (S: 53-4C)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Accessoires</div>
+                  <ul class="ks-list">
+                    <li>Hémoclips Jaune x1 (S: 53-LL4) · Hémoclips Bleu x1 (S: 53-LL5)</li>
+                    <li>Protecteurs instruments (S: 53-W4)</li>
+                    <li>Seringue 10ml x1 (S: 26-L2) · Aiguille 21 x1 (S: 26-M4)</li>
+                    <li>Lacets silastics mini x1 (S: 26-Z3)</li>
+                    <li>Jelco bleu G22 x1 (S: 26-M8)</li>
+                    <li>Bag decanter x1 (S: 26-AA1)</li>
+                    <li>Bande de Martin stérile 4 po (S: 26-U1)</li>
+                    <li>Stéri-strips petits (S: 26-I4)</li>
+                    <li>V-Lance 1.3mm (S: 53-L4)</li>
+                    <li>PRN : Sapin (S: 26-Z2)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stripping varices -->
+          <div class="proc-item" data-kcat="autre">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">23</div>
+              <h3>Saphénectomie / Stripping de varices / Phlébectomie</h3>
+              <div class="proc-tags"><span class="ptag ptag-autre" style="color:#94A3B8;border-color:rgba(148,163,184,.35);background:rgba(148,163,184,.08);">Autre</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal, bras sur planchettes. Gants : 7½ Protegrity.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Du nombril aux orteils, pied sur support d'ortho. Asepsie et badigeon Chlorhexidine 70% incolore.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Universal Split Pack (S: 53-4E)</li>
+                    <li>Blouse XXL x1, L x1 (S: 53-5D)</li>
+                    <li>Toile en U x1 (S: 53-4E)</li>
+                    <li>Cautère avec aspirateur de fumée (S: 53-B1+2)</li>
+                    <li>Raytec x1 (S: 53-C1)</li>
+                    <li>Plateau Varices (S: 43) ou Vasculaire Plastie</li>
+                    <li>Poignées pour lumières x1 (S: 53-A6)</li>
+                    <li>Gallon x1 (S: 53-C3+4) · Bassin simple (S: 26)</li>
+                    <li>PRN : Crochet pour phlébectomie · Couvre-table si bilatérale</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Accessoires</div>
+                  <ul class="ks-list">
+                    <li>Seringue 10ml (S: 26-L2) · Lacets silastics mini (S: 26-Z3)</li>
+                    <li>Boîte rouge (S: 26-I4) · Bag decanter (S: 26-AA1)</li>
+                    <li>Crayon marqueur (S: 26-AA3)</li>
+                    <li>Tire-veine jetable (S: 53-W6)</li>
+                    <li>Stéri-strips ½ po x3 (S: 26-L4)</li>
+                    <li>Hémoclips Bleu x1 (S: 53-LL5)</li>
+                    <li>Lames 10, 11, 15 (S: 26-M3)</li>
+                    <li>PRN : Robinet 3 voies (S: 56-F1) · Rallonge 36 po x1 et 6 po x2</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /kardex-grid-febrer -->
+      </div><!-- /kardex-febrer -->
+
+      <!-- DR FORTIN -->
+      <div id="kardex-fortin" class="kardex-surgeon" style="display:none;">
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:20px;display:flex;align-items:center;gap:18px;">
+          <div style="width:56px;height:56px;border-radius:50%;background:var(--red-dim);border:2px solid rgba(185,28,28,0.4);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">👨‍⚕️</div>
+          <div>
+            <div style="font-size:18px;font-weight:500;margin-bottom:3px;">Dr Fortin</div>
+            <div style="font-family:monospace;font-size:10px;color:var(--red);letter-spacing:1px;text-transform:uppercase;">Chirurgie vasculaire · HSCM</div>
+            <div style="font-size:12px;color:var(--text3);margin-top:4px;">Gants : 7 Protegrity — sauf mention contraire (7 Micro pour amputations et endovasculaire)</div>
+          </div>
+        </div>
+
+        <div class="proc-filter" style="margin-bottom:16px;">
+          <div class="pfilt active" style="--pf-color:#E2E8F0" onclick="filterKardexFortin('all',this)">Toutes</div>
+          <div class="pfilt" style="--pf-color:#34D399" onclick="filterKardexFortin('endo',this)">Endartériectomies</div>
+          <div class="pfilt" style="--pf-color:#60A5FA" onclick="filterKardexFortin('pontage',this)">Pontages</div>
+          <div class="pfilt" style="--pf-color:#A78BFA" onclick="filterKardexFortin('endovasc',this)">Endovasculaire</div>
+          <div class="pfilt" style="--pf-color:#FB923C" onclick="filterKardexFortin('amputation',this)">Amputations</div>
+        </div>
+
+        <div class="proc-grid" id="kardex-grid-fortin">
+
+          <!-- Endartériectomie carotidienne -->
+          <div class="proc-item" data-fcat="endo">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">01</div>
+              <h3>Endartériectomie carotidienne</h3>
+              <div class="proc-tags"><span class="ptag ptag-endo">Endartériectomie</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Différences vs Dr Febrer</div>
+                  <ul class="ks-list">
+                    <li>Barre en L du côté opposé à la chirurgie (pas à la tête)</li>
+                    <li>Cautère placé aux pieds</li>
+                    <li>Blouse XL (pas XXL)</li>
+                    <li>Gant 7 orange (S: 26-D4) et Gant 7½ orange (S: 26-D5) en plus</li>
+                    <li>Peanut cardiaque x1 (S: 53-W4)</li>
+                    <li>Champ écho stérile (S: 26-AA7) — référence différente</li>
+                    <li>Lacet silastic mini x2 + maxi x1</li>
+                    <li>Surgicel x1 (S: 53-LL7)</li>
+                    <li>PRN : Drain Penrose ¼ (S: 26-BB5) · Drain Jackson-Pratt 7mm (S: 26-BB7) · Corde Doppler (S: 40-1A)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal, bras le long du corps, flanelle en transverse. Rouleau sous les épaules. Oreiller sous les genoux. Infirmière du côté opposé. Chirurgien du côté opéré.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Du lobe d'oreille et joue jusqu'au mamelon côté opéré, menton jusqu'au mamelon côté opposé. Badigeon Chlorhexidine 2% + alcool 70% clair (incolore) (S: 27-T1).</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Custom pack Endartériectomie (S: 53-3A)</li>
+                    <li>Cautère avec aspirateur de fumée (S: 53-B1)</li>
+                    <li>Blouse XL x1 (S: 53-5C/5D)</li>
+                    <li>Serviettes vertes x2 (S: 53-Y3) · Bassin simple (S: 26)</li>
+                    <li>Champ ¾ (S: 53-4B) · Bandes bleues x1 (S: 53-4C)</li>
+                    <li>Plateau Endoprothèse AAA (S: 43-29D)</li>
+                    <li>Pinces de Gérald (S: 40-1B)</li>
+                    <li>Sonde écho Toshiba PLT-1202S (S: 53-6A)</li>
+                    <li>Tapis magnétique (S: 43-45B) · Poignées pour lumières (S: 53-A6)</li>
+                    <li>PRN : Écarteurs Langenbeck (S: 40-1D) · Écarteur Bras de Martin (S: 43-43E) · Champ Optima (S: 53-4D)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Accessoires</div>
+                  <ul class="ks-list">
+                    <li>Hémoclips Bleu x2 (S: 53-LL5) · Hémoclips Jaune x1 (S: 53-LL4)</li>
+                    <li>Peanut cardiaque x1 (S: 53-W4)</li>
+                    <li>Gel écho x1 (S: 26-AA4) · Champ écho stérile (S: 26-AA7)</li>
+                    <li>Embout veineux x1 (S: 53-S1)</li>
+                    <li>Caoutchoucs Fogarty A0C01 (S: 53-W5)</li>
+                    <li>Bag decanter x1 (S: 26-AA1)</li>
+                    <li>Lacet silastic mini x2 + maxi x1 (S: 26-Z3)</li>
+                    <li>Crayon marqueur (S: 26-AA3) · Surgicel x1 (S: 53-LL7)</li>
+                    <li>Gant 7 orange (S: 26-D4) · Gant 7½ orange (S: 26-D5)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Endartériectomie fémorale -->
+          <div class="proc-item" data-fcat="endo">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">02</div>
+              <h3>Endartériectomie fémorale ou ilio-fémorale</h3>
+              <div class="proc-tags"><span class="ptag ptag-endo">Endartériectomie</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal, bras en croix. Infirmière du côté opposé. Chirurgien du côté opéré. Si bilatéral : plateau appendice hernie (S: 53-8C), doubler silastics et sutures. Si fluoroscopie : flanelle en transverse, bras le long du corps.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Du nombril aux genoux. Badigeon Chlorhexidine 2% + alcool 70% rosée (S: 27-T5+6).</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Custom Pack Endartériectomie (S: 53-3A) + Universal Pack (S: 53-4E)</li>
+                    <li>Cautère avec aspirateur de fumée (S: 53-B3)</li>
+                    <li>Blouse XL x1 (S: 53-5D) · Serviettes vertes x2 (S: 53-Y3+4)</li>
+                    <li>Plateau Endoprothèse AAA (S: 43-29D) · Pinces de Gérald (S: 40-1B)</li>
+                    <li>Drape sheet doubler table Mayo (S: 53-4E) · Poignées pour lumières (S: 53-A6)</li>
+                    <li>PRN : Écarteurs Langenbeck (S: 40-1D) · Écarteur Bras de Martin (S: 43-43E) · Champ Optima (S: 53-4D)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Accessoires (différences vs Dr Febrer)</div>
+                  <ul class="ks-list">
+                    <li>Hémoclips Bleu x2 + Jaune x2 (S: 53-LL5 / LL4)</li>
+                    <li>Embout veineux x1 · Caoutchoucs Fogarty A0C01</li>
+                    <li>Bag decanter x2 (S: 26-AA1)</li>
+                    <li>Lacet silastic mini x2 + maxi x1 (S: 26-Z3)</li>
+                    <li>Crayon marqueur · Agrafeuse x1 (S: 26-Y7)</li>
+                    <li>Surgicel x1 (S: 53-LL7)</li>
+                    <li>Gant protexis 7 orange (S: 26-D4)</li>
+                    <li>Drain Penrose ¼ (S: 26-BB5) — inclus directement (pas en PRN)</li>
+                    <li>PRN : Drain Jackson-Pratt (S: 26-BB7) · Corde Doppler (S: 40-1A ou S: 48-4-44)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pontage fémoro-fémoral -->
+          <div class="proc-item" data-fcat="pontage">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">03</div>
+              <h3>Pontage fémoro-fémoral croisé</h3>
+              <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal, bras en croix. Infirmière du côté opposé. Si fluoroscopie : flanelle en transverse, bras le long du corps. Si angiographie : 2e table de base. Gants : 7 Protegrity.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Du nombril aux genoux. Badigeon Chlorhexidine 2% + alcool 70% rosée (S: 27-T5+6).</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Universal Pack (S: 53-4E) · Plateau Endoprothèse AAA (S: 43-29D)</li>
+                    <li>Pinces de Gérald (S: 40-1B) · Drape (S: 53-4E) · Champ Mayo (S: 53-4C)</li>
+                    <li>Poignées pour lumières (S: 53-A6) · Raytec x1 (S: 53-C1+2)</li>
+                    <li>PRN : Écarteurs Langenbeck (S: 40-1D) · Écarteur Bras de Martin (S: 43-43E) · Grand V-drape (S: 26)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Accessoires spécifiques Dr Fortin</div>
+                  <ul class="ks-list">
+                    <li>Hémoclips Bleu x3 (S: 53-LL5) · Hémoclips Jaune x2 (S: 53-LL4)</li>
+                    <li>Ruban ombilical (S: 53-H7)</li>
+                    <li>Embout veineux x1 (S: 53-S1)</li>
+                    <li>Protecteurs instruments x1 (S: 53-W4)</li>
+                    <li>Caoutchoucs Fogarty A0C01 (S: 53-W5)</li>
+                    <li>Boîte rouge x1 (S: 26-Y4+5) · Aiguille 21 x1 (S: 26-M4)</li>
+                    <li>Bag decanter x1 (S: 26-AA1)</li>
+                    <li>Lacet silastic mini x2 + maxi x1 (S: 26-Z3)</li>
+                    <li>Crayon marqueur · Seringue 10ml · Poire asepto</li>
+                    <li>Agrafeuse x1 · Lame 10 + 11 · Surgicel x1</li>
+                    <li>PRN : Drain Penrose ¼ · Drain Jackson-Pratt</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pontage carotido-sous-clavier -->
+          <div class="proc-item" data-fcat="pontage">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">04</div>
+              <h3>Pontage carotido-sous-clavier</h3>
+              <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal, bras le long du corps, flanelle en transverse. Infirmière du côté opposé. Barre en L à la tête. Têtière avec rail. Rouleau sous les épaules. Coussin gel sous les genoux. Gants : 7 Protegrity.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Du lobe d'oreille et joue jusqu'au mamelon côté opéré, menton jusqu'au mamelon côté opposé. Badigeon Chlorhexidine 2% + alcool 70% clair (incolore).</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Universal Pack (S: 53) · Plateau Endoprothèse AAA (S: 53)</li>
+                    <li>Boîte Rouge (S: 27) · Pinces de Gérald (S: 40)</li>
+                    <li>Tapis magnétique (S: 53) · Poignées pour lumières (S: 53)</li>
+                    <li>V-drape 1050 (S: 27)</li>
+                    <li>PRN : Écarteurs Langenbeck, Écarteur Henley, Pince bipolaire vasculaire, Bras de Martin, Champ Optima</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Accessoires spécifiques Dr Fortin</div>
+                  <ul class="ks-list">
+                    <li>Seringue 10ml x1 + 3ml x1 · Aiguille 21 x1</li>
+                    <li>Hémoclips Bleu x2 + Jaune x2</li>
+                    <li>Boîte rouge x1 · Embout veineux x1 (S: 56)</li>
+                    <li>Caoutchoucs Fogarty A0C01 (S: 56) · Peanut cardiaque (S: 56)</li>
+                    <li>Bag decanter x1 · Lacet silastic mini x2 + maxi x1</li>
+                    <li>Protecteurs instruments x1 (S: 56)</li>
+                    <li>Crayon marqueur · Poire asepto · Surgicel x1</li>
+                    <li>Lame 10 + Lame 11</li>
+                    <li>PRN : Drain Penrose ¼ (S: 27)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pontage carotido-sous-clavier avec embolisation -->
+          <div class="proc-item" data-fcat="pontage">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">05</div>
+              <h3>Pontage carotido-sous-clavier avec embolisation de la sous-clavière</h3>
+              <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span><span class="ptag ptag-endovasc">Hybride</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Configuration spéciale</div>
+                  <p>Table Mayo + 2 tables de base. Rallonge de carbone à la tête. Appareil à fluoro (à la tête côté gauche du patient). Télé fluoro (côté droit, à la tête). Chariot angio vasculaire bleu du 56 le plus proche. Tablier de plomb pour tout le personnel. Rouleau sous les épaules. Coussin gel sous les genoux. Gants : 7 Protegrity.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Du lobe d'oreille et joue jusqu'au mamelon côté opéré, menton jusqu'au mamelon côté opposé. Badigeon Chlorhexidine 2% + alcool 70% clair (incolore).</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments (en plus du carotido-sous-clavier simple)</div>
+                  <ul class="ks-list">
+                    <li>Universal Pack + Custom pack Angio (S: 53)</li>
+                    <li>Blouse XL x2, L x1 (S: 53)</li>
+                    <li>Champs pour fluoroscopie MTI 4951-20 (S: 27)</li>
+                    <li>Aiguille 21 x2 (au lieu de x1)</li>
+                    <li>Cordon ombilical x1 (S: 53)</li>
+                    <li>PRN : Drain Penrose ¼ (S: 27) · Drain Jackson-Pratt (S: 27)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pontage ilio-fémoral -->
+          <div class="proc-item" data-fcat="pontage">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">06</div>
+              <h3>Pontage ilio-fémoral</h3>
+              <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Configuration</div>
+                  <p>Table Mayfield — table inversée (tête aux pieds) + rallonge au pied. Infirmière du côté opposé. FAIRE UN COMPTE COMPLET. Décubitus dorsal, bras sur les planchettes. Gants : 7 Micro.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Mi-seins aux genoux. Badigeon Chlorhexidine rosée.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Custom Pack Aorte Abdominale · Cautère avec aspirateur de fumée</li>
+                    <li>Blouse XL x1 · Serviette · Bassin simple · Raytec x2 · Mesure 500ml (S: 46)</li>
+                    <li>Plateau Vasculaire Majeure (S: 53)</li>
+                    <li>Plateau Instruments Longs Vasculaire (S: 53)</li>
+                    <li>Écarteur Omni-Tract 2 plateaux (S: 53)</li>
+                    <li>Du Plateau Endoprothèse AAA : Écarteurs Weitlaner, porte-aiguille autostatique, bull-dog métalliques, pinces dissection manches noirs, pinces Hémoclips, 2 pinces Fogarty angulées</li>
+                    <li>Pinces De Bakey droites (S: 46) · Poignées pour lumières · Drain Penrose ¼ PRN</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Spéciaux</div>
+                  <ul class="ks-list">
+                    <li>Seringue 10ml · Hémoclips P.M. · Aiguille 21 x1</li>
+                    <li>Lacets Silastic Maxi x1 · Caoutchoucs Fogarty size 1 (A0C01)</li>
+                    <li>Cordon ombilical blanc · Longue électrode cautère</li>
+                    <li>Queue de rat · Bag decanter</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RAAA tube aortique -->
+          <div class="proc-item" data-fcat="pontage">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">07</div>
+              <h3>RAAA — Pontage aorto-aortique (tube)</h3>
+              <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal, bras sur planchettes, coussin en gel sous le patient le long du corps et sous les genoux. Infirmière à droite du patient. Chirurgien à gauche du patient. Table Mayfield + table Maquet avec flex. Gants : 7 Protegrity.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Mi-seins aux genoux. Badigeon Chlorhexidine 70% rosée (S: 27-T5+6).</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Custom Pack Aorte Abdominale (S: 53-3A)</li>
+                    <li>Vasculaire Majeure (S: 43-29E) + Instruments Longs Vasculaire (S: 43-29E)</li>
+                    <li>Écarteur Omni-tract 2 plateaux (S: 43-29D)</li>
+                    <li>Curettes (S: 43-32A) · Poignées pour lumières (S: 53-A6)</li>
+                    <li>PRN : Lames obèses Omni-tract (S: 53-8E)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Accessoires spécifiques Dr Fortin</div>
+                  <ul class="ks-list">
+                    <li>Seringue 10ml x1 (S: 26-L2) · Aiguille 21 x1 (S: 26-M4)</li>
+                    <li>Hémoclips Bleu x2, Vert x1, Orange x1 (S: 53-LL5)</li>
+                    <li>Électrode 4 po régulière x1 (S: 53-B4)</li>
+                    <li>Cordon ombilical x1 (S: 53-H7)</li>
+                    <li>Caoutchoucs Fogarty Soft 61 (S: 53-W5)</li>
+                    <li>Bag decanter x1 (S: 26-AA1) · Lacet silastic maxi x1 (S: 26-Z3)</li>
+                    <li>Tubulure auto-transfuseur x1 (S: 56-L6)</li>
+                    <li>Crayon marqueur (S: 26-AA3) · Surgicel x1 (S: 53-LL7)</li>
+                    <li>Sonde urinaire + kit + sac urinaire (S: 26-N3, O5-6, O1+2)</li>
+                    <li>PRN : Peanuts (S: 53-C8) · Tampons (S: 53-C7) · Corde Doppler (S: 40-A1)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RAAA aorto-bi-fémoral -->
+          <div class="proc-item" data-fcat="pontage">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">08</div>
+              <h3>RAAA — Pontage aorto-bi-fémoral</h3>
+              <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Différences vs tube aortique</div>
+                  <ul class="ks-list">
+                    <li>Ajout : Plateau Aorto-bi-fémoral (S: 43-29C)</li>
+                    <li>Hémoclips Jaune x2 en plus</li>
+                    <li>Cordon ombilical x2 (S: 53-H7) — au lieu de x1</li>
+                    <li>Caoutchoucs Fogarty Soft 61 + A0C01 (deux types)</li>
+                    <li>Lacet silastic mini x3 + maxi x2 (S: 26-Z3)</li>
+                    <li>Surgicel x2 (S: 53-LL7)</li>
+                    <li>Sonde urinaire + kit + sac urinaire inclus</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie / Position</div>
+                  <p>Identique au tube aortique. Mi-seins aux genoux. Badigeon Chlorhexidine 70% rosée. 2 cautères si assistant.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RAAA aorto-bi-iliaque -->
+          <div class="proc-item" data-fcat="pontage">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">09</div>
+              <h3>RAAA — Pontage aorto-bi-iliaque</h3>
+              <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Différences vs tube aortique</div>
+                  <ul class="ks-list">
+                    <li>Lacet silastic mini x1 + maxi x1 (au lieu de maxi x1 seulement)</li>
+                    <li>Cordon ombilical x1 (S: 27)</li>
+                    <li>Nécessaire pour installation de sonde urinaire inclus</li>
+                    <li>Surgicel x1 (S: 27)</li>
+                    <li>PRN : Peanuts · Tampons · Corde Doppler</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Position / Asepsie</div>
+                  <p>Décubitus dorsal avec coussin en gel sous les genoux. Mi-seins aux genoux. Badigeon Chlorhexidine 70% rosée. Table Mayfield avec flex.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RAAA rétropéritonéal -->
+          <div class="proc-item" data-fcat="pontage">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">10</div>
+              <h3>RAAA / PABI — Approche rétropéritonéale</h3>
+              <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus latéral droit, bras sur planchettes, coussin en gel le long du corps. Matelas à billes. Têtière avec rails. Support thoracique pour bras. Coussin en U entre les jambes. Coussin gel pour aisselles. Infirmière à droite. Chirurgien à gauche. Gants : 7 Protegrity.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>De la nuque jusqu'à mi-cuisse. Badigeon Chlorhexidine 70% rosée.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments supplémentaires</div>
+                  <ul class="ks-list">
+                    <li>Aorto-bi-fémoral (S: 53)</li>
+                    <li>Costotome de Berthume (S. 33, thoracique)</li>
+                    <li>Champ magnétique (S: 53)</li>
+                    <li>Drape sheet (renforcer tablette) + Bandes bleues x2</li>
+                    <li>PRN : Écarteurs aorte thoracique (Costotome, Tuffier, Fino Chietto) · Ortho Plastie (Cobb/dépériosteur)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Accessoires spécifiques</div>
+                  <ul class="ks-list">
+                    <li>Hémoclips Bleu x2, Vert x1, Orange x1 (S: 53)</li>
+                    <li>Cordon ombilical x2 (S: 53)</li>
+                    <li>Caoutchoucs Fogarty Soft 61 x1 (S: 56)</li>
+                    <li>Seringue 10ml x1 · Électrode 4 po x1</li>
+                    <li>Embout veineux x1 (S: 56)</li>
+                    <li>Tubulure auto-transfuseur x1 (S: 56)</li>
+                    <li>Aiguille 21 x1 · Bag decanter x1</li>
+                    <li>Lacet silastic maxi x2 · Crayon marqueur</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RAAT thoracotomie -->
+          <div class="proc-item" data-fcat="pontage">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">11</div>
+              <h3>RAAT — Approche thoracotomie</h3>
+              <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span><span class="ptag ptag-conjoint">Thoracique</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus latéral droit. Flex entre appendice xyphoïde et ombilic. Coussin en gel le long du corps. Matelas à billes. Têtière avec rails. Support thoracique pour bras. Coussin en U entre les jambes. Coussin gel pour aisselles. Infirmière à droite. Chirurgien à gauche. Gants : 7 Protegrity.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>De la nuque jusqu'à mi-cuisse. Badigeon Chlorhexidine 70% rosée.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Custom Pack Aorte Abdominale + Aorto-bi-fémoral (S: 53)</li>
+                    <li>Instruments Longs Vasculaire + Écarteur Omni-tract 2 plateaux (S: 53)</li>
+                    <li>Champ magnétique (S: 53) · Costotome de Berthume (S. 33)</li>
+                    <li>Curettes (S: 40) · Poignées pour lumières</li>
+                    <li>Drape sheet + Bandes bleues x2</li>
+                    <li>PRN : Lames obèses · Écarteurs aorte thoracique · Ortho Plastie</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Accessoires</div>
+                  <ul class="ks-list">
+                    <li>Hémoclips Bleu x2, Vert x1, Orange x1 · Cordon ombilical x2</li>
+                    <li>Caoutchoucs Fogarty Soft 61 x1 (S: 56)</li>
+                    <li>Seringue 10ml x1 · Électrode 4 po x1 · Embout veineux x1</li>
+                    <li>Tubulure auto-transfuseur x1 · Aiguille 21 x1</li>
+                    <li>Bag decanter x1 · Lacet silastic maxi x2 · Crayon marqueur</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RAAT avec réimplantation rénale -->
+          <div class="proc-item" data-fcat="pontage">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">12</div>
+              <h3>RAAT — Thoraco-abdominal avec réimplantation artère rénale</h3>
+              <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span><span class="ptag ptag-conjoint">Thoraco-abdo</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position spécifique</div>
+                  <p>Décubitus latéral droit environ 60 degrés. Flex entre appendice xyphoïde et ombilic. Tablette à la tête pour instruments. S'assurer que les rails de la table d'opération soient dégagés. Matelas à billes. Infirmière à droite. Chirurgien à gauche. Gants : 7 Protegrity.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>De la nuque jusqu'à mi-cuisses + l'épaule. En avant jusqu'en dessous des seins. En arrière jusqu'à la table d'opération. Badigeon Chlorhexidine 70% rosée.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments supplémentaires vs thoracotomie</div>
+                  <ul class="ks-list">
+                    <li>Drape sheet pour renforcer la tablette</li>
+                    <li>PRN : Écarteurs aorte thoracique (Costotome, Tuffier, Fino Chietto) (S: 53)</li>
+                    <li>PRN : Ortho Plastie Cobb/dépériosteur (S: 49)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Embolectomie fémorale -->
+          <div class="proc-item" data-fcat="pontage">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">13</div>
+              <h3>Embolectomie fémorale</h3>
+              <div class="proc-tags"><span class="ptag ptag-urgence">Urgence</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal, bras sur les planchettes. Bras en L salle 40 au niveau des hanches. Si fluoroscopie : flanelle en transverse. Vérifier si rallonge de carbone nécessaire. Gants : 7 Protegrity.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Du nombril aux genoux. Badigeon Chlorhexidine rosée (S: 27-T5+6).</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Universal pack 4 champs (S: 53-4E)</li>
+                    <li>Blouse XL x1, L x1 (S: 53-5D)</li>
+                    <li>Bassin simple · Tubulure succion caoutchouc</li>
+                    <li>Cautère avec aspirateur de fumée · Raytec x1 · Serviettes vertes x1</li>
+                    <li>Plateau Endoprothèse AAA (S: 43-29D)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Sutures spécifiques Dr Fortin</div>
+                  <ul class="ks-list">
+                    <li>Surgilon 3-0 1918-41 x1 (S: 53-E5)</li>
+                    <li>Polysorb 2.0 811 x2 (S: 53-D3)</li>
+                    <li>Prolène 5-0 8725 x2 (S: 53-F4)</li>
+                    <li>Prolène 6-0 (8806) x2 (S: 53-F4) — supplément vs Dr Febrer</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Spéciaux</div>
+                  <ul class="ks-list">
+                    <li>Hémoclips Bleu x1 + Jaune x1</li>
+                    <li>Poignées pour lumières · Protecteurs instruments</li>
+                    <li>Embout veineux x1 · Poire Asepto</li>
+                    <li>Seringue 10ml + 3ml · Aiguille 21 x1</li>
+                    <li>Lacet silastic maxi x1 · Lame 10 + Lame 11</li>
+                    <li>Caoutchoucs Fogarty A0C01 · Boîte rouge</li>
+                    <li>Crayon marqueur · Gant 7 orange (S: 26-D4)</li>
+                    <li>Agrafeuse x1 · Bag decanter x2</li>
+                    <li>Cathéter Fogarty 3, 4 ou 5 sur demande (S: 53-Mur 1)</li>
+                    <li>PRN : Corde Doppler · Drain Penrose ¼</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Résection anévrisme fémoral -->
+          <div class="proc-item" data-fcat="pontage">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">14</div>
+              <h3>Résection d'anévrisme fémoral</h3>
+              <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Table Mayo. Décubitus dorsal, bras sur les planchettes. Nouveau bras en L (S: 46) au niveau de la taille PRN. Coussin en gel sous le patient et sous les genoux. Gants : 7½ Protégrity.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Du nombril aux genoux. Badigeon Chlorhexidine rosée.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Universal Pack · Bassin simple · Blouse XXL x1, L x1</li>
+                    <li>Cautère avec aspirateur de fumée · Mayo x1</li>
+                    <li>Serviettes vertes x1 · Succion caoutchouc · Tampons x1 · Raytec x1 · Mesure</li>
+                    <li>Crayon marqueur</li>
+                    <li>Plateau Endoprothèse AAA (S: 53)</li>
+                    <li>Poignées pour lumières</li>
+                    <li>Écarteur Bras de Martin PRN (S: 56, chariot 6, tablette E)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Sutures et médicament</div>
+                  <ul class="ks-list">
+                    <li>Surgilon 3-0 à la main</li>
+                    <li>Prolène 5-0 8725 x2</li>
+                    <li>Polysorb 2-0 CL-811 x2</li>
+                    <li>Agrafes · Lames 10, 11, 15</li>
+                    <li>Héparine 2 500 unités diluées dans 250ml NaCl</li>
+                    <li>Grand Vi-Drape · Lacets silastic maxi</li>
+                    <li>Seringue 10ml · Aiguille 21 · Hémoclips M</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- EVAR percutané salle 26 -->
+          <div class="proc-item" data-fcat="endovasc">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">15</div>
+              <h3>Endoprothèse aortique percutanée — Salle 26</h3>
+              <div class="proc-tags"><span class="ptag ptag-endovasc">Endovasculaire</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="pearl" style="margin-bottom:14px;"><h4>⚠ Notes importantes Dr Fortin</h4><ul>
+                <li>Aorte abdominale OU thoracique — vérifier avec le chirurgien</li>
+                <li>Toujours avoir une salle d'opération prête pour résection AAA/AAT</li>
+                <li>Gants : 7 Micro</li>
+                <li>Cautère placé à la gauche du patient — ne brancher que si nécessaire</li>
+                <li>Apporter Chlorhexidine 0.05% aqueux si patient allergique à l'iode (pour sonde urinaire)</li>
+              </ul></div>
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Ce qu'on descend à la salle 26</div>
+                  <ul class="ks-list">
+                    <li>Appareil de cautère (pas celui de la salle préparée)</li>
+                    <li>Table de base (pas celle de la salle 30)</li>
+                    <li>Doppler (S: 30) · Support à bassin (pas celui de la salle 30)</li>
+                    <li>Tabliers RX pour tout le personnel</li>
+                    <li>Panier gris x2 pour endoprothèse (S: 53)</li>
+                    <li>1 greffon Hémashield 8mm x40 (S: 36)</li>
+                    <li>1 patch Vascu-Guard 1 x 6 cm (S: 36)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Position / Asepsie</div>
+                  <p>Décubitus dorsal. Bras le long du corps en hamac avec flanelle. Du nombril aux genoux. Badigeon Chlorhexidine rosée.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Lingerie</div>
+                  <ul class="ks-list">
+                    <li>Blouse XXL x1, XL x2, L x1</li>
+                    <li>Couvre-table x1 · Champ ¾ pour doubler la table</li>
+                    <li>Succion caoutchouc PRN · Bassin simple · Raytec x2</li>
+                    <li>Cautère avec aspirateur de fumée PRN</li>
+                    <li>Serviettes vertes x1 · Bande bleue x1 · Barrier x3 PRN</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Plateau angio percutané (S: 53) — si non disponible : plateau scopie de base ou plastie</li>
+                    <li>Plateau Endoprothèse AAA (S: 53) PRN</li>
+                    <li>Pinces de Gérald (S: 30) PRN · Succion Blair (S: 30) PRN</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Spéciaux PRN (en salle mais ne pas donner d'emblée)</div>
+                  <ul class="ks-list">
+                    <li>Seringue 10ml + aiguille 21 · Élastiques x1</li>
+                    <li>Cordon ombilical blanc U-12 x1</li>
+                    <li>Embout veineux · Boîte rouge · Bag decanter · Tourniquets</li>
+                    <li>Hémoclips M x1 · Hémoclips ML x1 · Silastic mini x1</li>
+                    <li>Poire Asepto · Poignées de lumière · Corde de Doppler</li>
+                    <li>Caoutchoucs Fogarty size 1 (A0C01) x1</li>
+                    <li>Nécessaire pour sonde urinaire + sac urinomètre</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Médicaments / Pansement</div>
+                  <ul class="ks-list">
+                    <li>Héparine 2 500 unités dans 250ml NaCl PRN</li>
+                    <li>Monocryl 4-0 Y823 PRN · Lames 10 et 11 PRN</li>
+                    <li>Pansement : Stéri-strips ou Stéri-strips + Leukomed petit</li>
+                    <li>Ou pansement compressif (bande élastique collante, S: 27)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- EVAR fenêtré Dr Ibrahim -->
+          <div class="proc-item" data-fcat="endovasc">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">16</div>
+              <h3>Endoprothèse fenêtrée — Salle 26 (Dr Ibrahim / Chirurgie cardiaque)</h3>
+              <div class="proc-tags"><span class="ptag ptag-endovasc">Endovasculaire</span><span class="ptag ptag-conjoint">Fenêtrée</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="pearl" style="margin-bottom:14px;"><h4>⚠ Spécificités FEVAR</h4><ul>
+                <li>Chirurgien vasculaire + Dr Ibrahim (cardiaque) — procédure conjointe</li>
+                <li>Vérifier avec le chirurgien pour badigeon du bras gauche</li>
+                <li>Cautère ophtalmique (S: 53) requis pour la préparation de l'endoprothèse</li>
+                <li>Ticron 5-0 (3280-21) x3 — dans le panier gris apporté de la salle 43</li>
+              </ul></div>
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position spécifique</div>
+                  <p>Décubitus dorsal. Bras le long du corps en hamac avec flanelle. Bras gauche sur planchette PRN. Vérifier badigeon du bras gauche avec le chirurgien.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments spécifiques</div>
+                  <ul class="ks-list">
+                    <li>Plateau Endoprothèse AAA (S: 43)</li>
+                    <li>Ticron 5-0 (3280-21) x3 (dans panier gris de la salle 43)</li>
+                    <li>1 greffon Hémashield 8mm x40 (S: 36)</li>
+                    <li>1 patch Vascu-Guard 1 x 6 cm (S: 36)</li>
+                    <li>Cautère ophtalmique x1 (S: 53)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Préparation endoprothèse sur table</div>
+                  <ul class="ks-list">
+                    <li>Cautère ophtalmique x1 · Embout veineux x1</li>
+                    <li>Ticron 5-0 x3 · Crayon x1 · Ruban x3 (couper en 2)</li>
+                    <li>Tourniquet x1 (couper en 2) · Seringue 10ml x1 + 20ml x1</li>
+                    <li>NaCl 0.9% 250ml · Bag décanter · Porte-aiguille Castro</li>
+                    <li>Ciseau Metz · Pince Debakey x2</li>
+                    <li>Hémostat x7 (sinon prendre mosquito)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Spéciaux supplémentaires</div>
+                  <ul class="ks-list">
+                    <li>Protecteurs instruments x1 · Boîte rouge x1</li>
+                    <li>Seringue 10ml x1 + 20ml x1 · Bag decanter x1</li>
+                    <li>Embout veineux x1 · Crayon marqueur · Tourniquets x1</li>
+                    <li>Cordon ombilical blanc U-12 x3</li>
+                    <li>Pansement : Stéri-strips ou compressif</li>
+                    <li>Drapage : serviette pliée en 3 + champ d'angio — demander aide technicienne radiologie stérile</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Angioplastie salle 40 -->
+          <div class="proc-item" data-fcat="endovasc">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">17</div>
+              <h3>Angioplastie / Dilatation percutanée ± stent — Salle 40</h3>
+              <div class="proc-tags"><span class="ptag ptag-endovasc">Endovasculaire</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="pearl" style="margin-bottom:14px;"><h4>⚠ Notes Dr Fortin</h4><ul>
+                <li>Dr Fortin se place face à la fluoroscopie</li>
+                <li>Rallonge de carbone SELON LE CHIRURGIEN (pas systématique)</li>
+                <li>Gants : 7 Micro (S: 26-D4)</li>
+                <li>Visipaque 320mg/ml — dans chariot angio bleu MM2</li>
+                <li>Identifier une feuille Notes d'évolution au nom du patient — y coller les étiquettes des ballons et endoprothèses</li>
+              </ul></div>
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal. Bras le long du corps avec flanelle (sous le patient). Abdomen dégagé. Rallonge de carbone selon le chirurgien.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>De l'ombilic aux genoux. Badigeon Chlorhexidine 2% + alcool 70% rosée (S: 27-T3). RASAGE des deux aines.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Lingerie</div>
+                  <ul class="ks-list">
+                    <li>Custom pack Angio (S: 43-29A) · Bassin simple (S: 26)</li>
+                    <li>Blouse XL x1, L x1 (S: 53-5C/5D)</li>
+                    <li>Raytec x1 (S: 53-C1) · Champ XL x1 (S: 53-4C)</li>
+                    <li>Serviette verte x1 (S: 53-Y3) · Bandes bleues x1 (S: 53-4C)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments / Spéciaux</div>
+                  <ul class="ks-list">
+                    <li>Plateau Angio percutané (S: 40-3B) — si non disponible : scopie de base ou plastie</li>
+                    <li>Poignées pour lumières (S: 53-A6) · Aiguille 21G (S: 26-M4)</li>
+                    <li>Champ écho stérile (S: 26-AA7) · Gel stérile écho (S: 26-AA4)</li>
+                    <li>Crayon-règle (S: 26-AA3)</li>
+                    <li>Champs fluoroscopie réf. 4951 (S: 26-AA8)</li>
+                    <li>Boîte rouge (S: 26-Y4) · Bag decanter x2 (S: 26-AA1)</li>
+                    <li>Seringue 20ml (S: 26-L4)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Médicaments</div>
+                  <ul class="ks-list">
+                    <li>NaCl 0.9% 1000ml avec 5 000 unités Héparine</li>
+                    <li>NaCl 0.9% 250ml</li>
+                    <li>Visipaque 320mg/ml x2 dans réchaud (chariot angio bleu MM2)</li>
+                    <li>Xylocaïne 2% avec épinéphrine 20ml (S: 56-C16) — si sous locale</li>
+                    <li>Si Visipaque non disponible : Isovue 370mg/ml (S: 53-K3)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Pansement / Drapage</div>
+                  <ul class="ks-list">
+                    <li>Stéri-strips (S: 26-I4) · Pansement Leukomed petit (S: 26-H2)</li>
+                    <li>Cache-sexe (serviette pliée en 3)</li>
+                    <li>Champ à trous custom pack angio + Champ XL + Bande bleue</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Angioplastie avec amputation salle 30 -->
+          <div class="proc-item" data-fcat="endovasc">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">18</div>
+              <h3>Angioplastie avec amputation — Salle 30</h3>
+              <div class="proc-tags"><span class="ptag ptag-endovasc">Endovasculaire</span><span class="ptag ptag-amputation">Amputation</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="pearl" style="margin-bottom:14px;"><h4>⚠ Configuration hybride</h4><ul>
+                <li>Dr Fortin se place face à la fluoroscopie</li>
+                <li>1 table de base pour l'angiographie + 1 table Mayo</li>
+                <li>Antégrade ou rétrograde — se référer au schéma de la salle</li>
+                <li>Patient descendu au plus bas de la table · Coussin en gel sous le patient le long du corps</li>
+                <li>Avoir 3 étiquettes du matériel — cahier CCVT + cahier implants salle 30 + bac restant</li>
+              </ul></div>
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>De l'ombilic à la cheville de la jambe opérée + les 2 aines (S: 27-T3). Badigeon Chlorhexidine 2% + alcool 70% rosée. RASAGE des deux aines. Gants : 7 Micro (S: 26-D4). Rallonge de carbone aux pieds.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Lingerie</div>
+                  <ul class="ks-list">
+                    <li>Custom pack Angio (S: 43-29A) · Bassin simple</li>
+                    <li>Champ XL (S: 53-4C) · Blouse XL x1, L x1 (S: 53-5C/5D)</li>
+                    <li>Raytec x1 (S: 53-C1) · Gallon x1 (S: 53-C3)</li>
+                    <li>Bande bleue (S: 53-4C) · Toile en U (S: 53-4E)</li>
+                    <li>Champ Mayo (S: 53-4C) · Serviette verte x1 (S: 53-Y3)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Plateau ortho plastie (S: 49-26B)</li>
+                    <li>Pince Liston vasculaire (S: 40-1B)</li>
+                    <li>Rongeur Ruskin ou double action (choix du chirurgien)</li>
+                    <li>Poignées pour lumières (S: 53-A6)</li>
+                    <li>Champ écho stérile (S: 26-AA7) · Gel stérile écho (S: 26-AA4)</li>
+                    <li>Crayon-règle (S: 26-AA3)</li>
+                    <li>Champs fluoroscopie MTI 4951-20 (S: 26-AA8)</li>
+                    <li>Boîte rouge (S: 26-Y4) · Bag decanter x2 (S: 26-AA1)</li>
+                    <li>Seringue 20ml (S: 26-L4)</li>
+                    <li>Seringue à dilatation AC3200 (chariot vasculaire)</li>
+                    <li>Nécessaire pour sonde urinaire PRN</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Médicaments</div>
+                  <ul class="ks-list">
+                    <li>NaCl 0.9% 1000ml avec 5 000 unités Héparine</li>
+                    <li>NaCl 0.9% 250ml</li>
+                    <li>Xylocaïne 2% avec épinéphrine 20ml</li>
+                    <li>Visipaque 270mg/ml x2 dans réchaud</li>
+                    <li>Si non disponible : Isovue 370mg/ml (S: 53-K3)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Sutures / Pansement</div>
+                  <ul class="ks-list">
+                    <li>Monosof 3-0 (SN-663) ou Ethibond 3-0 (663H) x2 (S: 53-E1) + au besoin</li>
+                    <li>Monocryl 4-0 (Y823) PRN</li>
+                    <li>Pansement aines : Leukomed petit (S: 26-H2)</li>
+                    <li>Pied : Compresses 4x8 (S: 26-G4) · Pad abdo 5x9 po (S: 26-G5) · Kling 4'' ou 6'' (S: 26-H7)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Drapage</div>
+                  <ul class="ks-list">
+                    <li>Cache-sexe · Champ de table pour recouvrir la partie à amputer</li>
+                    <li>Champ Split · Champ Angio · Champ XL + bande bleue (à la tête)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Amputation AK/BK -->
+          <div class="proc-item" data-fcat="amputation">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">19</div>
+              <h3>Amputation (AK / BK)</h3>
+              <div class="proc-tags"><span class="ptag ptag-amputation">Amputation</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position / Cautère</div>
+                  <p>Décubitus dorsal, bras sur les planchettes. Instruments sur la table de base. Cautère réglé à 40. Cautère à la tête. Gants : 7 Micro (S: 26-D4).</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Chlorhexidine (S: 27-T3). Badigeon Chlorhexidine rosée sur support d'ortho.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Lingerie</div>
+                  <ul class="ks-list">
+                    <li>Custom Split Pack (S: 49-19A) · Bassin simple (S: 26)</li>
+                    <li>Cautère avec aspirateur de fumée (S: 53-B1)</li>
+                    <li>Gallon x1 (S: 53-C3) · Coban 4 po (S: 26-I3)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Plateau d'Amputation (S: 49-26C)</li>
+                    <li>Moteur oscillant à batterie (S: 49-25B)</li>
+                    <li>Poignées pour lumières (S: 53-A6)</li>
+                    <li>NB : Liston se trouve dans le Plateau d'Amputation</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Spéciaux</div>
+                  <ul class="ks-list">
+                    <li>Bas large (S: 26-T6) · Lame scie oscillante 5071-553 (S: 26-R5)</li>
+                    <li>Péroxyde (S: 56-A03) · Crayon marqueur (S: 26-AA3)</li>
+                    <li>Drain Penrose ½ PRN · Seringue 10ml PRN si médication</li>
+                    <li>Aiguille 19x1, 22½x1 PRN si médication</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Sutures (différences vs Dr Febrer)</div>
+                  <ul class="ks-list">
+                    <li>Polysorb 2-0 L-13 x1 (S: 53-D3)</li>
+                    <li>Polysorb 2-0 CL-811 ou Vicryl 2-0 J259H x2 (S: 53-D3)</li>
+                    <li>Monosof 3-0 SN-663 ou Ethibond 3-0 663H x2 + au besoin (S: 53-E1)</li>
+                    <li>Marcaine 0.25% sans épinéphrine 10ml PRN</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Pansement / Drapage</div>
+                  <ul class="ks-list">
+                    <li>Bactigras (S: 56-A4) · Compresses 4x8 (S: 26-G4)</li>
+                    <li>Pad abdo 5x9 po (S: 26-G5) · Kling 4'' ou 6'' stérile (S: 26-H7)</li>
+                    <li>Velpeau 4'' ou 6'' non stérile (S: 27-K1/K2)</li>
+                    <li>Drapage : 1 couvre-table + 1 split sheet + 1 top sheet</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Amputation trans-métatarsienne -->
+          <div class="proc-item" data-fcat="amputation">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">20</div>
+              <h3>Amputation trans-métatarsienne (orteil)</h3>
+              <div class="proc-tags"><span class="ptag ptag-amputation">Amputation</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal, bras sur les planchettes. Talon appuyé sur support d'ortho pour le badigeon si possible, sinon faire appel au PAB. Gants : 7 Micro (S: 26-D4).</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Badigeon Chlorhexidine 2% + alcool 70% rosée (S: 27-T3).</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Lingerie</div>
+                  <ul class="ks-list">
+                    <li>Universal Split Pack réf. 29131 (S: 53-4E) · Bassin simple (S: 26)</li>
+                    <li>Blouse XL x1, L x1 (S: 53-5C/5D)</li>
+                    <li>Bande bleue (S: 53-4C) · Gallon x1 (S: 53-C3)</li>
+                    <li>Toile en U (S: 53-4E)</li>
+                    <li>Cautère avec aspirateur de fumée (S: 53-B1)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments (différences vs Dr Febrer)</div>
+                  <ul class="ks-list">
+                    <li>Plateau Ortho Plastie (S: 49-26B) — au lieu de Plastie Ortho S: 49</li>
+                    <li>Poignées pour lumières (S: 53-A6)</li>
+                    <li>Liston à Os (S: 40-1B)</li>
+                    <li>Curettes PRN (S: 40) · Rongeur moyen Perroquet PRN (S: 49-20C)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Spéciaux / Sutures</div>
+                  <ul class="ks-list">
+                    <li>Barrier x2 (S: 27-AA6) · Boîte rouge (S: 26-Y4)</li>
+                    <li>Crayon marqueur stérile avec règle (S: 26-AA3)</li>
+                    <li>Suture : Monosof 2-0 (SN-758) ou Ethilon 2-0 (664H) (S: 53-E1)</li>
+                    <li>Lames 10 et 15 (S: 26-M3)</li>
+                    <li>Irrigation : Bouteille NaCl 0.9% 500ml · Péroxyde (S: 56-A03)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Pansement / Drapage</div>
+                  <ul class="ks-list">
+                    <li>Compresses fluffées (S: 26-I1)</li>
+                    <li>Pad abdominal 8x24 po (S: 26-G6)</li>
+                    <li>Kling 3'' ou 4'' (S: 26-H7)</li>
+                    <li>Drapage : Toile en U + Split sheet + Top sheet</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /kardex-grid-fortin -->
+      </div><!-- /kardex-fortin -->
+
+      <!-- DR RIZKALLAH -->
+      <div id="kardex-rizkallah" class="kardex-surgeon" style="display:none;">
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:20px;display:flex;align-items:center;gap:18px;">
+          <div style="width:56px;height:56px;border-radius:50%;background:var(--red-dim);border:2px solid rgba(185,28,28,0.4);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">👨‍⚕️</div>
+          <div>
+            <div style="font-size:18px;font-weight:500;margin-bottom:3px;">Dr Rizkallah</div>
+            <div style="font-family:monospace;font-size:10px;color:var(--red);letter-spacing:1px;text-transform:uppercase;">Chirurgie vasculaire · HSCM</div>
+            <div style="font-size:12px;color:var(--text3);margin-top:4px;">Gants : 7½ Gammex (S: 26-E5) — signature distinctive vs les autres chirurgiens</div>
+          </div>
+        </div>
+
+        <div class="proc-filter" style="margin-bottom:16px;">
+          <div class="pfilt active" style="--pf-color:#E2E8F0" onclick="filterKardexRizkallah('all',this)">Toutes</div>
+          <div class="pfilt" style="--pf-color:#34D399" onclick="filterKardexRizkallah('endo',this)">Endartériectomies</div>
+          <div class="pfilt" style="--pf-color:#60A5FA" onclick="filterKardexRizkallah('pontage',this)">Pontages</div>
+          <div class="pfilt" style="--pf-color:#A78BFA" onclick="filterKardexRizkallah('endovasc',this)">Endovasculaire</div>
+          <div class="pfilt" style="--pf-color:#F87171" onclick="filterKardexRizkallah('urgence',this)">Urgences</div>
+          <div class="pfilt" style="--pf-color:#94A3B8" onclick="filterKardexRizkallah('autre',this)">Autres</div>
+        </div>
+
+        <div class="proc-grid" id="kardex-grid-rizkallah">
+
+          <!-- Endartériectomie carotidienne -->
+          <div class="proc-item" data-rcat="endo">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">01</div>
+              <h3>Endartériectomie carotidienne</h3>
+              <div class="proc-tags"><span class="ptag ptag-endo">Endartériectomie</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="pearl" style="margin-bottom:14px;"><h4>⚡ Spécificités Dr Rizkallah</h4><ul>
+                <li>Gants 7½ Gammex (S: 26-E5) — au lieu de Neopréne ou Protegrity</li>
+                <li>Barre en L du côté opposé à la chirurgie (comme Dr Fortin, pas à la tête)</li>
+                <li>Cautère aux pieds · Bandes bleues x2 (au lieu de x1 pour Dr Fortin)</li>
+                <li>Lacet silastic mini x3 + maxi x1 (plus que les autres chirurgiens)</li>
+                <li>Peanut (S: 53-C8) — au lieu de Peanut cardiaque</li>
+                <li>Drain Penrose ¼ inclus directement (pas en PRN)</li>
+                <li>Champ écho stérile (S: 26-AA7) · Surgicel x1 (S: 53-LL7)</li>
+              </ul></div>
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal, bras le long du corps, flanelle en transverse. Rouleau sous les épaules. Oreiller sous les genoux. Infirmière du côté opposé. Chirurgien du côté opéré.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Du lobe d'oreille et joue jusqu'au mamelon côté opéré, menton jusqu'au mamelon côté opposé. Badigeon Chlorhexidine 2% + alcool 70% clair (incolore). Pas de référence de stockage spécifiée — vérifier avec l'équipe.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Custom pack Endartériectomie (S: 53-3A)</li>
+                    <li>Cautère avec aspirateur de fumée (S: 53-B1)</li>
+                    <li>Blouse XXL x1 (S: 53-5D) · Serviettes vertes x2 (S: 53-Y3)</li>
+                    <li>Bassin simple (S: 26) · Champ ¾ (S: 53-4B)</li>
+                    <li>Bandes bleues x2 (S: 53-4C)</li>
+                    <li>Plateau Endoprothèse AAA (S: 43-29D)</li>
+                    <li>Pinces de Gérald (S: 40-1B)</li>
+                    <li>Sonde écho Toshiba PLT-1202S (S: 53-6A)</li>
+                    <li>Tapis magnétique (S: 43-45B) · Poignées pour lumières (S: 53-A6)</li>
+                    <li>PRN : Écarteurs Langenbeck (S: 40-1D) · Écarteur Bras de Martin (S: 43-43E) · Champ Optima (S: 53-4D)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Accessoires</div>
+                  <ul class="ks-list">
+                    <li>Hémoclips Bleu x2 (S: 53-LL5) · Hémoclips Jaune x1 (S: 53-LL4)</li>
+                    <li>Peanut x1 (S: 53-C8)</li>
+                    <li>Gel écho x1 (S: 26-AA4) · Champ écho stérile (S: 26-AA7)</li>
+                    <li>Embout veineux x1 (S: 53-S1)</li>
+                    <li>Caoutchoucs Fogarty A0C01 (S: 53-W5)</li>
+                    <li>Bag decanter x1 (S: 26-AA1)</li>
+                    <li>Lacet silastic mini x3 + maxi x1 (S: 26-Z3)</li>
+                    <li>Crayon marqueur (S: 27) · Surgicel x1 (S: 53-LL7)</li>
+                    <li>Drain Penrose ¼ (S: 26-BB5) — inclus systématiquement</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Endartériectomie fémorale -->
+          <div class="proc-item" data-rcat="endo">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">02</div>
+              <h3>Endartériectomie fémorale ou ilio-fémorale</h3>
+              <div class="proc-tags"><span class="ptag ptag-endo">Endartériectomie</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal, bras en croix. Barre en L. Table Mayo + Table de base. Si bilatéral : plateau appendice hernie (S: 53-8C), doubler silastics et sutures. Si fluoroscopie : flanelle en transverse. Gants : 7½ Gammex.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Du nombril aux genoux. Badigeon Chlorhexidine 2% + alcool 70% rosée (S: 27-T5+6).</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Custom Pack Endartériectomie (S: 53-3A) + Universal Pack (S: 53-4E)</li>
+                    <li>Plateau Endoprothèse AAA (S: 43-29D)</li>
+                    <li>Drape sheet doubler table Mayo (S: 53-4E)</li>
+                    <li>Poignées pour lumières (S: 53-A6) · Bassin simple (S: 26)</li>
+                    <li>Pinces de Gérald (S: 40-1B)</li>
+                    <li>PRN : Écarteurs Langenbeck (S: 40-1D) · Écarteur Bras de Martin (S: 43-43E)</li>
+                    <li>PRN : Champ Optima (S: 53-4D)</li>
+                    <li>PRN : Plateau pinces hémostat droites x8 (S: 39) — spécifique Dr Rizkallah</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Accessoires spécifiques Dr Rizkallah</div>
+                  <ul class="ks-list">
+                    <li>Hémoclips Bleu x2 + Jaune x2</li>
+                    <li>Embout veineux x1 · Caoutchoucs Fogarty A0C01</li>
+                    <li>Bag decanter x2 (S: 26-AA1)</li>
+                    <li>Lacet silastic mini x2 + maxi x1 (S: 26-Z3)</li>
+                    <li>Crayon marqueur (S: 26-AA3) · Agrafeuse x1 (S: 26-Y7)</li>
+                    <li>Gant 7½ Gammex (S: 26-E5) — en accessoire supplémentaire</li>
+                    <li>Drain Penrose ¼ (S: 26-BB5) — inclus systématiquement</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pontage fémoro-fémoral -->
+          <div class="proc-item" data-rcat="pontage">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">03</div>
+              <h3>Pontage fémoro-fémoral croisé</h3>
+              <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal, bras en croix. Barre en L. Si fluoroscopie : flanelle en transverse. Si angiographie : rallonge de carbone + 2e table de base. Gants : 7½ Gammex.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Du nombril aux genoux. Badigeon Chlorhexidine 2% + alcool 70% rosée (S: 27-T5+6).</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Universal Pack (S: 53-4E) · Plateau Endoprothèse AAA (S: 43-29D)</li>
+                    <li>Pinces de Gérald (S: 40-1B) · Drape (S: 53-4E)</li>
+                    <li>Raytec x1 (S: 53-C1+2) · Champ Mayo (S: 53-4C)</li>
+                    <li>Tubulure succion caoutchouc (S: 53-A2+3)</li>
+                    <li>Grand V-Drape (S: 26-BB4) — référence différente de Dr Fortin</li>
+                    <li>PRN : Écarteurs Langenbeck (S: 40-1D) · Bras de Martin (S: 43-43E)</li>
+                    <li>PRN : Plateau hémostat Dr Leduc (S: 39) — spécifique Dr Rizkallah</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Accessoires</div>
+                  <ul class="ks-list">
+                    <li>Hémoclips Bleu x2 (S: 53-LL5) · Hémoclips Jaune x2 (S: 53-LL4)</li>
+                    <li>Ruban ombilical x1 (S: 53-H7)</li>
+                    <li>Poignées pour lumières (S: 53-A6)</li>
+                    <li>Embout veineux x1 (S: 53-S1)</li>
+                    <li>Caoutchoucs Fogarty A0C01 (S: 53-W5)</li>
+                    <li>Protecteurs instruments x1 (S: 53-W4)</li>
+                    <li>Surgicel x1 (S: 53-LL7)</li>
+                    <li>Boîte rouge x1 (S: 26-Y4+5) · Aiguille 21 x1 (S: 26-M4)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pontage fémoro-poplité -->
+          <div class="proc-item" data-rcat="pontage">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">04</div>
+              <h3>Pontage fémoro-poplité</h3>
+              <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal, bras sur planchettes, flanelle en transverse. Infirmière du même côté (sauf tibiale antérieure ou pédieuse). Chirurgien assis pour prélèvement saphène. Rallonge de carbone aux pieds. Barre en L au niveau de la taille — vérifier si le chirurgien la prend malgré la fluoroscopie. Gants : 7½ Gammex.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Du nombril à la cheville. Vérifier si le chirurgien veut les 2 membres inférieurs badigeonnés. Badigeon Chlorhexidine 2% + alcool 70% teintée (S: 27-T1+2) — teintée, pas rosée.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Custom pack Fémoro-poplité (S: 53-3A)</li>
+                    <li>Plateau Poplité-tibial (S: 43-29C)</li>
+                    <li>Toile en U (S: 53-4E) · Blouse XXL x1 (S: 53-5E)</li>
+                    <li>Coban 4 po x1 ou 2 (S: 26-I3) · Bas large x1 ou 2 (S: 26-T6)</li>
+                    <li>Bassin simple (S: 26) · Serviettes vertes x2 (S: 53-Y3+4)</li>
+                    <li>Pinces de Gérald (S: 40-1B) · Écarteur Henley (S: 43-29C)</li>
+                    <li>PRN : Écarteur Bras de Martin (S: 43-43E) · Valvulotomes (S: 43-29C)</li>
+                    <li>PRN : Valvulotome LeMaître (S: 53-W1) · Champ Optima (S: 53-4D)</li>
+                    <li>PRN : Champ Périgroin (S: 53-10C) — spécifique Dr Rizkallah</li>
+                    <li>PRN : Plateau appendice hernie (S: 53-8C) · Tunnellisateurs 12'' ou 20'' (S: 40-3C)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Accessoires spécifiques Dr Rizkallah</div>
+                  <ul class="ks-list">
+                    <li>Hémoclips Bleu x2 (S: 53-LL5) · Hémoclips Jaune x2 (S: 53-LL4)</li>
+                    <li>Ruban ombilical x1 (S: 53-H7)</li>
+                    <li>Cathéter Jelco 18G x1 (S: 26-M7) — spécifique Dr Rizkallah</li>
+                    <li>Caoutchoucs Fogarty A0C01 (S: 53-W5)</li>
+                    <li>Bag decanter x2 (S: 26-AA1)</li>
+                    <li>Lacet silastic maxi x1 (S: 26-Z3)</li>
+                    <li>Crayon marqueur (S: 26-AA3)</li>
+                    <li>Gant 7½ Gammex (S: 26-E5)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pontage carotido-sous-clavier avec embolisation -->
+          <div class="proc-item" data-rcat="pontage">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">05</div>
+              <h3>Pontage carotido-sous-clavier avec embolisation</h3>
+              <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span><span class="ptag ptag-endovasc">Hybride</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Configuration</div>
+                  <p>Table Mayo + 2 tables de base. Rallonge de carbone à la tête. Rouleau sous les épaules. Coussin gel sous les genoux. Chariot angio bleu du 56. Appareil à fluoro (tête gauche). Télé fluoro (droite). Tablier de plomb pour tout le personnel. Gants : 7½ Gammex.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Du lobe d'oreille et joue jusqu'au mamelon côté opéré, menton jusqu'au mamelon côté opposé. Badigeon Chlorhexidine 2% + alcool 70% clair (incolore).</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Universal Pack + Custom pack Angio (S: 53)</li>
+                    <li>Blouse XXL x1, XL ou L (S: 53)</li>
+                    <li>Plateau Endoprothèse AAA (S: 53) · Boîte rouge (S: 27)</li>
+                    <li>Pinces de Gérald (S: 40) · Tapis magnétique (S: 53)</li>
+                    <li>Poignées pour lumières · Champs fluoroscopie MTI 4951-20 (S: 27)</li>
+                    <li>PRN : Écarteurs Langenbeck · Écarteur Henley · Pince bipolaire vasculaire</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Accessoires spécifiques Dr Rizkallah</div>
+                  <ul class="ks-list">
+                    <li>Seringue 10ml x1 · Aiguille 21 x1</li>
+                    <li>Hémoclips Bleu x2 + Jaune x2</li>
+                    <li>Boîte rouge x1 · Embout veineux x1 (S: 56)</li>
+                    <li>Caoutchoucs Fogarty A0C01 (S: 56) · Peanut cardiaque (S: 56)</li>
+                    <li>Bag decanter x1 · Lacet silastic mini x3 + maxi x1</li>
+                    <li>Protecteurs instruments x1 (S: 56)</li>
+                    <li>Crayon marqueur · Poire asepto</li>
+                    <li>Cordon ombilical x1 (S: 53)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pontage ilio-fémoral -->
+          <div class="proc-item" data-rcat="pontage">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">06</div>
+              <h3>Pontage ilio-fémoral</h3>
+              <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Configuration</div>
+                  <p>Table Mayfield — table inversée (tête aux pieds) + rallonge au pied. Infirmière du côté opposé. FAIRE UN COMPTE COMPLET. Décubitus dorsal, bras sur les planchettes. Gants : 7½ Gammex.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Mi-seins aux genoux. Badigeon Chlorhexidine rosée.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Custom Pack Aorte Abdominale · Cautère avec aspirateur de fumée</li>
+                    <li>Blouse XXL x1 · Serviette · Bassin simple · Raytec x2 · Mesure 500ml (S: 46)</li>
+                    <li>Plateau Vasculaire Majeure (S: 53)</li>
+                    <li>Plateau Instruments Longs Vasculaire (S: 53)</li>
+                    <li>Écarteur Omni-Tract 2 plateaux (S: 53)</li>
+                    <li>Du Plateau Endoprothèse AAA : Écarteurs Weitlaner, porte-aiguille autostatique, bull-dog métalliques, pinces dissection manches noirs, pinces Hémoclips, 2 pinces Fogarty angulées</li>
+                    <li>Pinces De Bakey droites (S: 46) · Poignées pour lumières · Drain Penrose ¼ PRN</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Spéciaux</div>
+                  <ul class="ks-list">
+                    <li>Seringue 10ml · Hémoclips P.M. · Aiguille 21 x1</li>
+                    <li>Lacets Silastic Maxi x1</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RAAA tube aortique -->
+          <div class="proc-item" data-rcat="pontage">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">07</div>
+              <h3>RAAA — Pontage aorto-aortique (tube)</h3>
+              <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="pearl" style="margin-bottom:14px;"><h4>⚡ Différence majeure vs Dr Febrer/Fortin</h4><ul>
+                <li>Infirmière à droite du patient — comme Dr Febrer et Fortin</li>
+                <li>Chirurgien à gauche — idem</li>
+                <li>Gant 7½ Gammex requis en accessoire (S: 26)</li>
+                <li>Pas de Surgicel dans les accessoires</li>
+                <li>Pas de Crayon marqueur dans les accessoires habituels (vérifier)</li>
+              </ul></div>
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal, bras sur planchettes, coussin en gel sous le patient et sous les genoux. Table Mayfield + Maquet avec flex. Gants : 7½ Gammex.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Mi-seins aux genoux. Badigeon Chlorhexidine 70% rosée (S: 27).</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Custom Pack Aorte Abdominale (S: 53)</li>
+                    <li>Vasculaire Majeure (S: 43) + Instruments Longs Vasculaire (S: 43)</li>
+                    <li>Écarteur Omni-tract 2 plateaux (S: 43)</li>
+                    <li>Curettes (S: 40) · Poignées pour lumières (S: 53)</li>
+                    <li>PRN : Lames obèses Omni-tract (S: 53) · V-Drape grand (S: 26)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Accessoires</div>
+                  <ul class="ks-list">
+                    <li>Hémoclips Bleu x2, Vert x1, Orange x1 (S: 53)</li>
+                    <li>Caoutchoucs Fogarty Soft 61 (S: 53)</li>
+                    <li>Tubulure auto-transfuseur x1 (S: 56)</li>
+                    <li>Aiguille 21 x1 (S: 26) · Électrode 4 po x1 (S: 53)</li>
+                    <li>Ruban ombilical x1 (S: 53)</li>
+                    <li>Seringue 10ml x1 (S: 26)</li>
+                    <li>Lacet silastic maxi x1 (S: 26) · Bag decanter x1 (S: 26)</li>
+                    <li>Crayon marqueur (S: 26) · Gant 7½ Gammex (S: 26)</li>
+                    <li>Nécessaire pour sonde urinaire (S: 26)</li>
+                    <li>PRN : Peanuts (S: 53)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RAAA aorto-bi-fémoral -->
+          <div class="proc-item" data-rcat="pontage">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">08</div>
+              <h3>RAAA — Pontage aorto-bi-fémoral</h3>
+              <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="pearl" style="margin-bottom:14px;"><h4>⚡ Différence importante</h4><ul>
+                <li>Infirmière à gauche du patient — inversé vs les autres chirurgiens</li>
+                <li>Chirurgien à droite du patient — inversé vs les autres chirurgiens</li>
+              </ul></div>
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal, bras sur planchettes, coussin en gel le long du corps. <strong>Infirmière à gauche, Chirurgien à droite</strong> — position inversée vs les autres chirurgiens. 2 cautères si assistant. Gants : 7½ Gammex.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Mi-seins aux genoux. Badigeon Chlorhexidine 70% rosée.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments supplémentaires vs tube</div>
+                  <ul class="ks-list">
+                    <li>Ajout : Aorto-bi-fémoral (S: 53)</li>
+                    <li>Hémoclips Jaune x2 en plus</li>
+                    <li>Cordon ombilical x2 (S: 53) au lieu de x1</li>
+                    <li>Caoutchoucs Fogarty Soft 61 + A0C01 (deux types)</li>
+                    <li>Embout veineux x1 (S: 56)</li>
+                    <li>Lacet silastic mini x3 + maxi x2</li>
+                    <li>PRN : V-Drape grand (S: 53)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RAAA aorto-bi-iliaque -->
+          <div class="proc-item" data-rcat="pontage">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">09</div>
+              <h3>RAAA — Pontage aorto-bi-iliaque</h3>
+              <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal avec coussin en gel sous les genoux. Infirmière à droite. Chirurgien à gauche. Table Mayfield + Maquet avec flex. Gants : 7½ Gammex.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Mi-seins aux genoux. Badigeon Chlorhexidine 70% rosée.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments / Accessoires</div>
+                  <ul class="ks-list">
+                    <li>Custom Pack Aorte Abdominale (S: 53-3A)</li>
+                    <li>Vasculaire Majeure (S: 43-29E) + Instruments Longs (S: 43-29E)</li>
+                    <li>Écarteur Omni-tract 2 plateaux (S: 43-29D) · Curettes (S: 40)</li>
+                    <li>Seringue 10ml (S: 26-L2) · Aiguille 21 (S: 26-M4)</li>
+                    <li>Hémoclips Bleu x2, Vert x1, Orange x1 (S: 53-LL5)</li>
+                    <li>Électrode 4 po x1 (S: 53-B4)</li>
+                    <li>Cordon ombilical x1 (S: 53-H7)</li>
+                    <li>Caoutchoucs Fogarty Soft 61 (S: 53-W5)</li>
+                    <li>Bag decanter x1 (S: 26-AA1)</li>
+                    <li>Lacet silastic mini x1 + maxi x1 (S: 26-Z3)</li>
+                    <li>Tubulure auto-transfuseur x1 (S: 56-L6)</li>
+                    <li>Crayon marqueur (S: 26-AA3) · Surgicel x1 (S: 53)</li>
+                    <li>Poignées pour lumières (S: 53-A6)</li>
+                    <li>Sonde urinaire (S: 26-N3) · Kit (S: 26-O5-6) · Sac urinaire (S: 26-O1-2)</li>
+                    <li>PRN : Lames obèses Omni-tract (S: 53)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RAAA rétropéritonéal -->
+          <div class="proc-item" data-rcat="pontage">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">10</div>
+              <h3>RAAA / PABI — Approche rétropéritonéale</h3>
+              <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus latéral droit, bras sur planchettes, coussin en gel le long du corps. Matelas à billes. Têtière avec rails. Support thoracique pour bras. Coussin en U entre jambes. Coussin gel pour aisselles. Infirmière à droite. Chirurgien à gauche. Gants : 7½ Gammex.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>De la nuque jusqu'à mi-cuisse. Badigeon Chlorhexidine 70% rosée.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments spécifiques</div>
+                  <ul class="ks-list">
+                    <li>Aorto-bi-fémoral (S: 53)</li>
+                    <li>Costotome de Berthume (S. 33, thoracique)</li>
+                    <li>Champ magnétique (S: 53)</li>
+                    <li>Drape sheet + Bandes bleues x2</li>
+                    <li>PRN : Écarteurs aorte thoracique · Ortho Plastie</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Accessoires</div>
+                  <ul class="ks-list">
+                    <li>Hémoclips Bleu x2, Vert x1, Orange x1 (S: 53)</li>
+                    <li>Cordon ombilical x2 (S: 53)</li>
+                    <li>Caoutchoucs Fogarty Soft 61 x1 (S: 56)</li>
+                    <li>Seringue 10ml x1 (S: 27) · Électrode 4 po x1 (S: 27)</li>
+                    <li>Embout veineux x1 (S: 56)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RAAT thoracotomie -->
+          <div class="proc-item" data-rcat="pontage">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">11</div>
+              <h3>RAAT — Approche thoracotomie</h3>
+              <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span><span class="ptag ptag-conjoint">Thoracique</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus latéral droit. Flex entre appendice xyphoïde et ombilic. Coussin en gel le long du corps. Matelas à billes. Têtière avec rails. Support thoracique pour bras. Coussin en U entre jambes. Coussin gel pour aisselles. Infirmière à droite. Chirurgien à gauche. Gants : 7½ Gammex.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>De la nuque jusqu'à mi-cuisse. Badigeon Chlorhexidine 70% rosée.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Custom Pack Aorte Abdominale + Aorto-bi-fémoral (S: 53)</li>
+                    <li>Instruments Longs Vasculaire + Écarteur Omni-tract 2 plateaux (S: 53)</li>
+                    <li>Champ magnétique (S: 53) · Costotome de Berthume (S. 33)</li>
+                    <li>Curettes (S: 40) · Poignées pour lumières · Drape sheet + Bandes bleues x2</li>
+                    <li>PRN : Lames obèses · Écarteurs aorte thoracique · Ortho Plastie</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Accessoires</div>
+                  <ul class="ks-list">
+                    <li>Hémoclips Bleu x2, Vert x1, Orange x1 · Cordon ombilical x2 (S: 53)</li>
+                    <li>Caoutchoucs Fogarty Soft 61 x1 (S: 56)</li>
+                    <li>Seringue 10ml x1 (S: 27) · Électrode 4 po x1 (S: 27)</li>
+                    <li>Embout veineux x1 (S: 56)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RAAT avec réimplantation rénale -->
+          <div class="proc-item" data-rcat="pontage">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">12</div>
+              <h3>RAAT — Thoraco-abdominal avec réimplantation artère rénale</h3>
+              <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span><span class="ptag ptag-conjoint">Thoraco-abdo</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus latéral droit environ 60 degrés. Flex entre appendice xyphoïde et ombilic. Tablette à la tête pour instruments. Rails de la table dégagés. Matelas à billes. Infirmière à droite. Chirurgien à gauche. Gants : 7½ Gammex.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>De la nuque jusqu'à mi-cuisses + épaule. En avant jusqu'en dessous des seins. En arrière jusqu'à la table. Badigeon Chlorhexidine 70% rosée.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Accessoire spécifique Dr Rizkallah</div>
+                  <ul class="ks-list">
+                    <li>Canule de perfusion 15 Fr x1 (S: 56 armoire C2) — spécifique Dr Rizkallah, absent chez les autres</li>
+                    <li>Embout veineux x1 (S: 56)</li>
+                    <li>Tubulure auto-transfuseur x1 (S: 56)</li>
+                    <li>Cordon ombilical x2 (S: 53) · Hémoclips Bleu x2, Vert x1, Orange x1</li>
+                    <li>Caoutchoucs Fogarty Soft 61 x1 (S: 56)</li>
+                    <li>PRN : Lames obèses · Écarteurs aorte thoracique · V-Drape grand · Ortho Plastie</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Embolectomie fémorale -->
+          <div class="proc-item" data-rcat="urgence">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">13</div>
+              <h3>Embolectomie fémorale</h3>
+              <div class="proc-tags"><span class="ptag ptag-urgence">Urgence</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal, bras sur les planchettes. Bras en L blanc au niveau de la taille PRN. Coussin en gel sous les genoux. Gants : 7½ Gammex.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Du nombril aux genoux. Asepsie à la chlorhexidine. Badigeon chlorhexidine rosée.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Universal pack (S: 53-4E)</li>
+                    <li>Blouse XXL x1, XL x1 (S: 53-5D) — XL au lieu de L</li>
+                    <li>Bassin simple · Tubulure succion caoutchouc</li>
+                    <li>Cautère avec aspirateur de fumée · Raytec x1 · Serviettes vertes x1</li>
+                    <li>Plateau Poplité-tibial (S: 43-29C)</li>
+                    <li>Écarteur Bras de Martin PRN (S: 43-43E)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Sutures</div>
+                  <ul class="ks-list">
+                    <li>Surgilon 3-0 1918-41 (S: 53-E5)</li>
+                    <li>Polysorb 2-0 CL-811 x2 (S: 53-D3)</li>
+                    <li>Prolène 5-0 8725 x2 (S: 53-F4)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Spéciaux spécifiques Dr Rizkallah</div>
+                  <ul class="ks-list">
+                    <li>Hémoclips Bleu x1 · Poire asepto · Seringue 10ml + 3ml</li>
+                    <li>Lame 10 + Lame 11 · Aiguille 21 (Hypo 21) x2</li>
+                    <li>Lacet silastic maxi x1 · Embout veineux</li>
+                    <li>Protecteurs instruments · Boîte rouge</li>
+                    <li>Caoutchoucs Fogarty A0C01 · Bag decanter x1</li>
+                    <li>Agrafeuse x1 · Crayon marqueur</li>
+                    <li>Cathéter Fogarty 3, 4 ou 5 sur demande (S: 53-Mur1)</li>
+                    <li>Robinet (S: 56-F1)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Médicaments spécifiques Dr Rizkallah</div>
+                  <ul class="ks-list">
+                    <li>Héparine 2 500 unités dans 250ml NaCl</li>
+                    <li>PRN : Papavérine 32.5mg (S: 53-B11) — spécifique Dr Rizkallah</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pontage huméro-huméral / embolectomie MS -->
+          <div class="proc-item" data-rcat="urgence">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">14</div>
+              <h3>Pontage huméro-huméral / Embolectomie humérale</h3>
+              <div class="proc-tags"><span class="ptag ptag-urgence">Urgence</span><span class="ptag ptag-pontage">Pontage</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Table Mayo + Table à main noire (S: 40). Décubitus dorsal, tête sur beigne. Patient le plus près possible du bord de la table. Coussin en gel sous les genoux et sous le patient. Gants : 7½ Gammex.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Bras au complet, épaule jusqu'au menton, ¾ côté opposé. Badigeon Chlorhexidine 2% incolore + alcool 70%.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Universal Split Pack · Mayo · Blouse XXL x1, L x1</li>
+                    <li>Bassin simple (S: 26) · Tubulure succion caoutchouc (S: 53-A2+3)</li>
+                    <li>Cautère avec aspirateur de fumée (S: 53-B3) · Raytec x2 (S: 53-C1+2)</li>
+                    <li>Plateau Poplité-tibial (S: 43)</li>
+                    <li>Plateau Pince de Gérald (S: 40)</li>
+                    <li>Bras de Martin PRN (S: 43)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Sutures spécifiques Dr Rizkallah</div>
+                  <ul class="ks-list">
+                    <li>Surgilon 0, 2-0, 3-0 à la main</li>
+                    <li>Prolène 5-0 8725</li>
+                    <li>Prolène 6-0 8718 — en plus du 5-0</li>
+                    <li>Polysorb 2-0 CL 811 x2 · Agrafes</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Spéciaux</div>
+                  <ul class="ks-list">
+                    <li>Seringue 10ml · Aiguille 21 (Hypo 21) · Poire asepto</li>
+                    <li>Protecteurs instruments (S: 53-W4)</li>
+                    <li>Lacets silastic mini x2 (S: 26-Z3)</li>
+                    <li>Embout veineux (S: 53-S1)</li>
+                    <li>Hémoclips Jaune (S: 53-LL4) · Hémoclips Bleu (S: 53-LL5)</li>
+                    <li>Boîte rouge (S: 26-Y4+5) · Bag Décanter (S: 26-AA1)</li>
+                    <li>Crayon marqueur (S: 26-AA3) · Poignées pour la lumière (S: 53-A6)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- EVAR salle 26 -->
+          <div class="proc-item" data-rcat="endovasc">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">15</div>
+              <h3>Endoprothèse aortique percutanée — Salle 26</h3>
+              <div class="proc-tags"><span class="ptag ptag-endovasc">Endovasculaire</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="pearl" style="margin-bottom:14px;"><h4>⚡ Spécificités Dr Rizkallah — Salle 26</h4><ul>
+                <li>Gants : 7½ Gammex (S: 26-E5)</li>
+                <li>Lingerie : Champs Angio déjà sur table technicienne en angio — ne pas en préparer</li>
+                <li>Blouse XXL x2, XL x2 — plus de blouses que les autres</li>
+                <li>Panier gris x2 pour endoprothèse (S: 53)</li>
+              </ul></div>
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Ce qu'on descend à la salle 26</div>
+                  <ul class="ks-list">
+                    <li>Appareil de cautère (pas celui de la salle préparée)</li>
+                    <li>Table de base (pas celle de la salle 30)</li>
+                    <li>Doppler (S: 30) · Support à bassin (pas celui de la salle 30)</li>
+                    <li>Tabliers RX pour tout le personnel</li>
+                    <li>Panier gris x2 pour endoprothèse (S: 53)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Position / Asepsie</div>
+                  <p>Décubitus dorsal. Bras le long du corps en hamac avec flanelle. Du nombril aux genoux. Badigeon Chlorhexidine rosée.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Lingerie</div>
+                  <ul class="ks-list">
+                    <li>Champs Angio (déjà sur table technicienne en angio)</li>
+                    <li>Blouse XXL x2, XL x2</li>
+                    <li>Couvre-table x1 · Champ ¾ pour doubler la table</li>
+                    <li>Succion caoutchouc PRN · Bassin simple · Raytec x2</li>
+                    <li>Cautère avec aspirateur de fumée PRN</li>
+                    <li>Serviettes vertes x1 · Bande bleue x1 · Barrier x3 PRN</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Plateau angio percutané (S: 53) — si non disponible : scopie de base ou plastie</li>
+                    <li>Plateau Endoprothèse AAA (S: 53) PRN</li>
+                    <li>Pinces de Gérald (S: 30) PRN · Succion Blair (S: 30) PRN</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Spéciaux PRN (en salle, ne pas donner d'emblée)</div>
+                  <ul class="ks-list">
+                    <li>Seringue 10ml + aiguille 21 · Élastiques x1</li>
+                    <li>Cordon ombilical blanc U-12</li>
+                    <li>Embout veineux · Boîte rouge · Bag decanter · Tourniquets</li>
+                    <li>Hémoclips M x1 · Hémoclips ML x1 · Silastic mini x1</li>
+                    <li>Poire Asepto · Poignées de lumière · Corde de Doppler</li>
+                    <li>Caoutchoucs Fogarty size 1 (A0C01) x1</li>
+                    <li>Nécessaire pour sonde urinaire + sac urinomètre</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Médicament / Pansement</div>
+                  <ul class="ks-list">
+                    <li>Héparine 2 500 unités dans 250ml NaCl PRN</li>
+                    <li>Monocryl 4-0 Y823 PRN · Lames 10 et 11 PRN</li>
+                    <li>Pansement : Stéri-strips ou Stéri-strips + Leukomed petit</li>
+                    <li>Ou pansement compressif bande élastique (S: 27)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Angioplastie salle 40 -->
+          <div class="proc-item" data-rcat="endovasc">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">16</div>
+              <h3>Angioplastie / Dilatation percutanée ± stent — Salle 40</h3>
+              <div class="proc-tags"><span class="ptag ptag-endovasc">Endovasculaire</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="pearl" style="margin-bottom:14px;"><h4>⚡ Différences Dr Rizkallah vs Dr Febrer/Fortin</h4><ul>
+                <li>Gants : 7½ Gammex (S: 26-E5) — dans les spéciaux</li>
+                <li>Blouse XXL + L (pas XL + L)</li>
+                <li>Champ pour fluoroscopie (S: 49-18C) — référence différente</li>
+                <li>Champ écho stérile (S: 26-AA6) — référence différente</li>
+                <li>Pas de Xylocaïne listée — vérifier avec l'équipe si nécessaire</li>
+              </ul></div>
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal avec flanelle en transverse. Bras le long du corps avec flanelle (sous le patient). Abdomen dégagé. Rallonge de carbone selon le chirurgien.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>De l'ombilic aux genoux. Badigeon Chlorhexidine 2% + alcool 70% rosée. RASAGE des deux aines.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Lingerie</div>
+                  <ul class="ks-list">
+                    <li>Custom pack Angio (S: 43-29A) · Bassin simple (S: 26)</li>
+                    <li>Blouse XXL x1 et L x1 (S: 53-5D)</li>
+                    <li>Raytec x1 (S: 53-C1+2)</li>
+                    <li>Serviette verte x1 (S: 53-Y3+4)</li>
+                    <li>Champ XL x1 (S: 53-4C) · Bande bleue x1 (S: 53-4C)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments / Spéciaux</div>
+                  <ul class="ks-list">
+                    <li>Plateau Angio percutané (S: 40-3B)</li>
+                    <li>Poignées pour lumières (S: 53-A6) · Aiguille 21G (S: 26-M4)</li>
+                    <li>Champ écho stérile (S: 26-AA6) · Gel stérile écho (S: 26-AA6)</li>
+                    <li>Crayon-règle (S: 26-AA3)</li>
+                    <li>Champ pour fluoroscopie (S: 49-18C) — référence exclusive Dr Rizkallah</li>
+                    <li>Boîte rouge (S: 26-Y4+5) · Bag decanter x2 (S: 26-AA1)</li>
+                    <li>Seringue 20ml (S: 26-L4)</li>
+                    <li>Gants 7½ Gammex (S: 26-E5)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Médicaments</div>
+                  <ul class="ks-list">
+                    <li>NaCl 0.9% 1000ml avec 5 000 unités Héparine (S: 56-B9)</li>
+                    <li>NaCl 0.9% 250ml (S: 27-N2)</li>
+                    <li>Xylocaïne 2% avec épinéphrine 20ml (S: 56-C16)</li>
+                    <li>Visipaque 320mg/ml x2 dans réchaud (chariot angio bleu)</li>
+                    <li>Si non disponible : Isovue 370mg/ml (salle 53)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Pansement / Notes</div>
+                  <ul class="ks-list">
+                    <li>Stéri-strips (S: 26-I4) · Leukomed petit (S: 26-H2)</li>
+                    <li>Drapage : Cache-sexe + champ à trous du custom pack angio</li>
+                    <li>Identifier feuille Notes d'évolution : Dr Rizkallah — y coller étiquettes ballons et endoprothèses</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- FEVAR Dr Ibrahim -->
+          <div class="proc-item" data-rcat="endovasc">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">17</div>
+              <h3>Endoprothèse fenêtrée — Salle 26 (Dr Ibrahim / Chirurgie cardiaque)</h3>
+              <div class="proc-tags"><span class="ptag ptag-endovasc">Endovasculaire</span><span class="ptag ptag-conjoint">Fenêtrée</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="pearl" style="margin-bottom:14px;"><h4>⚠ Procédure conjointe</h4><ul>
+                <li>Chirurgien vasculaire + Dr Ibrahim (cardiaque)</li>
+                <li>Vérifier avec le chirurgien pour badigeon du bras gauche</li>
+                <li>Cautère ophtalmique (S: 53) pour préparation de l'endoprothèse sur table</li>
+                <li>Ticron 5-0 (3280-21) x3 dans le panier gris de la salle 43</li>
+              </ul></div>
+              <p style="font-size:13px;color:var(--text2);">Configuration identique à la version Dr Fortin/Rizkallah — se référer à la fiche FEVAR du Kardex Dr Fortin pour le détail complet de la préparation de la table et du matériel spécifique.</p>
+            </div>
+          </div>
+
+          <!-- Fistule artério-veineuse -->
+          <div class="proc-item" data-rcat="autre">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">18</div>
+              <h3>Création de fistule artério-veineuse</h3>
+              <div class="proc-tags"><span class="ptag ptag-autre" style="color:#94A3B8;border-color:rgba(148,163,184,.35);background:rgba(148,163,184,.08);">Autre</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Différences vs Dr Febrer</div>
+                  <ul class="ks-list">
+                    <li>Gants : 7½ Gammex (S: 26-E5) — au lieu de Neopréne</li>
+                    <li>Bras en croix (au lieu de garrot du côté opéré chez Febrer)</li>
+                    <li>1 table de base + bassin régulier</li>
+                    <li>Asepsie : doigts ad aisselle (au lieu de bras au complet)</li>
+                    <li>Pas de Champ Mayo en PRN</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal, bras en croix, oreiller sous les genoux, garrot du côté opéré. Table à main noire, appareil garrot, 1 table de base, bassin régulier.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Bras au complet (doigts ad aisselle). Asepsie et badigeon Chlorhexidine 70% incolore (S: 27-T1+2).</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Ensemble Main (S: 49-18A) · Blouse XXL, L (S: 53-5C, 5D)</li>
+                    <li>Succion caoutchouc (S: 53-A2+3)</li>
+                    <li>Cautère avec aspirateur de fumée (S: S53-B3)</li>
+                    <li>Plateau Plastie Vasculaire (S: 43-29D)</li>
+                    <li>Bassin simple (S: 26) · Pince de Gérald (S: 40-1B)</li>
+                    <li>PRN : BB duck (S: 40-1D) · Si greffon : Passe-greffon Impra (S: 40-3B)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Sutures spécifiques Dr Rizkallah</div>
+                  <ul class="ks-list">
+                    <li>Surgilon 4-0 (1918-31) (S: 53-E6)</li>
+                    <li>Prolène 6-0 (8806 ou VP746x) x1 (S: 53-F4)</li>
+                    <li>Monocryl 4.0 (Y823) (S: 53-D7)</li>
+                    <li>PRN si REDO : ajouter lame 11 (S: 26-M3)</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Accessoires</div>
+                  <ul class="ks-list">
+                    <li>Hémoclips Jaune x1 + Bleu x1</li>
+                    <li>Protecteurs instruments (S: 53-W4)</li>
+                    <li>Seringue 10ml x1 · Aiguille 21 x1</li>
+                    <li>Lacets silastics mini x1 · Jelco bleu G22 x1 (S: 26-M8)</li>
+                    <li>Bag decanter x1 · Bande de Martin stérile 4 po (S: 26-U1)</li>
+                    <li>Stéri-strips petits (S: 27) · V-Lance 1.3mm (S: 53-L4)</li>
+                    <li>Poignées pour lumières x1 (S: 53-A6)</li>
+                    <li>PRN : Sapin (S: 26-Z2) · Corde Doppler (S: 40-A1)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /kardex-grid-rizkallah -->
+      </div><!-- /kardex-rizkallah -->
+
+      <!-- DR BLAIR -->
+      <div id="kardex-blair" class="kardex-surgeon" style="display:none;">
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:20px;display:flex;align-items:center;gap:18px;">
+          <div style="width:56px;height:56px;border-radius:50%;background:var(--red-dim);border:2px solid rgba(185,28,28,0.4);display:flex;align-items:center;justify-content:center;font-size:24px;">👩‍⚕️</div>
+          <div>
+            <div style="font-size:18px;font-weight:500;margin-bottom:3px;">Dr Blair</div>
+            <div style="font-family:monospace;font-size:10px;color:var(--red);letter-spacing:1px;text-transform:uppercase;">Chirurgie vasculaire · HSCM · Gaucher</div>
+            <div style="font-size:12px;color:var(--text3);margin-top:4px;">Gants : 7½ Protégrity — Table Mayfield inversée (tête aux pieds) + rallonge au pied</div>
+          </div>
+        </div>
+        <div class="proc-grid">
+          <div class="proc-item">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">01</div>
+              <h3>Pontage aorto-rénal</h3>
+              <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Configuration spéciale</div>
+                  <p>Dr Blair gaucher — se place à gauche du patient. Infirmière à droite de la table Mayfield. Table inversée (tête aux pieds) + rallonge au pied. Cautère : Coagulation 40. Installation d'une sonde vésicale. Dr Blair ajuste le flex en début de chirurgie. Ombilic du patient au niveau du flex de la table.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal, bras sur les planchettes. Oreiller sous les genoux.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Mi-seins aux genoux. Badigeon (x3) Chlorhexidine rosée. Gants : 7½ Protégrity.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Custom Pack Aorte Abdominale</li>
+                    <li>Plateau Instruments Vasculaire Majeure (S: 53)</li>
+                    <li>Plateau Instruments Longs Vasculaires (S: 53)</li>
+                    <li>Plateau Omni-tract 2 plateaux (S: 53)</li>
+                    <li>Plateau Pontage aorto-rénal (S: 53)</li>
+                    <li>Metz spécial pour gaucher (S: 46)</li>
+                    <li>Long ciseau de Pott (S: 46)</li>
+                    <li>Poignées pour lumière</li>
+                    <li>Blouse XXL x1 · Bassin simple · Champ ¾ doubler Mayfield</li>
+                    <li>Mesure 500ml · Serviettes x1 · Serviettes blanches radio-opaques x2</li>
+                  </ul>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Spéciaux</div>
+                  <ul class="ks-list">
+                    <li>Seringue 10ml · Aiguille 21 x1</li>
+                    <li>Peanuts · Bag decanter</li>
+                    <li>Cordon ombilical blanc</li>
+                    <li>Queue de rat jaune · Longue électrode</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="proc-item">
+            <div class="proc-head" onclick="toggleP(this)">
+              <div class="proc-num">02</div>
+              <h3>Pontage spléno-rénal ou hépato-rénal</h3>
+              <div class="proc-tags"><span class="ptag ptag-pontage">Pontage</span></div>
+              <span class="proc-chev">▼</span>
+            </div>
+            <div class="proc-body">
+              <div class="kardex-section-grid">
+                <div class="ks-block">
+                  <div class="ks-title">Position</div>
+                  <p>Décubitus dorsal, bras sur les planchettes. Région lombaire surélevée par support rénal ou rouleau. Coussin sous les genoux. Infirmière à droite de la table Mayfield. Table inversée (tête aux pieds) + rallonge au pied.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Asepsie</div>
+                  <p>Mi-seins aux genoux. Badigeon Chlorhexidine rosée. Gants : 7½ Protégrity.</p>
+                </div>
+                <div class="ks-block">
+                  <div class="ks-title">Instruments</div>
+                  <ul class="ks-list">
+                    <li>Custom Pack Aorte Abdominale</li>
+                    <li>Plateau Instruments Vasculaire Majeure (S: 53)</li>
+                    <li>Plateau Instruments Longs Vasculaire (S: 53)</li>
+                    <li>Écarteur Omni-tract 2 plateaux (S: 53)</li>
+                    <li>Plateau Pontage Aorto-Rénal (S: 53)</li>
+                    <li>Plateau Pince de Gérald (S: 46)</li>
+                    <li>Long ciseau de Pott (S: 46)</li>
+                    <li>Poignées pour lumières</li>
+                    <li>Du plateau Endoprothèse AAA : pinces Hémoclips P et M, Bull Dog métallique, Pince de Cooley, Écarteur Weitlaner x2, Porte-aiguille Castro manche noir, Pinces artérielles Fogarty droites et angulées</li>
+                    <li>Cautère · Blouse XXL x1 · Serviettes x1 · Bassin simple · Tampons · Mesure 500ml</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="pearl"><h4>⚡ Note Dr Blair</h4><ul><li>Dr Blair est gaucher — adapter l'orientation des instruments et la disposition de la table en conséquence</li></ul></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /page-wrap -->
+  </div><!-- /sec-kardex -->
+
+<!-- ══ QUIZ ═══════════════════════════════════════════ -->
   <div id="sec-quiz" class="section">
     <div class="page-wrap">
       <div class="page-header">
@@ -2418,6 +5645,53 @@ function infoV(id) {
 }
 
 // ─── Procedures ──────────────────────────────────────
+function switchKardex(name, el) {
+  document.querySelectorAll('.kardex-surgeon').forEach(k => { k.style.display='none'; k.classList.remove('active'); });
+  document.querySelectorAll('.anatomy-tabs .atab').forEach(t => t.classList.remove('active'));
+  const panel = document.getElementById('kardex-' + name);
+  if (panel) { panel.style.display='block'; panel.classList.add('active'); }
+  if (el) el.classList.add('active');
+}
+
+function filterKardexRizkallah(cat, el) {
+  const grid = document.getElementById('kardex-grid-rizkallah');
+  if (!grid) return;
+  grid.querySelectorAll('.proc-item').forEach(item => {
+    if (cat === 'all') item.classList.remove('hidden');
+    else item.classList.toggle('hidden', item.dataset.rcat !== cat);
+    item.querySelector('.proc-body').classList.remove('open');
+    item.querySelector('.proc-chev').style.transform = '';
+  });
+  document.querySelectorAll('#kardex-rizkallah .pfilt').forEach(f => f.classList.remove('active'));
+  if (el) el.classList.add('active');
+}
+
+function filterKardexFortin(cat, el) {
+  const grid = document.getElementById('kardex-grid-fortin');
+  if (!grid) return;
+  grid.querySelectorAll('.proc-item').forEach(item => {
+    if (cat === 'all') item.classList.remove('hidden');
+    else item.classList.toggle('hidden', item.dataset.fcat !== cat);
+    item.querySelector('.proc-body').classList.remove('open');
+    item.querySelector('.proc-chev').style.transform = '';
+  });
+  document.querySelectorAll('#kardex-fortin .pfilt').forEach(f => f.classList.remove('active'));
+  if (el) el.classList.add('active');
+}
+
+function filterKardex(cat, el) {
+  const grid = document.getElementById('kardex-grid-febrer');
+  if (!grid) return;
+  grid.querySelectorAll('.proc-item').forEach(item => {
+    if (cat === 'all') item.classList.remove('hidden');
+    else item.classList.toggle('hidden', item.dataset.kcat !== cat);
+    item.querySelector('.proc-body').classList.remove('open');
+    item.querySelector('.proc-chev').style.transform = '';
+  });
+  document.querySelectorAll('#sec-kardex .pfilt').forEach(f => f.classList.remove('active'));
+  if (el) el.classList.add('active');
+}
+
 function filterProc(cat, el) {
   document.querySelectorAll('.proc-item').forEach(item => {
     if (cat === 'all') item.classList.remove('hidden');
