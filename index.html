@@ -903,6 +903,96 @@ body {
   text-transform: uppercase; letter-spacing: 0.8px;
 }
 
+
+/* ══════════════════════════════
+   CONSOMMABLES
+   ══════════════════════════════ */
+.cons-tabs {
+  display: flex; gap: 6px; flex-wrap: wrap;
+  margin-bottom: 20px; padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.cons-tab {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase;
+  padding: 6px 14px; border-radius: 6px;
+  border: 1px solid var(--border);
+  color: var(--text3); cursor: pointer;
+  transition: all 0.18s; background: var(--bg3); white-space: nowrap;
+}
+.cons-tab:hover { border-color: rgba(185,28,28,0.35); color: var(--text2); }
+.cons-tab.active { background: var(--red-dim); border-color: rgba(185,28,28,0.4); color: var(--text); }
+.cons-panel { display: none; }
+.cons-panel.active { display: block; }
+
+.cons-panel-header {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 18px; padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.cons-panel-icon {
+  font-size: 24px; width: 44px; height: 44px;
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 10px; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.cons-panel-title { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.cons-panel-meta { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; }
+
+.cons-subgroup { margin-bottom: 14px; }
+.cons-subgroup-label {
+  padding: 7px 14px; border-radius: 6px 6px 0 0;
+  border: 1px solid var(--border);
+  border-bottom: none; font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.5px;
+}
+
+.cons-table {
+  width: 100%; border-collapse: collapse;
+  font-size: 12px; margin-bottom: 0;
+  border: 1px solid var(--border); border-radius: 0 0 8px 8px; overflow: hidden;
+}
+.cons-table thead th {
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  letter-spacing: 1px; text-transform: uppercase;
+  color: var(--text3); padding: 7px 14px; text-align: left;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg2); white-space: nowrap;
+}
+.cons-table tbody td {
+  padding: 7px 14px; color: var(--text2);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  vertical-align: middle;
+}
+.cons-table tbody tr:last-child td { border-bottom: none; }
+.cons-table tbody tr:hover td { background: rgba(255,255,255,0.025); color: var(--text); }
+
+.cons-loc {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--red); padding: 2px 8px; border-radius: 4px;
+  letter-spacing: 0.5px; white-space: nowrap;
+}
+.cons-grm {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  color: var(--text3);
+}
+
+.cons-legend {
+  display: flex; flex-wrap: wrap; gap: 10px;
+  margin-bottom: 18px; padding: 12px 16px;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.cons-legend-item {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace;
+}
+.cons-legend-dot {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+}
+
 </style>
 </head>
 <body>
@@ -964,6 +1054,9 @@ body {
     </div>
     <div class="nav-item" onclick="show('inventaire',this)">
       <span class="nav-icon">📦</span> Inventaire & Implants
+    </div>
+    <div class="nav-item" onclick="show('consommables',this)">
+      <span class="nav-icon">🔬</span> Consommables
     </div>
     <div class="nav-item" onclick="show('quiz',this)">
       <span class="nav-icon">🧠</span> Quiz bloc opératoire
@@ -1042,6 +1135,11 @@ body {
           <div class="module-card-icon">📦</div>
           <div class="module-card-title">Inventaire & Implants</div>
           <div class="module-card-desc">362 unités — EVAR · TEVAR · Stents · Ballons · Introducteurs</div>
+        </div>
+        <div class="module-card" style="--card-color:#065F46" onclick="show('consommables',document.querySelector('[onclick*=consommables]'))">
+          <div class="module-card-icon">🔬</div>
+          <div class="module-card-title">Consommables & Cathéters</div>
+          <div class="module-card-desc">61 références — Guides · Cathéters · Introducteurs · Emplacements GRM</div>
         </div>
         <div class="module-card" style="--card-color:#7C3AED" onclick="show('quiz',document.querySelector('[onclick*=quiz]'))">
           <div class="module-card-count">15 questions</div>
@@ -3747,6 +3845,109 @@ body {
 
   </div><!-- /sec-inventaire -->
 
+
+  <!-- ═══════════════════════════════════
+       CONSOMMABLES & CATHÉTERS
+       ═══════════════════════════════════ -->
+  <div id="sec-consommables" class="section">
+    <h2 class="section-title">Consommables & Cathéters</h2>
+    <p class="section-sub">Salle 40 — HSCM · Guides, cathéters, introducteurs · Emplacements et références GRM</p>
+
+    <!-- Légende emplacements -->
+    <div class="cons-legend">
+      <div class="cons-legend-item"><div class="cons-legend-dot" style="background:#B91C1C"></div> MM1-MM6 = Chariot guides/cathéters (tiroirs)</div>
+      <div class="cons-legend-item"><div class="cons-legend-dot" style="background:#0E7490"></div> NN1-NN2 = Rails cathéters navigation</div>
+      <div class="cons-legend-item"><div class="cons-legend-dot" style="background:#7C3AED"></div> OO1-OO4 = Petits guides et micro-matériel</div>
+      <div class="cons-legend-item"><div class="cons-legend-dot" style="background:#065F46"></div> PP1-PP2 = Cathéters de support</div>
+      <div class="cons-legend-item"><div class="cons-legend-dot" style="background:#92400E"></div> Salle 40, entre-salle arrière = Matériel volumineux</div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="cons-tabs">
+      <div class="cons-tab active" onclick="switchCons('guides',this)">〰️ Guides</div>
+      <div class="cons-tab" onclick="switchCons('caths',this)">🔬 Cathéters</div>
+      <div class="cons-tab" onclick="switchCons('intros',this)">🔧 Introducteurs</div>
+      <div class="cons-tab" onclick="switchCons('accs',this)">⚙️ Accessoires</div>
+    </div>
+
+    <!-- GUIDES -->
+    <div id="cons-guides" class="cons-panel active">
+      <div class="cons-panel-header">
+        <div class="cons-panel-icon">〰️</div>
+        <div>
+          <div class="cons-panel-title">Guides endovasculaires</div>
+          <div class="cons-panel-meta">18 références · 0.014" · 0.018" · 0.035" — Emplacements MM1 à MM4 et OO1-OO3</div>
+        </div>
+      </div>
+      <div class="cons-subgroup">
+      <div class="cons-subgroup-label" style="border-color:#7C3AED20;background:#7C3AED10">
+        <span style="color:#7C3AED;font-weight:600">Guide 0.014"</span>
+      </div>
+      <table class="cons-table"><thead><tr><th>Matériel</th><th>Taille</th><th>Emplacement</th><th>GRM</th></tr></thead><tbody><tr><td>Guide Commander ES 0.014</td><td>190 cm</td><td><span class="cons-loc">OO1</span></td><td class="cons-grm">1200002375</td></tr><tr><td>Guide Victory 0.014</td><td>195 cm</td><td><span class="cons-loc">OO2</span></td><td class="cons-grm">1200002715</td></tr><tr><td>Guide Commander ES 0.014</td><td>300 cm</td><td><span class="cons-loc">OO1</span></td><td class="cons-grm">1200005159</td></tr></tbody></table></div><div class="cons-subgroup">
+      <div class="cons-subgroup-label" style="border-color:#0E749020;background:#0E749010">
+        <span style="color:#0E7490;font-weight:600">Guide 0.018"</span>
+      </div>
+      <table class="cons-table"><thead><tr><th>Matériel</th><th>Taille</th><th>Emplacement</th><th>GRM</th></tr></thead><tbody><tr><td>Guide Terumo 0.018</td><td>180 cm</td><td><span class="cons-loc">OO3</span></td><td class="cons-grm">1200002208</td></tr><tr><td>Guide Victory 0.018</td><td>195 cm</td><td><span class="cons-loc">OO2</span></td><td class="cons-grm">1200002723</td></tr><tr><td>Guide Commander ST 0.018</td><td>210 cm</td><td><span class="cons-loc">OO1</span></td><td class="cons-grm">1200014550</td></tr><tr><td>Guide Commander ST 0.018</td><td>300 cm</td><td><span class="cons-loc">OO1</span></td><td class="cons-grm">1200014551</td></tr></tbody></table></div><div class="cons-subgroup">
+      <div class="cons-subgroup-label" style="border-color:#B4530920;background:#B4530910">
+        <span style="color:#B45309;font-weight:600">Guide 0.035"</span>
+      </div>
+      <table class="cons-table"><thead><tr><th>Matériel</th><th>Taille</th><th>Emplacement</th><th>GRM</th></tr></thead><tbody><tr><td>Guide BENTSON 0.035</td><td>145 cm</td><td><span class="cons-loc">MM1</span></td><td class="cons-grm">1001332315</td></tr><tr><td>Guide Rosen 0.035</td><td>150 cm</td><td><span class="cons-loc">MM4</span></td><td class="cons-grm">1200013293</td></tr><tr><td>Guide Advantage 0.035</td><td>180 cm</td><td><span class="cons-loc">MM3</span></td><td class="cons-grm">1200000743</td></tr><tr><td>Guide AMPLATZ (STIFF) 0.035</td><td>180 cm</td><td><span class="cons-loc">MM1</span></td><td class="cons-grm">1010006619</td></tr><tr><td>Guide BENTSON 0.035</td><td>180 cm</td><td><span class="cons-loc">MM1</span></td><td class="cons-grm">4200021495</td></tr><tr><td>Guide Terumo 0.035</td><td>180 cm</td><td><span class="cons-loc">MM1</span></td><td class="cons-grm">1100007096</td></tr><tr><td>Guide Bentson 0.035</td><td>260 cm</td><td><span class="cons-loc">MM2</span></td><td class="cons-grm">1200011673</td></tr><tr><td>Guide Lunderquist</td><td>260 cm</td><td><span class="cons-loc">MM4</span></td><td class="cons-grm">1100006847</td></tr><tr><td>Guide Rosen 0.035</td><td>260 cm</td><td><span class="cons-loc">MM4</span></td><td class="cons-grm">4200001675</td></tr><tr><td>Guide Terumo 0.035</td><td>260 cm</td><td><span class="cons-loc">MM2</span></td><td class="cons-grm">4200002764</td></tr><tr><td>Guide Terumo 0.035</td><td>400 cm</td><td><span class="cons-loc">MM3</span></td><td class="cons-grm">4200022240</td></tr></tbody></table></div>
+    </div>
+
+    <!-- CATHÉTERS -->
+    <div id="cons-caths" class="cons-panel">
+      <div class="cons-panel-header">
+        <div class="cons-panel-icon">🔬</div>
+        <div>
+          <div class="cons-panel-title">Cathéters de navigation et de support</div>
+          <div class="cons-panel-meta">23 références · CXI · Quickcross · KMP · RIM · Simmons · Pigtail — Emplacements NN1, NN2, PP1, PP2</div>
+        </div>
+      </div>
+      <div class="cons-subgroup">
+      <div class="cons-subgroup-label" style="border-color:#065F4620;background:#065F4610">
+        <span style="color:#065F46;font-weight:600">CXI (support)</span>
+      </div>
+      <table class="cons-table"><thead><tr><th>Matériel</th><th>Taille</th><th>Emplacement</th><th>GRM</th></tr></thead><tbody><tr><td>Cathéter CXI 0.014 angulé</td><td>90 cm</td><td><span class="cons-loc">PP1</span></td><td class="cons-grm">1200002398</td></tr><tr><td>Cathéter CXI 0.014 angulé</td><td>135 cm</td><td><span class="cons-loc">PP1</span></td><td class="cons-grm">4200005318</td></tr><tr><td>Cathéter CXI 0.014 droit</td><td>135 cm</td><td><span class="cons-loc">PP1</span></td><td class="cons-grm">4200005320</td></tr><tr><td>Cathéter CXI 0.018 angulé</td><td>135 cm</td><td><span class="cons-loc">PP1</span></td><td class="cons-grm">4209000698</td></tr><tr><td>Cathéter CXI 0.018 droit</td><td>135 cm</td><td><span class="cons-loc">PP1</span></td><td class="cons-grm">4209000697</td></tr><tr><td>Cathéter CXI 0.035 angulé</td><td>135 cm</td><td><span class="cons-loc">PP1</span></td><td class="cons-grm">4209000699</td></tr><tr><td>Cathéter CXI 0.035 droit</td><td>135 cm</td><td><span class="cons-loc">PP1</span></td><td class="cons-grm">4200001679</td></tr></tbody></table></div><div class="cons-subgroup">
+      <div class="cons-subgroup-label" style="border-color:#1E3A5F20;background:#1E3A5F10">
+        <span style="color:#1E3A5F;font-weight:600">Quickcross (support)</span>
+      </div>
+      <table class="cons-table"><thead><tr><th>Matériel</th><th>Taille</th><th>Emplacement</th><th>GRM</th></tr></thead><tbody><tr><td>Cathéter Quick-Cross 0.018, 4F courbe</td><td>90 cm</td><td><span class="cons-loc">PP2</span></td><td class="cons-grm">1200002320</td></tr><tr><td>Cathéter Quick-Cross 0.018, 4F droit</td><td>90 cm</td><td><span class="cons-loc">PP2</span></td><td class="cons-grm">1200002849</td></tr><tr><td>Cathéter Quick-Cross 0.035, 5F courbe</td><td>90 cm</td><td><span class="cons-loc">PP2</span></td><td class="cons-grm">1200002321</td></tr><tr><td>Cathéter Quick-Cross 0.035, 5F droit</td><td>90 cm</td><td><span class="cons-loc">PP2</span></td><td class="cons-grm">1200002318</td></tr></tbody></table></div><div class="cons-subgroup">
+      <div class="cons-subgroup-label" style="border-color:#7C3AED20;background:#7C3AED10">
+        <span style="color:#7C3AED;font-weight:600">Navigation / Diagnostic</span>
+      </div>
+      <table class="cons-table"><thead><tr><th>Matériel</th><th>Taille</th><th>Emplacement</th><th>GRM</th></tr></thead><tbody><tr><td>Cathéter DROIT GRADUÉ 5F</td><td>65 cm</td><td><span class="cons-loc">NN2 2ème rail</span></td><td class="cons-grm">1200000693</td></tr><tr><td>Cathéter DROIT GRADUÉ 5F</td><td>100 cm</td><td><span class="cons-loc">NN2 2ème rail</span></td><td class="cons-grm">1200002385</td></tr><tr><td>Cathéter KMP 5F</td><td>65 cm</td><td><span class="cons-loc">NN1 premier rail</span></td><td class="cons-grm">1200001141</td></tr><tr><td>Cathéter KMP 5F</td><td>100 cm</td><td><span class="cons-loc">NN2 2ème rail</span></td><td class="cons-grm">1200013621</td></tr><tr><td>Cathéter Omniflush courbe 5F</td><td>65 cm</td><td><span class="cons-loc">NN1 premier rail</span></td><td class="cons-grm">4200006056</td></tr><tr><td>Cathéter PIG ou PIGTAIL 5F</td><td>65 cm/ 100 cm</td><td><span class="cons-loc">NN1 premier rail</span></td><td class="cons-grm">4200010818</td></tr><tr><td>Cathéter RIM 4F</td><td>65 cm</td><td><span class="cons-loc">NN2 2ème rail</span></td><td class="cons-grm">1200001630</td></tr><tr><td>Cathéter RIM 5F</td><td>65 cm</td><td><span class="cons-loc">NN1 premier rail</span></td><td class="cons-grm">1100007095</td></tr><tr><td>Cathéter SIM1 5F</td><td>65 cm</td><td><span class="cons-loc">NN2 2ème rail</span></td><td class="cons-grm">4200003833</td></tr><tr><td>Cathéter straight flush 5F</td><td>65 cm</td><td><span class="cons-loc">NN2 2ème rail</span></td><td class="cons-grm">1100003433</td></tr></tbody></table></div><div class="cons-subgroup">
+      <div class="cons-subgroup-label" style="border-color:#37415120;background:#37415110">
+        <span style="color:#374151;font-weight:600">Autre</span>
+      </div>
+      <table class="cons-table"><thead><tr><th>Matériel</th><th>Taille</th><th>Emplacement</th><th>GRM</th></tr></thead><tbody><tr><td>Cathéter DAV 5F</td><td>65 cm</td><td><span class="cons-loc">0</span></td><td class="cons-grm">1200013622</td></tr><tr><td>Snare</td><td>120 cm</td><td><span class="cons-loc">OO3</span></td><td class="cons-grm">1010006652</td></tr></tbody></table></div>
+    </div>
+
+    <!-- INTRODUCTEURS -->
+    <div id="cons-intros" class="cons-panel">
+      <div class="cons-panel-header">
+        <div class="cons-panel-icon">🔧</div>
+        <div>
+          <div class="cons-panel-title">Introducteurs périphériques</div>
+          <div class="cons-panel-meta">14 références · 5F à 8F · Pinnacle / Destination / Flexor — Emplacements MM5, MM6, entre-salle</div>
+        </div>
+      </div>
+      <table class="cons-table"><thead><tr><th>Matériel</th><th>Taille</th><th>Emplacement</th><th>GRM</th></tr></thead><tbody><tr><td>Introducteur 5 F</td><td>10 cm</td><td><span class="cons-loc">MM5</span></td><td class="cons-grm">1200000026</td></tr><tr><td>Introducteur 6 F</td><td>10 cm</td><td><span class="cons-loc">MM5</span></td><td class="cons-grm">1100008023</td></tr><tr><td>Introducteur 6 F</td><td>25 cm</td><td><span class="cons-loc">MM5</span></td><td class="cons-grm">1200000540</td></tr><tr><td>Introducteur 7 F</td><td>10 cm</td><td><span class="cons-loc">MM6</span></td><td class="cons-grm">1200000730</td></tr><tr><td>Introducteur 7 F</td><td>25 cm</td><td><span class="cons-loc">MM6</span></td><td class="cons-grm">1200000541</td></tr><tr><td>Introducteur 8 F</td><td>25 cm</td><td><span class="cons-loc">MM6</span></td><td class="cons-grm">1200002515</td></tr><tr><td>Introducteur Destination 5 F</td><td>45 cm</td><td><span class="cons-loc">Salle 40, entre-salle arrière</span></td><td class="cons-grm">4200000262</td></tr><tr><td>Introducteur Destination 6 F</td><td>45 cm</td><td><span class="cons-loc">Salle 40, entre-salle arrière</span></td><td class="cons-grm">4200008411</td></tr><tr><td>Introducteur Flexor 5 F</td><td>45 cm</td><td><span class="cons-loc">Salle 40, entre-salle arrière</span></td><td class="cons-grm">—</td></tr><tr><td>Introducteur Flexor 6 F</td><td>45 cm</td><td><span class="cons-loc">Salle 40, entre-salle arrière</span></td><td class="cons-grm">—</td></tr><tr><td>Introducteur Flexor 7 F</td><td>45 cm</td><td><span class="cons-loc">Salle 40, entre-salle arrière</span></td><td class="cons-grm">—</td></tr><tr><td>Introducteur Flexor 8 F</td><td>45 cm</td><td><span class="cons-loc">Salle 40, entre-salle arrière</span></td><td class="cons-grm">—</td></tr><tr><td>Micro-Introducteur 4 F</td><td>—</td><td><span class="cons-loc">OO2</span></td><td class="cons-grm">1200001941</td></tr><tr><td>Micro-Introducteur 5 F</td><td>—</td><td><span class="cons-loc">OO2</span></td><td class="cons-grm">1200001144</td></tr></tbody></table>
+    </div>
+
+    <!-- ACCESSOIRES -->
+    <div id="cons-accs" class="cons-panel">
+      <div class="cons-panel-header">
+        <div class="cons-panel-icon">⚙️</div>
+        <div>
+          <div class="cons-panel-title">Accessoires angiographie</div>
+          <div class="cons-panel-meta">6 références · Seringues · Manifolds · Produit de contraste · Perclose</div>
+        </div>
+      </div>
+      <table class="cons-table"><thead><tr><th>Matériel</th><th>Taille</th><th>Emplacement</th><th>GRM</th></tr></thead><tbody><tr><td>A2000 Multi-use syringe Kit</td><td>—</td><td><span class="cons-loc">Salle 40, entre-salle arrière</span></td><td class="cons-grm">1100008115</td></tr><tr><td>AngioTouch ATX65</td><td>—</td><td><span class="cons-loc">Salle 40, entre-salle arrière</span></td><td class="cons-grm">4200021211</td></tr><tr><td>Automated Manifold Kit Model BT2000</td><td>—</td><td><span class="cons-loc">Salle 40, entre-salle arrière</span></td><td class="cons-grm">1100008114</td></tr><tr><td>Colorant/Visipaque/Isovue</td><td>200 ml</td><td><span class="cons-loc">MM6</span></td><td class="cons-grm">1100005289</td></tr><tr><td>Perclose/Proglide</td><td>—</td><td><span class="cons-loc">OO4</span></td><td class="cons-grm">1010000309</td></tr><tr><td>Seringue à dilatation</td><td>—</td><td><span class="cons-loc">MM3</span></td><td class="cons-grm">1100001343</td></tr></tbody></table>
+    </div>
+
+  </div><!-- /sec-consommables -->
+
   <div id="sec-quiz" class="section">
     <div class="page-wrap">
       <div class="page-header">
@@ -4079,6 +4280,16 @@ function switchInv(id, el) {
   var tabs = document.querySelectorAll('.inv-tab');
   for (var i=0;i<tabs.length;i++) tabs[i].classList.remove('active');
   var p = document.getElementById('inv-'+id);
+  if (p) p.classList.add('active');
+  if (el) el.classList.add('active');
+}
+
+function switchCons(id, el) {
+  var panels = document.querySelectorAll('.cons-panel');
+  for (var i=0;i<panels.length;i++) panels[i].classList.remove('active');
+  var tabs = document.querySelectorAll('.cons-tab');
+  for (var i=0;i<tabs.length;i++) tabs[i].classList.remove('active');
+  var p = document.getElementById('cons-'+id);
   if (p) p.classList.add('active');
   if (el) el.classList.add('active');
 }
